@@ -1,0 +1,53 @@
+---
+title: "Hepatotoxicity Displays and Analyses"
+format: html
+editor: visual
+---
+
+## 
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Hepatotox Displays and Analyses Catalog"
+  site-url: https://phuse-org.github.io/hepatotox/
+  repo-url: https://github.com/phuse-org/hepatotox
+  search: true
+  repo-actions: [edit, source, issue]
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: Tables
+        menu:
+          - href: code/Table 1 Program Code.qmd
+            text: Table 1
+          - href: code/Table 2 Program Code.qmd
+            text: Table 2
+          - href: code/Table 3 Program Code.qmd
+            text: Table 3
+          - href: code/Table 4 Program Code.qmd
+            text: Table 4
+      - text: Figures
+        menu:
+          - href: code/Figure 1 Program Code.qmd
+            text: Figure 1
+          - href: code/Figure 2 Program Code.qmd
+            text: Figure 2
+          - href: code/Figure 3 Program Code.qmd
+            text: Figure 3
+          - href: code/Figure 4 Program Code.qmd
+            text: Figure 4
+          - href: code/Figure 5 Program Code.qmd
+            text: Figure 5
+
+format:
+  html:
+    theme: lumen
+    toc: false
+    code-copy: true
+    code-fold: true
+    tabsets: true
+    highlight-style: tango
+    css: custom.css   # optional: for any extra styling
