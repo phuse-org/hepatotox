@@ -1,0 +1,703 @@
+---
+title: "Figure 2 Program Code"
+author: "Dimple"
+format: html
+editor: visual
+---
+
+```{r warning=FALSE, echo=FALSE, comment=FALSE}
+#Download appropriate libraries.
+library(dplyr)
+library(tern)
+library(random.cdisc.data)
+library(tidyverse)
+library(magrittr)
+library(rtables)
+library(r2rtf)
+library(formatters)
+library(shiny)
+library(plotly)
+library(rlang)
+library(gt)
+
+#Load ADLB dataset.----
+load(file = "/cloud/project/Raw Data/Raw Data Output/adlbf2.Rda")
+
+#Load ADSL dataset.----
+load(file = "/cloud/project/Raw Data/Raw Data Output/adslf2.Rda")
+
+#NAs are explicit missing levels.----
+adlb2aa <- df_explicit_na(adlbf2)
+adsl2aa <- df_explicit_na(adslf2)
+
+#Rename the treatment arms & parameter codes.----
+levels(adlb2aa$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adlb2aa$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
+levels(adlb2aa$PARAMCD) <- c("ALP", "ALT", "AST", "Total Bilirubin")
+adlb2aa$PARAMCD <- factor(adlb2aa$PARAMCD, levels = c("ALT", "AST", "Total Bilirubin", "ALP"))
+adlb2aa$PARAM <- factor(adlb2aa$PARAM, levels = c("Alanine Aminotransferase Measurement", "Aspartate Aminotransferase Measurement", "Total Bilirubin Measurement", "Alkaline Phosphatase Measurement"))
+
+adlb2aa$ACTARMCD <- factor(adlb2aa$ACTARMCD, levels = c("T1", "T2", "PL"))
+adlb2a <- adlb2aa %>% add_column(RUNNUM=runif(nrow(.)))
+
+#Flag baseline measurement.----
+adlb2bl <- adlb2a %>% filter(SAFFL == "Y" & ABLFL == "Y") %>%
+  group_by(USUBJID, PARAMCD) %>% 
+  select(USUBJID, SUBJID, PARAMCD, PARAM, ABLFL, BASE, ARMCD)
+
+#Flag the maximum post-baseline result.----
+adlb2mpbr <- adlb2a %>% filter(SAFFL == "Y" & AVISITN %in% c(1, 2)) %>%
+  group_by(USUBJID, PARAMCD) %>% slice_max(AVAL) %>% mutate(MPBR = "Y")
+
+#Merge Baseline Laboratory Dataset with the Maximum Post-Baseline Laboratory Dataset.----
+adlb2shift <- merge(x = adlb2mpbr, y = adlb2bl[ , c("SUBJID", "USUBJID", "PARAMCD", "PARAM", "ABLFL", "BASE", "ARMCD")], by = c("SUBJID", "PARAMCD"), all.x = TRUE) %>%
+  mutate(BASExr = round(BASE.x, 3), AVALr = round(AVAL, 3), BASEyr = round(BASE.y, 3))
+
+#Create 2 event Flags. 1 for N = number of subjects with Max. Baseline 'normal' or
+#'low' and at least 1 post-baseline value. 2nd flag for n = number of subjects with 
+#Max post-baseline 'high'.----
+adlb2flags <- adlb2shift %>% mutate(EVFLAG1 = case_when(ABLFL.y == "Y" & 
+            BNRIND %in% c("LOW", "NORMAL") & MPBR == "Y" ~ "Y", .default = "N")) %>%
+            mutate(EVFLAG2 = case_when(EVFLAG1 == "Y" & ANRIND %in% c("HIGH") ~ "Y", 
+                                       EVFLAG1 == "Y" & ANRIND %in% c("LOW", "NORMAL") ~ "N"), .default ="N")
+
+
+#Subset flagged table by parameter code.----
+adlbflagsalt <- adlb2flags %>% filter(PARAMCD == "ALT")
+adlbflagsast <- adlb2flags %>% filter(PARAMCD == "AST")
+adlbflagstbili <- adlb2flags %>% filter(PARAMCD == "Total Bilirubin")
+adlbflagsalp <- adlb2flags %>% filter(PARAMCD == "ALP")
+
+#Create frequency tables with percentage for ALT/AST/Total Bilirubin/ALP.----
+adlbflagsaltn1 <- adlbflagsalt %>% filter(EVFLAG1 == "Y") %>% group_by(ACTARMCD) %>% 
+  summarize(N1 = n())
+adlbflagsastn1 <- adlbflagsast %>% filter(EVFLAG1 == "Y") %>% group_by(ACTARMCD) %>% 
+  summarize(N1 = n())
+adlbflagstbilin1 <- adlbflagstbili %>% filter(EVFLAG1 == "Y") %>% group_by(ACTARMCD) %>% 
+  summarize(N1 = n())
+adlbflagsalpn1 <- adlbflagsalp %>% filter(EVFLAG1 == "Y") %>% group_by(ACTARMCD) %>% 
+  summarize(N1 = n())
+
+adlbflagsaltn2 <- adlbflagsalt %>% filter(EVFLAG2 == "Y") %>% group_by(ACTARMCD) %>% 
+  summarize(N2 = n())
+adlbflagsastn2 <- adlbflagsast %>% filter(EVFLAG2 == "Y") %>% group_by(ACTARMCD) %>% 
+  summarize(N2 = n())
+adlbflagstbilin2 <- adlbflagstbili %>% filter(EVFLAG2 == "Y") %>% group_by(ACTARMCD) %>% 
+  summarize(N2 = n())
+adlbflagsalpn2 <- adlbflagsalp %>% filter(EVFLAG2 == "Y") %>% group_by(ACTARMCD) %>% 
+  summarize(N2 = n())
+
+adlbflagsalt2 <- merge(adlbflagsaltn2[ , c("ACTARMCD", "N2")], adlbflagsaltn1, by = c("ACTARMCD")) %>%   mutate(perc = round(N2/N1*100, 2)) 
+adlbflagsast2 <- merge(adlbflagsastn2[ , c("ACTARMCD", "N2")], adlbflagsastn1, by = c("ACTARMCD")) %>%   mutate(perc = round(N2/N1*100, 2)) 
+adlbflagstbili2 <- merge(adlbflagstbilin2[ , c("ACTARMCD", "N2")], adlbflagstbilin1, by = c("ACTARMCD")) %>%   mutate(perc = round(N2/N1*100, 2)) 
+adlbflagsalp2 <- merge(adlbflagsalpn2[ , c("ACTARMCD", "N2")], adlbflagsalpn1, by = c("ACTARMCD")) %>%   mutate(perc = round(N2/N1*100, 2)) 
+
+finalt <- rbind(adlbflagsalt2[2, ], adlbflagsalt2[3, ], adlbflagsalt2[1, ])
+finast <- rbind(adlbflagsast2[2, ], adlbflagsast2[3, ], adlbflagsast2[1, ])
+fintbili <- rbind(adlbflagstbili2[2, ], adlbflagstbili2[3, ], adlbflagstbili2[1, ])
+finalp <- rbind(adlbflagsalp2[2, ], adlbflagsalp2[3, ], adlbflagsalp2[1, ])
+
+#Create contingency tables to procure Fisher's exact test calculation for ALT/AST/Total #Bilirubin/ALP.----
+contalt <- adlbflagsalt2 %>% mutate(nothigh = N1 - N2) %>% select(ACTARMCD, N2, nothigh)
+contast <- adlbflagsast2 %>% mutate(nothigh = N1 - N2) %>% select(ACTARMCD, N2, nothigh)
+conttbili <- adlbflagstbili2 %>% mutate(nothigh = N1 - N2) %>% select(ACTARMCD, N2, nothigh)
+contalp <- adlbflagsalp2 %>% mutate(nothigh = N1 - N2) %>% select(ACTARMCD, N2, nothigh)
+
+contaltt1 <- contalt %>% filter(ACTARMCD %in% c("PL", "T1"))
+contastt1 <- contast %>% filter(ACTARMCD %in% c("PL", "T1"))
+conttbilit1 <- conttbili %>% filter(ACTARMCD %in% c("PL", "T1"))
+contalpt1 <- contalp %>% filter(ACTARMCD %in% c("PL", "T1"))
+
+altfisht1 <- fisher.test(rbind(contaltt1[1, 2:3], contaltt1[2, 2:3]),  alternative="less")
+astfisht1 <- fisher.test(rbind(contastt1[1, 2:3], contastt1[2, 2:3]),  alternative="less")
+tbilifisht1 <- fisher.test(rbind(conttbilit1[1, 2:3], conttbilit1[2, 2:3]),  alternative="less")
+alpfisht1 <- fisher.test(rbind(contalpt1[1, 2:3], contalpt1[2, 2:3]),  alternative="less")
+
+contaltt2 <- contalt %>% filter(ACTARMCD %in% c("PL", "T2")) 
+contastt2 <- contast %>% filter(ACTARMCD %in% c("PL", "T2"))
+conttbilit2 <- conttbili %>% filter(ACTARMCD %in% c("PL", "T2"))
+contalpt2 <- contalp %>% filter(ACTARMCD %in% c("PL", "T2"))
+
+altfisht2 <- fisher.test(rbind(contaltt2[1, 2:3], contaltt2[2, 2:3]),  alternative="less")
+astfisht2 <- fisher.test(rbind(contastt2[1, 2:3], contastt2[2, 2:3]),  alternative="less")
+tbilifisht2 <- fisher.test(rbind(conttbilit2[1, 2:3], conttbilit2[2, 2:3]),  alternative="less")
+alpfisht2 <- fisher.test(rbind(contalpt2[1, 2:3], contalpt2[2, 2:3]),  alternative="less")
+
+#Add Fisher's Exact test values to original frequency tables ALT/AST/Total Bilirubin/ALP.----
+pvalalt <- c(round(altfisht1$p.value, 2), round(altfisht2$p.value, 2), NA)
+pvalast <- c(round(astfisht1$p.value, 2), round(astfisht2$p.value, 2), NA)
+pvaltbili <- c(round(tbilifisht1$p.value, 2), round(tbilifisht2$p.value, 2), NA)
+pvalalp <- c(round(alpfisht1$p.value, 2), round(alpfisht2$p.value, 2), NA)
+
+finalt2 <- cbind(finalt, pvalalt)
+finast2 <- cbind(finalt, pvalast)
+fintbili2 <- cbind(fintbili, pvaltbili)
+finalp2 <- cbind(finalt, pvalalp)
+
+#Create crude GT table for each lab test.----
+finalt2a <- finalt2 %>% gt() %>% 
+  tab_spanner(label = "Treatment-Emergent High",  columns = c(N2, N1, perc, pvalalt), id = "dt") %>%
+  cols_label(ACTARMCD = "Treatment", N2 = "N", N1 = "n", perc = "%", pvalalt = "P value*a")  
+
+finast2a <- finast2 %>% gt() %>% 
+  tab_spanner(label = "Treatment-Emergent High",  columns = c(N2, N1, perc, pvalast), id = "dt") %>%
+  cols_label(ACTARMCD = "Treatment", N2 = "N", N1 = "n", perc = "%", pvalast = "P value*a")  
+
+fintbili2a <- fintbili2 %>% gt() %>% 
+  tab_spanner(label = "Treatment-Emergent High",  columns = c(N2, N1, perc, pvaltbili), id = "dt") %>% cols_label(ACTARMCD = "Treatment", N2 = "N", N1 = "n", perc = "%", pvaltbili = "P value*a")  
+
+finalp2a <- finalp2 %>% gt() %>% 
+  tab_spanner(label = "Treatment-Emergent High",  columns = c(N2, N1, perc, pvalalp), id = "dt") %>%
+  cols_label(ACTARMCD = "Treatment", N2 = "N", N1 = "n", perc = "%", pvalalp = "P value*a")  
+
+#Create & execute function to control appearance for rest of the features in the GT table.----  
+gtrest <- function(dataset1) {
+  dataset1 %>% tab_footnote("N = number of subjects with Max. baseline 'normal' or
+'low' and at least one post-baselinevalue; n = among the 'N',
+number of subjects with Max. post-baseline 'high'; high and low are determined
+using the reference limits based on the individual subject's demographics.
+*a - P values are from Fisher's Exact test, compared with PL.") %>%
+  tab_options(table.font.size = 13) %>%
+  tab_style(
+    style = cell_borders(sides = "bottom", style = NULL),
+    locations = cells_body(
+      columns = 1:5,
+      rows = 1:3
+    )) %>%
+  tab_style(
+    style = list(
+      cell_borders(
+        sides = c("top", "bottom"),  
+        color = "black",  
+        weight = px(2)  
+      )
+    ),
+    locations = cells_column_spanners(spanners = everything())  
+  ) %>%
+  tab_style(
+    style = list(
+      cell_borders(
+        sides = c("top", "bottom"),  
+        color = "black", 
+        weight = px(2)  
+      )
+    ),
+    locations = cells_column_labels(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_borders(sides = "bottom", color = "black", weight = 2),
+    locations = cells_body(
+      columns = 1:5,
+      rows = 3
+    )) %>%
+  tab_style(
+    style = list(cell_text(weight = "bold")),
+    locations = cells_column_labels(columns = everything())
+  ) %>%
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_spanners(spanners = "dt")
+  ) %>%
+  tab_style(
+    style = list(cell_text(weight = "bold")),
+    locations = cells_body(columns = 1)
+  )
+}
+
+finalt3 <- gtrest(finalt2a)
+finast3 <- gtrest(finast2a)
+fintbili3 <- gtrest(fintbili2a)
+finalp3 <- gtrest(finalp2a)
+
+#Create RShiny app's UI component----
+uix <- fluidPage(
+  fluidRow(
+    column(12, 
+           h3("Figure 2: Scatterplot and Shift Summary for Quantitative Safety Measures \n Assessing High Value with Change Criteria: Individual Study", style = "font-size: 20px;"),
+           uiOutput("subtitles")
+    )
+  ),
+  
+  fluidRow(
+  column(4, selectInput("Plot", "Please select a Liver Biochemical Test to view:",
+           choices = c("ALT", "AST", "Total Bilirubin", "ALP"), width = '100%')),
+  column(1, br(), actionButton("submit", "Submit", width = '100%')
+  )),
+
+  mainPanel(fluidRow(
+  column(7, 
+           plotlyOutput("Plots", height = "400px", width = '100%'),   
+           textOutput("footnote1", container = span)  
+    ),
+    column(4, 
+           gt_output("Tables")),
+    tags$head(
+    tags$style(HTML(HTML("
+      #footnote1 {
+        font-size: 10px;
+      }
+    "))
+  )
+)
+)))
+
+#Create RShiny app's Server Component. ----
+server <- function(input, output, session) {
+  observeEvent(input$submit, {
+  plotalt <- plot_ly(adlb2shift %>% filter(ACTARMCD == "PL" & PARAMCD == "ALT"), 
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            name = "Placebo",
+            marker = list(color = "aquamarine")) %>%
+    add_trace(data = adlb2shift %>% filter(ACTARMCD == "T1" & PARAMCD == "ALT"),
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "lightslategray"),
+            name = "Treatment 1") %>% 
+    add_trace(data = adlb2shift %>% filter(ACTARMCD == "T2" & PARAMCD == "ALT"),
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "hotpink"),
+            name = "Treatment 2") %>%
+      layout(title = "Scatterplot of Baseline Versus Maximum Values for AST\n<Analysis Set>",
+           xaxis = list(title = "Maximum Baseline Measures (Unit: U/L)"),
+           yaxis = list(title = 'Max. Post-baseline Measures (Unit: U/L)'),
+           legend=list(title=list(text='<b> Treatment </b>')),
+           shapes = list(
+    list(
+        type = "line",
+        x0 = 7,
+        x1 = 7,
+        y0 = 0,
+        y1 = 67,
+        line = list(color = "blue", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 55,
+        x1 = 55,
+        y0 = 0,
+        y1 = 67,
+        line = list(color = "darkred", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 0,
+        x1 = 70,
+        y0 = 7,
+        y1 = 7,
+        line = list(color = "blue", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 0,
+        x1 = 70,
+        y0 = 55,
+        y1 = 55,
+        line = list(color = "darkred", dash = "dash")
+      ),
+    list(
+        type = "line", 
+        x0 = 0, 
+        x1 = ~max(70, 70), 
+        xref = "x",
+        y0 = 0, 
+        y1 = ~max(70, 70),
+        yref = "y",
+        line = list(color = "black")
+    ))) %>%
+    add_annotations(
+      x= 56,
+      y= 4.5,
+      text = "ULN",
+      showarrow = F,
+      textangle = 270,
+      font = list(color = "red")
+    ) %>%
+    add_annotations(
+      x= 4.5,
+      y= 57,
+      text = "ULN",
+      showarrow = F,
+      font = list(color = "red")
+    ) %>%
+    add_annotations(
+      x= 8,
+      y= 4.5,
+      text = "LLN",
+      showarrow = F,
+      textangle = 270,
+      font = list(color = "blue")
+    ) %>%
+    add_annotations(
+      x= 3.5,
+      y= 8.5,
+      text = "LLN",
+      showarrow = F,
+      font = list(color = "blue")
+    ) 
+
+  plotast <- plot_ly(adlb2shift %>% filter(ACTARMCD == "PL" & PARAMCD == "AST"), 
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            name = "Placebo",
+            marker = list(color = "aquamarine")) %>%
+    add_trace(data = adlb2shift %>% filter(ACTARMCD == "T1" & PARAMCD == "AST"),
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "lightslategray"),
+            name = "Treatment 1") %>% 
+    add_trace(data = adlb2shift %>% filter(ACTARMCD == "T2" & PARAMCD == "AST"),
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "hotpink"),
+            name = "Treatment 2") %>%
+    layout(title = "Scatterplot of Baseline Versus Maximum Values for AST\n<Analysis Set>",
+           xaxis = list(title = "Maximum Baseline Measures (Unit: U/L)"),
+           yaxis = list(title = 'Max. Post-baseline Measures (Unit: U/L)'),
+           legend=list(title=list(text='<b> Treatment </b>')),
+           shapes = list(
+    list(
+        type = "line",
+        x0 = 8,
+        x1 = 8,
+        y0 = 0,
+        y1 = 37,
+        line = list(color = "blue", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 33,
+        x1 = 33,
+        y0 = 0,
+        y1 = 37,
+        line = list(color = "darkred", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 0,
+        x1 = 45,
+        y0 = 8,
+        y1 = 8,
+        line = list(color = "blue", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 0,
+        x1 = 45,
+        y0 = 33,
+        y1 = 33,
+        line = list(color = "darkred", dash = "dash")
+      ),
+    list(
+        type = "line", 
+        x0 = 0, 
+        x1 = ~max(38, 38), 
+        xref = "x",
+        y0 = 0, 
+        y1 = ~max(38, 38),
+        yref = "y",
+        line = list(color = "black")
+    ))) %>%
+    add_annotations(
+      x = 34,
+      y = 6,
+      text = "ULN",
+      showarrow = F,
+      textangle = 270,
+      font = list(color = "red")
+    ) %>%
+    add_annotations(
+      x = 6,
+      y = 34,
+      text = "ULN",
+      showarrow = F,
+      font = list(color = "red")
+    ) %>%
+    add_annotations(
+      x = 9,
+      y = 6,
+      text = "LLN",
+      showarrow = F,
+      textangle = 270,
+      font = list(color = "blue")
+    ) %>%
+    add_annotations(
+      x = 6,
+      y = 9,
+      text = "LLN",
+      showarrow = F,
+      font = list(color = "blue")
+    ) 
+
+  plottbili <- plot_ly(adlb2shift %>% filter(ACTARMCD == "PL" & PARAMCD == "Total Bilirubin"), 
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            name = "Placebo",
+            marker = list(color = "aquamarine")) %>%
+    add_trace(data = adlb2shift %>% filter(ACTARMCD == "T1" & PARAMCD == "Total Bilirubin"),
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "lightslategray"),
+            name = "Treatment 1") %>% 
+    add_trace(data = adlb2shift %>% filter(ACTARMCD == "T2" & PARAMCD == "Total Bilirubin"),
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "hotpink"),
+            name = "Treatment 2") %>%
+    layout(title = list(text = "Scatterplot of Baseline Versus Maximum Values for Total Bilirubin\n<Analysis Set>", font = list(size = 14)),
+           xaxis = list(title = "Maximum Baseline Measures (Unit: mg/dL)", ticks = "inside"),
+           yaxis = list(title = "Max. Post-baseline Measures (Unit: mg/dL)", ticks = "inside"),
+           legend=list(title=list(text='<b> Treatment </b>')),
+           shapes = list(
+    list(
+        type = "line",
+        x0 = .1,
+        x1 = .1,
+        y0 = 0,
+        y1 = 3.5,
+        line = list(color = "blue", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 1.2,
+        x1 = 1.2,
+        y0 = 0,
+        y1 = 3.5,
+        line = list(color = "darkred", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 0,
+        x1 = 3.5,
+        y0 = .1,
+        y1 = .1,
+        line = list(color = "blue", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 0,
+        x1 = 3.5,
+        y0 = 1.2,
+        y1 = 1.2,
+        line = list(color = "darkred", dash = "dash")
+      ),
+    list(
+        type = "line", 
+        x0 = 0, 
+        x1 = ~max(3.5, 3.5), 
+        xref = "x",
+        y0 = 0, 
+        y1 = ~max(3.5, 3.5),
+        yref = "y",
+        line = list(color = "black")
+    ))) %>%
+    add_annotations(
+      x= 1.25,
+      y= .25,
+      text = "ULN",
+      showarrow = F,
+      textangle = 270,
+      font = list(color = "red")
+    ) %>%
+    add_annotations(
+      x= .27,
+      y= 1.3,
+      text = "ULN",
+      showarrow = F,
+      font = list(color = "red")
+    ) %>%
+    add_annotations(
+      x= .15,
+      y= .5,
+      text = "LLN",
+      showarrow = F,
+      textangle = 270,
+      font = list(color = "blue")
+    ) %>%
+    add_annotations(
+      x= .5,
+      y= .2,
+      text = "LLN",
+      showarrow = F,
+      font = list(color = "blue")
+    ) 
+
+  plotalp <- plot_ly(adlb2shift %>% filter(ACTARMCD == "PL" & PARAMCD == "ALP"), 
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            name = "Placebo",
+            marker = list(color = "aquamarine")) %>%
+    add_trace(data = adlb2shift %>% filter(ACTARMCD == "T1" & PARAMCD == "ALP"),
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "lightslategray"),
+            name = "Treatment 1") %>% 
+    add_trace(data = adlb2shift %>% filter(ACTARMCD == "T2" & PARAMCD == "ALP"),
+            x = ~BASExr,
+            y = ~AVALr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            symbol = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "hotpink"),
+            name = "Treatment 2") %>%
+    layout(title = "Scatterplot of Baseline Versus Maximum Values for ALP\n<Analysis Set>",
+           xaxis = list(title = "Maximum Baseline Measures (Unit: U/L)"),
+           yaxis = list(title = 'Max. Post-baseline Measures (Unit: U/L)'),
+           legend=list(title=list(text='<b> Treatment </b>')),
+           shapes = list(
+    list(
+        type = "line",
+        x0 = 44,
+        x1 = 44,
+        y0 = 0,
+        y1 = 250,
+        line = list(color = "blue", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 147,
+        x1 = 147,
+        y0 = 0,
+        y1 = 250,
+        line = list(color = "darkred", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 0,
+        x1 = 250,
+        y0 = 44,
+        y1 = 44,
+        line = list(color = "blue", dash = "dash")
+      ),
+    list(
+        type = "line",
+        x0 = 0,
+        x1 = 250,
+        y0 = 147,
+        y1 = 147,
+        line = list(color = "darkred", dash = "dash")
+      ),
+    list(
+        type = "line", 
+        x0 = 0, 
+        x1 = ~max(250, 250), 
+        xref = "x",
+        y0 = 0, 
+        y1 = ~max(250, 250),
+        yref = "y",
+        line = list(color = "black")
+    ))) %>%
+    add_annotations(
+      x= 150,
+      y= 34,
+      text = "ULN",
+      showarrow = F,
+      textangle = 270,
+      font = list(color = "red")
+    ) %>%
+    add_annotations(
+      x= 34,
+      y= 153,
+      text = "ULN",
+      showarrow = F,
+      font = list(color = "red")
+    ) %>%
+    add_annotations(
+      x= 47,
+      y= 34,
+      text = "LLN",
+      showarrow = F,
+      textangle = 270,
+      font = list(color = "blue")
+    ) %>%
+    add_annotations(
+      x= 34,
+      y= 48,
+      text = "LLN",
+      showarrow = F,
+      font = list(color = "blue")
+    ) 
+
+    output$subtitles <- renderUI({
+    switch(isolate(input$Plot),
+      "ALT" = HTML(paste("Scatterplot and Shift Table Summary of Absolute Lab Values for ALT",
+      "Max baseline vs. Max Post-baseline",  sep="<br/>")),
+      "AST" = HTML(paste("Scatterplot and Shift Table Summary of Absolute Lab Values for AST
+      Max baseline vs. Max Post-baseline",  sep="<br/>")),
+      "Total Bilirubin" = HTML(paste("Scatterplot and Shift Table Summary of Absolute Lab Values for Total Bilirubin Max baseline vs. Max Post-baseline",  sep="<br/>")),
+      "ALP" = HTML(paste("Scatterplot and Shift Table Summary of Absolute Lab Values for ALP
+      Max baseline vs. Max Post-baseline",  sep="<br/>")))
+  })
+    
+    output$footnote1 <- renderText({
+        HTML("LLN=Lower limit of normal; ULN=Upper limit of normal; if the limits (LLN and ULN) vary across the population, the limits that apply to the majority of subjects are displayed in the scatter plot.The black diagonal line represents no change from max. baseline to max. post-baseline.")
+      })
+    
+    output$Plots = renderPlotly({
+    switch(isolate(input$Plot),
+           "ALT" = plotalt,
+           "AST" = plotast,
+           "Total Bilirubin" = plottbili,
+           "ALP" = plotalp
+          )
+    })
+    
+    output$Tables = render_gt({
+    switch(isolate(input$Plot),
+           "ALT" = finalt3,
+           "AST" = finast3,
+           "Total Bilirubin" = fintbili3,
+           "ALP" = finalp3
+          )
+    })
+})}
+
+#Output final ShinyApp.
+shinyApp(uix, server)
+```
