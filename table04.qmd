@@ -1,0 +1,228 @@
+---
+title: "Table 4 Program Code"
+author: "Dimple Patel"
+format: html
+editor: visual
+---
+
+```{r warning=FALSE, echo=FALSE, comment=FALSE}
+#Attach appropriate libraries.
+library(dplyr)
+library(tern)
+library(random.cdisc.data)
+library(tidyverse)
+library(magrittr)
+library(tern)
+library(dplyr)
+library(rtables)
+library(r2rtf)
+library(formatters)
+
+#Load an ADAE and ADSL datasets.
+load(file = "/cloud/project/Raw Data/Raw Data Output/adaet4.Rda")
+
+#Load ADSL for future treatment arm reference.
+load(file = "/cloud/project/Raw Data/Raw Data Output/adslt4.Rda")
+ 
+#NAs are explicit missing levels.
+adae2a <- df_explicit_na(adaet4)
+adsl2a <- df_explicit_na(adslt4)
+
+#Rename the treatment arms for both ADSL & ADAE datasets.
+levels(adae2a$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adae2a$ACTARM) <- c("T1\n n/N (%)", "PL\n n/N (%)", "T2\n n/N (%)")
+levels(adae2a$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
+
+levels(adsl2a$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adsl2a$ACTARM) <- c("T1\n n/N (%)", "PL\n n/N (%)", "T2\n n/N (%)")
+levels(adsl2a$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
+
+adae2a$ACTARMCD <- factor(adae2a$ACTARMCD, levels = c("PL", "T1", "T2")) 
+adae2a$ARM <- factor(adae2a$ARM, levels = c("Placebo", "Treatment 1", "Treatment 2"))
+adsl2a$ARM <- factor(adsl2a$ARM, levels = c("Placebo", "Treatment 1", "Treatment 2"))
+adsl2a$ACTARMCD <- factor(adsl2a$ACTARMCD, levels = c("PL", "T1", "T2")) 
+
+adae2b <- adae2a %>% add_column(RUNNUM=runif(nrow(.)))
+
+#Flag the number of patients with at least 1 broad or narrow scoped SMQ.
+adaeany1 <- adae2b %>% 
+  filter(SAFFL == "Y") %>% 
+  mutate(EVFLAG1 = case_when(SMQ01SC %in% c("Narrow")| SMQ02SC %in% c("Broad") ~ "Y", .default = "N"))
+
+adaeany2 <- adaeany1 %>% filter(EVFLAG1 == "Y") %>% 
+  group_by(SUBJID) %>% 
+  slice_min(AESEQ)
+
+#Right join adverse events dataset with subject-level ADSL dataset to count patients with at
+#least 1 broad or narrow scoped SMQ.
+adaeany3 <- right_join(adaeany2, adsl2a, join_by(SUBJID)) %>%
+  select(USUBJID.y, ARM.y, ACTARM.y, ACTARMCD.x, EVFLAG1, SUBJID) %>%
+  rename(ARM = ARM.y, ACTARM = ACTARM.y, ACTARMCD = ACTARMCD.x) %>% 
+  add_column(RUNNUM=runif(nrow(.)))
+
+#Create custom functions that yields facet A & facet B's basic_table structures.
+faceta <- function(val1, val2){
+  basic_table(show_colcounts = TRUE) %>% 
+  split_cols_by("ARM", show_colcounts = TRUE, labels_var = "ACTARM",
+  split_fun = add_riskdiff(arm_x = c("Treatment 1"), 
+  arm_y = c("Placebo"), 
+   col_label = paste0("\n", "Risk", "\n", "Difference", "\n", 
+  c("T1"), "-", c("PL"), "\n", "(95% CI)"))) %>%
+  count_patients_with_event(
+    "RUNNUM",
+    filters = c("EVFLAG1"="Y"),
+    denom = "N_col", riskdiff = TRUE,
+    .labels = c(count_fraction = val1),
+    .indent_mods = val2)
+}
+
+facetb <- function(val1, val2){
+  basic_table(show_colcounts = TRUE) %>% 
+  split_cols_by("ARM", show_colcounts = TRUE, labels_var = "ACTARM",
+  split_fun = add_riskdiff(arm_x = "Treatment 2", 
+  arm_y = c("Placebo", "Treatment 1"), 
+   col_label = paste0("\n", "Risk", "\n", "Difference", "\n", 
+  c("T2-"), c("PL", "T1"), "\n", "(95% CI)"))) %>%
+  count_patients_with_event(
+    "RUNNUM",
+    filters = c("EVFLAG1"="Y"),
+    denom = "N_col", riskdiff = TRUE,
+    .labels = c(count_fraction = val1),
+    .indent_mods = val2)
+}
+
+#Build and render top part of the table counting patients with at least 1 narrow or broad scope PT.
+tabboth1a <- faceta("Number of patients\nreporting at least one\nNarrow or Broad Scope PT", 0)
+tabboth1a1 <- append_topleft(tabboth1a, "Preferred Term")
+result1a <- build_table(tabboth1a1, df = adaeany3)
+
+tabboth1b <- facetb("Number of patients\nreporting at least one\nNarrow or Broad Scope PT", 0)
+tabboth1b1 <- append_topleft(tabboth1b, "Preferred Term")
+result1b <- build_table(tabboth1b1, df = adaeany3)
+
+#Create flags for all narrow scope PTs.
+adaen1 <- adae2b %>% 
+  filter(SAFFL == "Y") %>% 
+  mutate(EVFLAG1 = case_when(SMQ01NAM %in% c("Hepatic failure, fibrosis, and cirrhosis and other liver damage-related conditions") ~ "Y", .default = "N"))
+
+adaen2 <- adae2b %>% 
+  filter(SAFFL == "Y") %>% 
+  mutate(EVFLAG1 = case_when(SMQ01NAM %in% c("Hepatitis, non-infectious") ~ "Y", .default = "N"))
+
+adaen3 <- adae2b %>% 
+  filter(SAFFL == "Y") %>% 
+  mutate(EVFLAG1 = case_when(SMQ01NAM %in% c("Liver neoplasms, benign (incl cysts and polyps)") ~ "Y", .default = "N"))
+
+adaen4 <- adae2b %>% 
+  filter(SAFFL == "Y") %>% 
+  mutate(EVFLAG1 = case_when(SMQ01NAM %in% c("Liver neoplasms, malignant and unspecified") ~ "Y", 
+      .default = "N"))
+
+#Right join adverse events datasets with subject-level ADSL dataset to count patients with 1st narrow SMQ.
+adaean1a <- adaen1 %>% filter(EVFLAG1 == "Y") %>% 
+  group_by(SUBJID) %>% 
+  slice_min(AESEQ)
+
+adaean2a <- adaen2 %>% filter(EVFLAG1 == "Y") %>% 
+  group_by(SUBJID) %>% 
+  slice_min(AESEQ)
+
+adaean3a <- adaen3 %>% filter(EVFLAG1 == "Y") %>% 
+  group_by(SUBJID) %>% 
+  slice_min(AESEQ)
+
+adaean4a <- adaen4 %>% filter(EVFLAG1 == "Y") %>% 
+  group_by(SUBJID) %>% 
+  slice_min(AESEQ)
+
+adaean1b <- right_join(adaean1a, adsl2a, join_by(SUBJID)) %>%
+  select(USUBJID.y, ARM.y, ACTARM.y, EVFLAG1, SUBJID) %>%
+  rename(ARM = ARM.y, ACTARM = ACTARM.y) %>% add_column(RUNNUM=runif(nrow(.)))
+
+adaean2b <- right_join(adaean2a, adsl2a, join_by(SUBJID)) %>%
+  select(USUBJID.y, ARM.y, ACTARM.y, EVFLAG1, SUBJID) %>%
+  rename(ARM = ARM.y, ACTARM = ACTARM.y) %>% add_column(RUNNUM=runif(nrow(.)))
+
+adaean3b <- right_join(adaean3a, adsl2a, join_by(SUBJID)) %>%
+  select(USUBJID.y, ARM.y, ACTARM.y, EVFLAG1, SUBJID) %>%
+  rename(ARM = ARM.y, ACTARM = ACTARM.y) %>% add_column(RUNNUM=runif(nrow(.)))
+
+adaean4b <- right_join(adaean4a, adsl2a, join_by(SUBJID)) %>%
+  select(USUBJID.y, ARM.y, ACTARM.y, EVFLAG1, SUBJID) %>%
+  rename(ARM = ARM.y, ACTARM = ACTARM.y) %>% add_column(RUNNUM=runif(nrow(.)))
+
+#Build and render parts of the table counting patients with the specific narrow-scoped SMQ.
+tabnar1a <- faceta("   Hepatic failure, fibrosis,\n   and cirrhosis and other liver\n   damage-related conditions", 0)
+tabnar1a1 <- append_topleft(tabnar1a, "Preferred Term")
+resultnar1a <- build_table(tabnar1a1, df = adaean1b)
+
+tabnar1b <- facetb("   Hepatic failure, fibrosis,\n   and cirrhosis and other liver\n   damage-related conditions", 0)
+tabnar1b1 <- append_topleft(tabnar1b, "Preferred Term")
+resultnar1b <- build_table(tabnar1b1, df = adaean1b)
+
+tabnar2a <- faceta("   Hepatitis, non-infectious", 0)
+tabnar2a1 <- append_topleft(tabnar2a, "Preferred Term")
+resultnar2a <- build_table(tabnar2a1, df = adaean2b)
+
+tabnar2b <- facetb("   Hepatitis, non-infectious", 0)
+tabnar2b1 <- append_topleft(tabnar2b, "Preferred Term")
+resultnar2b <- build_table(tabnar2b1, df = adaean2b)
+
+tabnar3a <- faceta("   Liver neoplasms, benign\n   (incl cysts and polyps)", 0)
+tabnar3a1 <- append_topleft(tabnar3a, "Preferred Term")
+resultnar3a <- build_table(tabnar3a1, df = adaean3b)
+
+tabnar3b <- facetb("   Liver neoplasms, benign\n   (incl cysts and polyps)", 0)
+tabnar3b1 <- append_topleft(tabnar3b, "Preferred Term")
+resultnar3b <- build_table(tabnar3b1, df = adaean3b)
+
+tabnar4a <- faceta("   Liver neoplasms, malignant\n   and unspecified", 0)
+tabnar4a1 <- append_topleft(tabnar4a, "Preferred Term")
+resultnar4a <- build_table(tabnar4a1, df = adaean4b)
+
+tabnar4b <- facetb("   Liver neoplasms, malignant\n   and unspecified", 0)
+tabnar4b1 <- append_topleft(tabnar4b, "Preferred Term")
+resultnar4b <- build_table(tabnar4b1, df = adaean4b)
+
+#Combine rows for facets A and B for Narrow-Scoped PTs
+resultbota <- rbind( 
+  resultnar1a[1, ],
+  resultnar2a[1, ],
+  resultnar3a[1, ],
+  resultnar4a[1, ]
+)
+
+resultbotb <- rbind( 
+  resultnar1b[1, ],
+  resultnar2b[1, ],
+  resultnar3b[1, ],
+  resultnar4b[1, ]
+)
+
+#Combine columns from facets A and B for Patients with at least 1 Broad or Narrow SMQ & Narrow-Scoped PTs.
+resulttop <- cbind_rtables(result1a[, 2], result1a[, 1], result1a[, 3:4],
+                           result1b[, 4:ncol(result1b)])
+
+resultbot <- cbind_rtables(resultbota[, 2], resultbota[, 1], resultbota[, 3:4],
+                           resultbotb[, 4:5])
+
+resultbot1 <- insert_rrow(resultbot, rrow("\nNarrow Scope PTs"))
+
+resultall <- rbind(
+  resulttop[1, ],
+  resultbot1[1:7, ]
+  )
+
+main_title(resultall) <- paste("Table 4", 
+  "\nSummary of Treatment Emergent Adverse Events of Adverse Events Meeting the Liver Safety SMQ (or FMQ)", "\n<Analysis Set>")
+main_footer(resultall) <-paste("\nN=number of applicable subjects in treatment arm; n=actual applicable observed number with values.")
+
+#Output table as a PDF file.#
+table4a <- "/cloud/project/Tables and Figures/Program Output/Table 4.pdf"
+export_as_pdf(resultall, file = table4a, landscape = TRUE, paginate = FALSE, 
+              colwidths = c(35, 12, 12, 12, 18, 17, 17))
+
+#Output table as a HTML file.# 
+#Output table as a Word file.#
+#Output table as a Powerpoint file.#
+```
