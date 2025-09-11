@@ -1,0 +1,509 @@
+---
+title: "Figure 3 Program Code"
+author: "Dimple Patel"
+format: html
+editor: visual
+---
+
+```{r warning=FALSE, echo=FALSE, comment=FALSE}
+#Load packages.
+library(dplyr)
+library(tern)
+library(random.cdisc.data)
+library(tidyverse)
+library(magrittr)
+library(formatters)
+library(grid)
+library(shiny)
+library(plotly)
+library(ggvis)
+library(patchwork)
+library(ggprism)
+library(maditr)
+library(gridExtra)
+library(utile.visuals)
+library(flextable)
+library(cowplot)
+library(sciplot)
+library(DT)
+library(gt)
+ 
+#Load an ADLB dataset.
+load(file = "/cloud/project/Raw Data/Raw Data Output/adlbf3.Rda")
+
+#Load ADSL dataset for treatment arm reference.
+load(file = "/cloud/project/Raw Data/Raw Data Output/adslf3.Rda")
+
+#NAs are explicit missing levels.----
+adlb2aa <- df_explicit_na(adlbf3)
+
+#Rename the treatment arms & parameter codes.----
+levels(adlb2aa$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adslf3$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adlb2aa$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
+levels(adlb2aa$PARAMCD) <- c("ALP", "ALT", "AST", "TBILI")
+adlb2aa$PARAMCD <- factor(adlb2aa$PARAMCD, levels = c("ALT", "AST", "TBILI", "ALP"))
+adlb2aa$PARAM <- factor(adlb2aa$PARAM, levels = c("Alanine Aminotransferase Measurement", "Aspartate Aminotransferase Measurement", "Total Bilirubin Measurement", "Alkaline Phosphatase Measurement"))
+adlb2aa$ACTARMCD <- factor(adlb2aa$ACTARMCD, levels = c("PL", "T1", "T2")) 
+adslf3$ACTARMCD <- factor(adslf3$ACTARMCD, levels = c("PL", "T1", "T2")) 
+adlb2a <- adlb2aa %>% add_column(RUNNUM=runif(nrow(.)))
+
+#Fix the visit values to align figure shell's visit values.----
+adlb2a1 <- adlb2a %>% mutate(WKVISIT = case_when(AVISIT %in% c("BASELINE") ~ "Baseline", AVISIT %in%
+  "WEEK 1 DAY 8" ~ "Week 1", AVISIT %in% c("WEEK 2 DAY 15")~"Week 2", AVISIT %in% c("WEEK 3 DAY 22") ~ "Week 3", AVISIT %in% c("WEEK 4 DAY 29") ~ "Week 4", AVISIT %in% c("WEEK 5 DAY 36") ~ "Week 5",
+  AVISIT %in% c("WEEK 6 DAY 43") ~ "Week 6", AVISIT %in% c("SCREENING") ~ "Screening",
+  AVISIT %in% c("WEEK 7 DAY 50") ~ "Week 7", AVISIT %in% c("WEEK 8 DAY 57") ~ "Week 8",
+  AVISIT %in% c("WEEK 9 DAY 64") ~ "Week 9", AVISIT %in% c("WEEK 10 DAY 71") ~ "Week 10", AVISIT %in% c("WEEK 11 DAY 78") ~ "Week 11", AVISIT %in% c("WEEK 12 DAY 85") ~ "Week 12", AVISIT %in% c("WEEK 13 DAY 92") ~ "Week 13", AVISIT %in% c("WEEK 14 DAY 99") ~ "Week 14", AVISIT %in% c("WEEK 15 DAY 106") ~ "Week 15", AVISIT %in% c("WEEK 16 DAY 113") ~ "Week 16", AVISIT %in% c("WEEK 17 DAY 120") ~ "Week 17", AVISIT %in% c("WEEK 18 DAY 127") ~ "Week 18", AVISIT %in% c("WEEK 19 DAY 134") ~ "Week 19", AVISIT %in% c("WEEK 20 DAY 141") ~ "Week 20", AVISIT %in% c("WEEK 21 DAY 148") ~ "Week 21", AVISIT %in% c("WEEK 22 DAY 155") ~ "Week 22", AVISIT %in% c("WEEK 23 DAY 162") ~ "Week 23", AVISIT %in% c("WEEK 24 DAY 169") ~ "Week 24", AVISIT %in% c("WEEK 25 DAY 176") ~ "Week 25", AVISIT %in% c("WEEK 26 DAY 183") ~ "Week 26")) %>%
+  mutate(PERBASE = (case_when(AVISITN > 1 ~ AVAL - BASE))) 
+  
+#Subset table by parameter code & remove screening and baseline values.----
+adlbalt <- adlb2a1 %>% filter(PARAMCD == "ALT" & AVISITN > 0)
+adlbast <- adlb2a1 %>% filter(PARAMCD == "AST" & AVISITN > 0)
+adlbtbili <- adlb2a1 %>% filter(PARAMCD == "TBILI" & AVISITN > 0)
+adlbalp <- adlb2a1 %>% filter(PARAMCD == "ALP" & AVISITN > 0)
+
+#Subset table by ACTARMCD.----
+adlbaltt1 <- adlbalt %>% filter(ACTARMCD == "T1")
+adlbaltt2 <- adlbalt %>% filter(ACTARMCD == "T2")
+adlbaltpl <- adlbalt %>% filter(ACTARMCD == "PL")
+
+adlbastt1 <- adlbast %>% filter(ACTARMCD == "T1")
+adlbastt2 <- adlbast %>% filter(ACTARMCD == "T2")
+adlbastpl <- adlbast %>% filter(ACTARMCD == "PL")
+
+adlbtbilit1 <- adlbtbili %>% filter(ACTARMCD == "T1")
+adlbtbilit2 <- adlbtbili %>% filter(ACTARMCD == "T2")
+adlbtbilipl <- adlbtbili %>% filter(ACTARMCD == "PL")
+
+adlbalpt1 <- adlbalp %>% filter(ACTARMCD == "T1")
+adlbalpt2 <- adlbalp %>% filter(ACTARMCD == "T2")
+adlbalppl <- adlbalp %>% filter(ACTARMCD == "PL")
+
+#Create function to calculate mean change from baseline & SD of mean change from baseline.----
+meanandSD <- function(dataset1, armcode1){
+  dataset1 %>% group_by(ACTARMCD) %>% group_by(WKVISIT) %>% 
+  summarize(PERBASEavg = mean(PERBASE), SDavg = sd(PERBASE)) %>% mutate(ARMCODE = armcode1)
+}
+
+#Execute meanandSD function for each PARMACD & Treatment Arm combo.
+adlbaltmt1 <- meanandSD(adlbaltt1, "T1")
+adlbaltmt2 <- meanandSD(adlbaltt2, "T2")
+adlbaltmpl <- meanandSD(adlbaltpl, "PL")
+
+adlbastmt1 <- meanandSD(adlbastt1, "T1")
+adlbastmt2 <- meanandSD(adlbastt2, "T2")
+adlbastmpl <- meanandSD(adlbastpl, "PL")
+
+adlbtbilimt1 <- meanandSD(adlbtbilit1, "T1")
+adlbtbilimt2 <- meanandSD(adlbtbilit2, "T2")
+adlbtbilimpl <- meanandSD(adlbtbilipl, "PL")
+
+adlbalpmt1 <- meanandSD(adlbalpt1, "T1")
+adlbalpmt2 <- meanandSD(adlbalpt2, "T2")
+adlbalpmpl <- meanandSD(adlbalppl, "PL")
+
+#Create & execute function to calculate mean value at each visit----
+meanvisit <- function(dataset1, armcode1){
+  dataset1 %>% group_by(ACTARMCD) %>% group_by(WKVISIT) %>% 
+  summarize(meanvisit = mean(AVAL)) %>%  mutate(ARMCODE = armcode1) %>%
+  mutate(meanvisitrd = round(meanvisit, 2)) %>% 
+  select(WKVISIT, ARMCODE, meanvisitrd)
+}
+
+adlbaltvt1 <- meanvisit(adlbaltt1, "T1")
+adlbaltvt2 <- meanvisit(adlbaltt2, "T2")
+adlbaltvpl <- meanvisit(adlbaltpl, "PL")
+
+adlbastvt1 <- meanvisit(adlbastt1, "T1")
+adlbastvt2 <- meanvisit(adlbastt2, "T2")
+adlbastvpl <- meanvisit(adlbastpl, "PL")
+
+adlbtbilivt1 <- meanvisit(adlbtbilit1, "T1")
+adlbtbilivt2 <- meanvisit(adlbtbilit2, "T2")
+adlbtbilivpl <- meanvisit(adlbtbilipl, "PL")
+
+adlbalpvt1 <- meanvisit(adlbalpt1, "T1")
+adlbalpvt2 <- meanvisit(adlbalpt2, "T2")
+adlbalpvpl <- meanvisit(adlbalppl, "PL")
+
+#Create and execute function to stack tables based on PARAMCD & filter table to pertinent weeks.----
+bindweeks <- function(ds1, ds2, ds3) {
+  bind_rows(ds1, ds2, ds3) %>% 
+  filter(WKVISIT %in% c("Week 2", "Week 4", "Week 6", "Week 8", "Week 10", "Week 12", 
+"Week 14", "Week 16", "Week 18", "Week 20", "Week 22", "Week 24", "Week 26"))
+}
+
+adlbaltfin <- bindweeks(adlbaltmt1, adlbaltmt2, adlbaltmpl) 
+adlbastfin <- bindweeks(adlbastmt1, adlbastmt2, adlbastmpl) 
+adlbtbilifin <- bindweeks(adlbtbilimt1, adlbtbilimt2, adlbtbilimpl) 
+adlbalpfin <- bindweeks(adlbalpmt1, adlbalpmt2, adlbalpmpl)
+
+adlbaltfinv <- bindweeks(adlbaltvt1, adlbaltvt2, adlbaltvpl) 
+adlbastfinv <- bindweeks(adlbastvt1, adlbastvt2, adlbastvpl)
+adlbtbilifinv <- bindweeks(adlbtbilivt1, adlbtbilivt2, adlbtbilivpl) 
+adlbalpfinv <- bindweeks(adlbalpvt1, adlbalpvt2, adlbalpvpl)
+  
+#Reorder Weekly Visits.----
+reordervisit <- function(dataset1) {
+  factor(dataset1$WKVISIT, levels = c("Week 2", "Week 4", "Week 6", "Week 8", 
+"Week 10", "Week 12", "Week 14", "Week 16", "Week 18", "Week 20", "Week 22", "Week 24", "Week 26"))
+}
+
+adlbaltfin$WKVISIT <- reordervisit(adlbaltfin)
+adlbastfin$WKVISIT <- reordervisit(adlbastfin)
+adlbtbilifin$WKVISIT <- reordervisit(adlbtbilifin)
+adlbalpfin$WKVISIT <- reordervisit(adlbalpfin)
+
+adlbaltfinv$WKVISIT <- reordervisit(adlbaltfinv)
+adlbastfinv$WKVISIT <- reordervisit(adlbastfinv)
+adlbtbilifinv$WKVISIT <- reordervisit(adlbtbilifinv)
+adlbalpfinv$WKVISIT <- reordervisit(adlbalpfinv)
+
+#Create function to round Mean Change from Baseline in dataset & merge with mean value data set.
+#Then concatenate mean change from baseline with mean value. Then transpose.----
+toptable <- function(dataset1, dataset2) {
+  dataset1a <- dataset1 %>% mutate(MCFB = round(PERBASEavg, 2)) %>% 
+  select(WKVISIT, ARMCODE, MCFB)
+  
+  dataset3 <- merge(dataset1a, dataset2, by.x = c("WKVISIT", "ARMCODE")) %>%
+  mutate(meanchgvisit = paste(MCFB, "/", meanvisitrd, sep = "")) %>%
+  select(ARMCODE, meanchgvisit, WKVISIT) %>%
+  mutate(ARM = case_when(ARMCODE %in% c("PL") ~ "Placebo", ARMCODE %in% c("T1") ~
+                           "Treatment 1", ARMCODE %in% c("T2") ~ "Treatment 2"))
+  
+  dataset3$ARMCODE <- factor(dataset3$ARMCODE, levels = c("PL", "T1", "T2")) 
+  
+  dataset3$WKVISIT <- factor(dataset3$WKVISIT, levels = c("Week 2", "Week 4", "Week 6", "Week 8", "Week 10", "Week 12", "Week 14", "Week 16", "Week 18", "Week 20", "Week 22", "Week 24", "Week 26"))
+  
+  dataset3a <- dataset3 %>% arrange(ARMCODE, WKVISIT)
+  
+  pivot_wider(dataset3a, names_from = WKVISIT, values_from = meanchgvisit) %>% select(-ARMCODE)
+}
+
+topaltfinwide <- toptable(adlbaltfin, adlbaltfinv)
+topastfinwide <- toptable(adlbastfin, adlbastfinv)
+toptbilifinwide <- toptable(adlbtbilifin, adlbtbilifinv)
+topalpfinwide <- toptable(adlbalpfin, adlbalpfinv)
+
+#Create GT Baseline/Mean Value tables for RShiny output.
+finalgt <- function(dataset1, subtitle2) {
+dataset1 %>%
+  gt() %>%
+  tab_options(column_labels.hidden = TRUE) %>%
+  tab_style(
+    style = cell_borders(sides = "bottom", color = "black", weight = 2),
+    locations = cells_body(
+      columns = 2:14,
+      rows = 3
+    ))  %>%
+  tab_style(
+    style = cell_borders(sides = "right", color = "black", weight = 2),
+    locations = cells_body(
+      columns = 14,
+      rows = 1:3
+    )) %>%
+  tab_style(
+    style = cell_borders(sides = "right", color = "black", weight = 2),
+    locations = cells_body(
+      columns = 1,
+      rows = 1:3
+    )) %>%
+  tab_style(
+    style = cell_borders(sides = "bottom", style = NULL),
+    locations = cells_body(
+      columns = 2:14,
+      rows = 1:2
+    )) %>%
+  tab_style(
+    style = cell_borders(sides = "top", style = NULL),
+    locations = cells_body(
+      columns = 1,
+      rows = 1
+    )) %>%
+  tab_style(
+    style = cell_borders(sides = "bottom", style = NULL),
+    locations = cells_body(
+      columns = 1,
+      rows = 1:3
+    )) %>%
+  tab_style(
+    style = cell_borders(sides = "top", color = "black", weight = 2),
+    locations = cells_body(
+      columns = 2:14,
+      rows = 1
+    )) %>%
+  tab_style(
+    style = cell_text(color = "steelblue"),  
+    locations = cells_body(
+      columns = 1:14,
+      rows = 1
+    )) %>%
+  tab_style(
+    style = cell_text(color = "blue"),
+    locations = cells_body(
+      columns = 1:14,
+      rows = 2
+    )) %>%
+  tab_style(
+    style = cell_text(color = "darkolivegreen4"),
+    locations = cells_body(
+      columns = 1:14,
+      rows = 3
+    )) %>%
+  tab_header(
+    title = "", 
+    subtitle = subtitle2
+  ) %>%
+  cols_width(c("Week 2", "Week 4", "Week 6", "Week 8", "Week 10", "Week 12", 
+    "Week 14", "Week 16", "Week 18", "Week 20", "Week 22", "Week 24", "Week 26") ~ px(150)) %>%
+    tab_options(
+    table.font.size = "8px" 
+    )
+}
+
+finalalttop <- finalgt(topaltfinwide, "Mean Change from Baseline / Mean Value")
+finalasttop <- finalgt(topastfinwide, "Mean Change from Baseline / Mean Value")
+finaltbilitop <- finalgt(toptbilifinwide, "Mean Change from Baseline / Mean Value")
+finalalptop <- finalgt(topalpfinwide, "Mean Change from Baseline / Mean Value")
+
+#Create and execute function to calculate number of patients with data for each weekly visit.
+countn <- function(dataset1, armcode1){
+  dataset1 %>% group_by(ACTARMCD) %>% group_by(WKVISIT) %>% 
+  summarize(npat = n()) %>% mutate(ARMCODE = armcode1)
+}
+
+adlbaltnt1 <- countn(adlbaltt1, "T1")
+adlbaltnt2 <- countn(adlbaltt2, "T2")
+adlbaltnpl <- countn(adlbaltpl, "PL")
+
+adlbastnt1 <- countn(adlbastt1, "T1")
+adlbastnt2 <- countn(adlbastt2, "T2")
+adlbastnpl <- countn(adlbastpl, "PL")
+
+adlbtbilint1 <- countn(adlbtbilit1, "T1")
+adlbtbilint2 <- countn(adlbtbilit2, "T2")
+adlbtbilinpl <- countn(adlbtbilipl, "PL")
+
+adlbalpnt1 <- countn(adlbalpt1, "T1")
+adlbalpnt2 <- countn(adlbalpt2, "T2")
+adlbalpnpl <- countn(adlbalppl, "PL")
+
+#Execute function to stack patient count tables based on PARAMCD & filter table to pertinent #weeks.----
+adlbaltfinn <- bindweeks(adlbaltnt1, adlbaltnt2, adlbaltnpl) 
+adlbastfinn <- bindweeks(adlbastnt1, adlbastnt2, adlbastnpl)
+adlbtbilifinn <- bindweeks(adlbtbilint1, adlbtbilint2, adlbtbilinpl) 
+adlbalpfinn <- bindweeks(adlbalpnt1, adlbalpnt2, adlbalpnpl)
+
+#Create function to add space padding to patient number cells & transpose tables.----
+bottable <- function(dataset1) {
+  dataset2 <- dataset1 %>% select(ARMCODE, npat, WKVISIT) %>%
+  mutate(ARM = case_when(ARMCODE %in% c("PL") ~ "Placebo", ARMCODE %in% c("T1") ~
+                           "Treatment 1", ARMCODE %in% c("T2") ~ "Treatment 2")) %>% 
+  mutate(npat2 = paste("     ", npat, "     ", sep = ""))
+  
+  dataset2$ARMCODE <- factor(dataset2$ARMCODE, levels = c("PL", "T1", "T2")) 
+  
+  dataset2$WKVISIT <- factor(dataset2$WKVISIT, levels = c("Week 2", "Week 4", "Week 6", "Week 8", "Week 10", "Week 12", "Week 14", "Week 16", "Week 18", "Week 20", "Week 22", "Week 24", "Week 26"))
+  
+  dataset2a <- dataset2 %>% arrange(ARMCODE, WKVISIT)
+  
+  pivot_wider(dataset2a, names_from = WKVISIT, values_from = npat2) %>% select(-ARMCODE, -npat)
+}
+
+botaltfinwide <- bottable(adlbaltfinn)
+botastfinwide <- bottable(adlbastfinn)
+bottbilifinwide <- bottable(adlbtbilifinn)
+botalpfinwide <- bottable(adlbalpfinn)
+
+#Create GT Patient Count tables for RShiny output via custom function finalgtbot().
+finalgtbot <- function(dataset1, subtitle2) {
+  dataset1 %>%
+    gt() %>%
+    tab_options(column_labels.hidden = TRUE) %>%
+    tab_style(
+      style = cell_borders(sides = "bottom", color = "black", weight = 2),
+      locations = cells_body(
+        columns = 2:14,
+        rows = 3
+      ))  %>%
+    tab_style(
+      style = cell_borders(sides = "right", color = "black", weight = 2),
+      locations = cells_body(
+        columns = 14,
+        rows = 1:3
+      )) %>%
+    tab_style(
+      style = cell_borders(sides = "right", color = "black", weight = 2),
+      locations = cells_body(
+        columns = 1,
+        rows = 1:3
+      )) %>%
+    tab_style(
+      style = cell_borders(sides = "bottom", style = NULL),
+      locations = cells_body(
+        columns = 2:14,
+        rows = 1:2
+      )) %>%
+    tab_style(
+      style = cell_borders(sides = "top", style = NULL),
+      locations = cells_body(
+        columns = 1,
+        rows = 1
+      )) %>%
+    tab_style(
+      style = cell_borders(sides = "bottom", style = NULL),
+      locations = cells_body(
+        columns = 1,
+        rows = 1:3
+      )) %>%
+    tab_style(
+      style = cell_borders(sides = "top", color = "black", weight = 2),
+      locations = cells_body(
+        columns = 2:14,
+        rows = 1
+      )) %>%
+    tab_style(
+      style = cell_text(color = "steelblue"),  
+      locations = cells_body(
+        columns = 1:14,
+        rows = 1
+      )) %>%
+    tab_style(
+      style = cell_text(color = "blue"),
+      locations = cells_body(
+        columns = 1:14,
+        rows = 2
+      )) %>%
+    tab_style(
+      style = cell_text(color = "darkolivegreen4"),
+      locations = cells_body(
+        columns = 1:14,
+        rows = 3
+      )) %>%
+    tab_header(
+      title = "", 
+      subtitle = subtitle2
+    )  %>%
+    cols_width(c("Week 2", "Week 4", "Week 6", "Week 8", "Week 10", "Week 12", 
+    "Week 14", "Week 16", "Week 18", "Week 20", "Week 22", "Week 24", "Week 26") ~ px(210)) %>%
+    tab_options(
+    table.font.size = "12px" 
+    )
+}
+ 
+finalaltbot <- finalgtbot(botaltfinwide, "Number of Patients with Data")
+finalastbot <- finalgtbot(botastfinwide, "Number of Patients with Data")
+finaltbilibot <- finalgtbot(bottbilifinwide, "Number of Patients with Data")
+finalalpbot <- finalgtbot(botalpfinwide, "Number of Patients with Data")
+ 
+#Create RShiny app UI/server components.----
+ui <- fluidPage(
+  tags$style(HTML("
+    .plot-container {
+      margin-left: 20px;
+    }
+    .gt_table {
+      width: 270%;
+    }
+  ")),
+  titlePanel("Figure 3: Line Plot for Liver Biochemical Tests"),
+  sidebarLayout(
+    sidebarPanel(
+     selectInput("Plot", "Please select a Liver Biochemical Test to view:",
+      choices = c("ALT", "AST", "Total Bilirubin", "ALP")),
+      actionButton("submit", "Submit"), width = 1.5),
+    
+    mainPanel(
+    column(12,
+           div(class = "plot-container", plotOutput("linePlot")),  
+           div(style = "margin-left: 15px;", gt_output("table1")), 
+           gt_output("table2")) 
+    )
+  )
+)
+
+server = function(input, output, session) {
+  observeEvent(input$submit, {
+  altplot <- ggplot(adlbaltfin, aes(x = WKVISIT, y = PERBASEavg, group = ARMCODE, color = ARMCODE)) +
+     geom_errorbar(aes(ymin = PERBASEavg - SDavg, ymax = PERBASEavg + SDavg), width = .2) +
+     geom_line() + 
+     geom_point() +
+     scale_color_brewer(palette = "Paired", name = "", labels = c("Placebo", "Treatment 1", "Treatment 2")) + theme_bw() +
+     theme(axis.text.x = element_text(size = 10)) + 
+     xlab("") +
+     ylab("Mean Change from Baseline (95% CI)") +
+     theme(axis.title.y = element_text(size = 12)) +
+     theme(legend.position = "bottom") +
+     geom_hline(yintercept = 0, linetype="dashed", color = "darkgrey") +
+     ggtitle("Figure 3 \n Line Plot for Liver Biochemical Tests \n<Analysis Set>\nALT")
+  
+  astplot <- ggplot(adlbastfin, aes(x = WKVISIT, y = PERBASEavg, group = ARMCODE, color = ARMCODE)) +
+     geom_errorbar(aes(ymin = PERBASEavg - SDavg, ymax = PERBASEavg + SDavg), width = .2) +
+     geom_line() + 
+     geom_point() +
+     scale_color_brewer(palette = "Paired", name = "", labels = c("Placebo", "Treatment 1", "Treatment 2")) + theme_bw() +
+     theme(axis.text.x = element_text(size = 10)) + 
+     xlab("") +
+     ylab("Mean Change from Baseline (95% CI)") +
+     theme(axis.title.y = element_text(size = 12)) +
+     theme(legend.position = "bottom") +
+     geom_hline(yintercept = 0, linetype="dashed", color = "darkgrey") +
+     ggtitle("Figure 3 \n Line Plot for Liver Biochemical Tests \n<Analysis Set>\nAST")
+  
+  tbiliplot <- ggplot(adlbtbilifin, aes(x = WKVISIT, y = PERBASEavg, group = ARMCODE, color = ARMCODE)) +
+     geom_errorbar(aes(ymin = PERBASEavg - SDavg, ymax = PERBASEavg + SDavg), width = .2) +
+     geom_line() + 
+     geom_point() +
+     scale_color_brewer(palette = "Paired", name = "", labels = c("Placebo", "Treatment 1", "Treatment 2")) + theme_bw() +
+     theme(axis.text.x = element_text(size = 10)) + 
+     xlab("") +
+     ylab("Mean Change from Baseline (95% CI)") +
+     theme(axis.title.y = element_text(size = 12)) +
+     theme(legend.position = "bottom") +
+     geom_hline(yintercept = 0, linetype="dashed", color = "darkgrey") +
+     ggtitle("Figure 3 \n Line Plot for Liver Biochemical Tests \n <Analysis Set>\nTotal Bilirubin")
+  
+  alpplot <- ggplot(adlbalpfin, aes(x = WKVISIT, y = PERBASEavg, group = ARMCODE, color = ARMCODE)) +
+     geom_errorbar(aes(ymin = PERBASEavg - SDavg, ymax = PERBASEavg + SDavg), width = .2) +
+     geom_line() + 
+     geom_point() +
+     scale_color_brewer(palette = "Paired", name = "", labels = c("Placebo", "Treatment 1", "Treatment 2")) + theme_bw() +
+     theme(axis.text.x = element_text(size = 10)) + 
+     xlab("") +
+     ylab("Mean Change from Baseline (95% CI)") +
+     theme(axis.title.y = element_text(size = 12)) +
+     theme(legend.position = "bottom") +
+     geom_hline(yintercept = 0, linetype="dashed", color = "darkgrey") +
+     ggtitle("Figure 3 \n Line Plot for Liver Biochemical Tests \n <Analysis Set>\nALP")
+
+    output$linePlot = renderPlot({
+    switch(isolate(input$Plot),
+           "ALT" = altplot,
+           "AST" = astplot,
+           "Total Bilirubin" = tbiliplot,
+           "ALP" = alpplot)
+    })
+
+    output$table1 = render_gt({
+    switch(isolate(input$Plot),
+           "ALT" = finalalttop,
+           "AST" = finalasttop,
+           "Total Bilirubin" = finaltbilitop,
+           "ALP" = finalalptop
+          )
+    })
+    
+    output$table2 = render_gt({
+    switch(isolate(input$Plot),
+           "ALT" = finalaltbot,
+           "AST" = finalastbot,
+           "Total Bilirubin" = finaltbilibot,
+           "ALP" = finalalpbot
+          )
+    })
+
+})}
+
+#Run the application 
+shinyApp(ui = ui, server = server)
+```

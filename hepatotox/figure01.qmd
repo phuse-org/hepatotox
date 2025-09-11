@@ -1,0 +1,244 @@
+---
+title: "Figure 1 Program Code"
+author: "Dimple Patel"
+format: html
+editor: visual
+execute:
+  enabled: true
+server:
+  shiny: true
+---
+
+```{r}
+#Download appropriate libraries.
+library(dplyr)
+library(tern)
+library(random.cdisc.data)
+library(tidyverse)
+library(magrittr)
+library(r2rtf)
+library(formatters)
+library(grid)
+library(shiny)
+library(plotly)
+
+#Load an ADLB dataset.
+load(file = "/cloud/project/Raw Data/Raw Data Output/adlbf1.Rda")
+
+#Load ADSL dataset.
+load(file = "/cloud/project/Raw Data/Raw Data Output/adslf1.Rda")
+
+#NAs are explicit missing levels.
+adlb2aa <- df_explicit_na(adlbf1)
+
+#Rename the treatment arms & parameter codes.
+levels(adlb2aa$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adslf1$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adlb2aa$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
+levels(adlb2aa$PARAMCD) <- c("ALP", "ALT", "AST", "TBILI")
+adlb2aa$PARAMCD <- factor(adlb2aa$PARAMCD, levels = c("ALT", "AST", "TBILI", "ALP"))
+adlb2aa$PARAM <- factor(adlb2aa$PARAM, levels = c("Alanine Aminotransferase Measurement", "Aspartate Aminotransferase Measurement", "Total Bilirubin Measurement", "Alkaline Phosphatase Measurement"))
+adlb2aa$ACTARMCD <- factor(adlb2aa$ACTARMCD, levels = c("PL", "T1", "T2")) 
+adslf1$ACTARMCD <- factor(adslf1$ACTARMCD, levels = c("PL", "T1", "T2")) 
+levels(adslf1$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
+
+adlb2a <- adlb2aa %>% add_column(RUNNUM=runif(nrow(.)))
+
+#Flag the maximum post-baseline result.
+adlb2b <- adlb2a %>% filter(SAFFL == "Y" & AVISITN %in% c(1, 2)) %>%
+  group_by(USUBJID, PARAMCD) %>% slice_max(AVAL) %>% mutate(MPBR = "Y")
+
+#Calculate AVAL in terms of ULN for PARAMCD == (TBILI, ALT,AST, ALP).
+adlb2c <- adlb2b %>% filter(PARAMCD %in% c("ALT", "AST", "TBILI", "ALP") & MPBR == "Y") %>%
+  mutate(MAXU = case_when(PARAMCD == "ALT" ~ AVAL/55, PARAMCD == "AST" ~ AVAL/33, PARAMCD == "ALP" ~ AVAL/147), MAXUB = case_when(PARAMCD == "TBILI" ~ AVAL/1.2))
+
+adlb2all1 <- pivot_wider(adlb2c, id_cols = SUBJID, names_from = PARAMCD, values_from = c(MAXU, MAXUB, AVISIT))
+
+adlb2all2 <- merge(x = adlb2all1, y = adslf1[ , c("SUBJID", "ACTARMCD", "ARM")], by = "SUBJID", all.x = TRUE) %>% mutate(ALTr = round(MAXU_ALT, 3), ASTr = round(MAXU_AST, 3), ALPr = round(MAXU_ALP, 3), TBILIr = round(MAXUB_TBILI, 3)) %>%
+  subset(select = c(SUBJID, ACTARMCD, ARM,  ALTr, ASTr, ALPr, TBILIr, AVISIT_ALT, AVISIT_AST)) 
+
+#Create RShiny app's UI and Server Components.
+ui = navbarPage("Figure 1",
+                  uiOutput("all"),
+                  tabPanel("Plot",
+                           icon = icon("chart-area"),
+                           sidebarLayout(sidebarPanel(
+                             selectInput("Plot", "Please select a Liver Biochemical Test to view:",
+                                         choices = c("ALT", 
+                                                     "AST", 
+                                                     "ALP")),
+                             actionButton("submit", "Submit")),
+                             mainPanel(
+                            titlePanel("Figure 1"), 
+                            plotlyOutput(outputId = "Plots")
+                           ))))
+
+server = function(input, output, session) {
+
+  observeEvent(input$submit,{
+
+plotalt <- plot_ly(adlb2all2 %>% filter(ACTARMCD == "PL"), 
+            x = ~ALTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            name = "Placebo",
+            marker = list(color = "aquamarine"),
+            hoverinfo = "text",
+            hovertext = ~paste("Subject: ", SUBJID, '<br>Arm:', ARM, '<br>Visit:', AVISIT_ALT,
+                               '<br> x-axis:', ALTr, '<br> y-axis:', TBILIr)) %>%
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T1"),
+            x = ~ALTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "lightslategray"),
+            name = "Treatment 1") %>% 
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T2"),
+            x = ~ALTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "hotpink"),
+            name = "Treatment 2") %>%
+    layout(title = "Plot of Maximum Total Bilirubin Versus Maximum ALT or AST or ALP\n<Analysis Set>",
+           xaxis = list(title = "Alanine Aminotransferase/ULN", showgrid = FALSE),
+           yaxis = list(title = 'Bilirubin/ULN', showgrid = FALSE),
+           plot_bgcolor = "white",
+           paper_bgcolor = "white",
+           shapes = list(
+      list(
+        type = "line",
+        x0 = 0,
+        x1 = 20,
+        y0 = 2,
+        y1 = 2,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      ),
+      list(
+        type = "line",
+        x0 = 3,
+        x1 = 3,
+        y0 = 0,
+        y1 = 12,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      )
+    ))
+  
+plotast <- plot_ly(adlb2all2 %>% filter(ACTARMCD == "PL"), 
+            x = ~ASTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            name = "Placebo",
+            marker = list(color = "aquamarine"),
+            hoverinfo = "text",
+            hovertext = ~paste("Subject: ", SUBJID, '<br>Arm:', ARM, '<br>Visit:', AVISIT_AST,
+                               '<br> x-axis:', ASTr, '<br> y-axis:', TBILIr)) %>%
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T1"),
+            x = ~ASTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "lightslategray"),
+            name = "Treatment 1") %>% 
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T2"),
+            x = ~ASTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "hotpink"),
+            name = "Treatment 2") %>%
+    layout(title = "Plot of Maximum Total Bilirubin Versus Maximum ALT or AST or ALP\n<Analysis Set>",
+            xaxis = list(title = "Aspartate Aminotransferase/ULN", showgrid = FALSE),
+            yaxis = list(title = 'Bilirubin/ULN', showgrid = FALSE),
+            plot_bgcolor = "white",
+            paper_bgcolor = "white",
+           shapes = list(
+      list(
+        type = "line",
+        x0 = 0,
+        x1 = 20,
+        y0 = 2,
+        y1 = 2,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      ),
+      list(
+        type = "line",
+        x0 = 3,
+        x1 = 3,
+        y0 = 0,
+        y1 = 12,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      )
+      ))
+
+plotalp <- plot_ly(adlb2all2 %>% filter(ACTARMCD == "PL"), 
+            x = ~ALPr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            name = "Placebo",
+            marker = list(color = "aquamarine"),
+            hoverinfo = "text",
+            hovertext = ~paste("Subject: ", SUBJID, '<br>Arm:', ARM, '<br>Visit:', AVISIT_AST,
+                               '<br> x-axis:', ASTr, '<br> y-axis:', TBILIr)) %>%
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T1"),
+            x = ~ALPr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "lightslategray"),
+            name = "Treatment 1") %>% 
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T2"),
+            x = ~ALPr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "hotpink"),
+            name = "Treatment 2") %>%
+    layout(title = "Plot of Maximum Total Bilirubin Versus Maximum ALT or AST or ALP\n<Analysis Set>",
+            xaxis = list(title = "Aspartate Aminotransferase/ULN", showgrid = FALSE),
+            yaxis = list(title = 'Bilirubin/ULN', showgrid = FALSE),
+            plot_bgcolor = "white",
+            paper_bgcolor = "white",
+           shapes = list(
+      list(
+        type = "line",
+        x0 = 0,
+        x1 = 5,
+        y0 = 2,
+        y1 = 2,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      ),
+      list(
+        type = "line",
+        x0 = 2,
+        x1 = 2,
+        y0 = 0,
+        y1 = 12,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      )
+      ))
+
+    output$Plots = renderPlotly({
+    switch(isolate(input$Plot),
+           "ALT" = plotalt,
+           "AST" = plotast,
+           "ALP" = plotalp
+       )
+})
+
+  })}
+
+shinyApp(ui, server)
+```

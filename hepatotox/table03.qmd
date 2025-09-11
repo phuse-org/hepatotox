@@ -1,0 +1,93 @@
+---
+title: "Table 3 Program Code"
+author: "Dimple Patel"
+format: html
+editor: visual
+---
+
+```{r warning=FALSE, echo=FALSE, comment=FALSE}
+#Load appropriate libraries.
+library(dplyr)
+library(tern)
+library(random.cdisc.data)
+library(tidyverse)
+library(magrittr)
+library(rtables)
+library(r2rtf)
+library(formatters)
+
+#Load an ADLB dataset.
+load(file = "/cloud/project/Raw Data/Raw Data Output/adlbt3.Rda")          
+
+#Load ADSL for future treatment arm reference.
+load(file = "/cloud/project/Raw Data/Raw Data Output/adslt3.Rda") 
+
+#NAs are explicit missing levels.
+adlb2aa <- df_explicit_na(adlbt3)
+
+#Rename the treatment arms & parameter codes.
+levels(adlb2aa$ACTARMCD) <- c("T1 (N=318)", "PL (N=355)", "T2 (N=326)")
+levels(adlb2aa$ACTARM) <- c("T1\n n/N (%)", "PL\n n/N (%)", "T2\n n/N (%)")
+levels(adlb2aa$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
+levels(adlb2aa$PARAMCD) <- c("ALP", "ALT", "AST", "Total Bilirubin")
+adlb2aa$PARAMCD <- factor(adlb2aa$PARAMCD, levels = c("ALT", "AST", "Total Bilirubin", "ALP"))
+adlb2aa$PARAM <- factor(adlb2aa$PARAM, levels = c("Alanine Aminotransferase Measurement", "Aspartate Aminotransferase Measurement", "Total Bilirubin Measurement", "Alkaline Phosphatase Measurement"))
+adlb2aa$ACTARMCD <- factor(adlb2aa$ACTARMCD, levels = c("PL (N=355)", "T1 (N=318)", "T2 (N=326)")) 
+
+adlb2a <- adlb2aa %>% add_column(RUNNUM=runif(nrow(.)))
+
+#Flag the maximum post-baseline result.
+adlb2b <- adlb2a %>% filter(SAFFL == "Y" & AVISITN %in% c(1, 2)) %>%
+  group_by(USUBJID, PARAMCD) %>% slice_max(AVAL) %>% mutate(MPBR = "Y")
+
+
+#Adding Missing as a factor level to AVALCHY & fix MISSING value in BASECHY variables &
+#reorder levels.
+adlb2b$AVALCHY <- factor(adlb2b$AVALCHY, levels = c("< 3x ULN", ">= 3 to < 5x ULN", ">= 5 to < 10x ULN", ">= 10 to < 20x ULN", ">= 20x ULN", "Missing"))
+levels(adlb2b$BASECHY)[levels(adlb2b$BASECHY) == "<Missing>"] <- "Missing"
+adlb2b$BASECHY <- factor(adlb2b$BASECHY, levels = c("< 3x ULN", ">= 3 to < 5x ULN", ">= 5 to < 10x ULN", ">= 10 to < 20x ULN", ">= 20x ULN", "Missing"))
+
+#Filter laboratory shift values for subjects with Placebo Treatment and ALT as PARAMCD.
+adlbplal <- adlb2b %>% filter(ACTARMCD == "PL" & PARAMCD == "ALT")
+
+#Create a basic table structure to calculate maximum post baseline result.
+basic_lyt <- basic_table() %>%
+  split_cols_by("AVALCHY") %>%
+  append_topleft("Maximum Baseline Value") %>%
+  split_rows_by(
+    var = "PARAMCD"
+  ) %>%
+  split_rows_by(
+    var = "ACTARMCD"
+  ) %>% 
+  split_rows_by(
+    var = "BASECHY",
+    indent_mod = 5L
+  ) %>% 
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = "unique",
+    .labels = c(unique = NULL)
+  ) 
+ 
+maxpost <- build_table(basic_lyt, adlb2b)
+
+
+#Add title/footnotes and header.
+main_title(maxpost) <- paste("Table 3", 
+  "\nShifts in Liver Biochemical Tests Based on Thresholds", "\n<Analysis Set>")
+subtitles(maxpost) <- paste("                                                                             Maximum Post-Baseline Result")
+section_div(maxpost) <- " "
+main_footer(maxpost) <-paste("PL=Placebo, T1=Treatment 1, T2=Treatment 2, ALT=alanine aminotransferase, AST=aspartate aminotransferase, ALP=alkaline phosphatase;", "\nN=number of applicable subjects in treatment arm; n=actual applicable observed number with values.")
+
+#Output table as a PDF file.
+table3a <-"/cloud/project/Tables and Figures/Program Output/Table 3.pdf"
+export_as_pdf(maxpost, file = table3a, landscape = TRUE, paginate = TRUE, 
+              colwidths = c(33, 11, 15, 16, 17, 12, 11))
+
+#Output table as a HTML file.#
+#Output table as a Word file.#
+#Output table as a Powerpoint file.#
+
+
+```
