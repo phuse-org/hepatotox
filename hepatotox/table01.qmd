@@ -8,7 +8,6 @@ editor: visual
 ```{r warning=FALSE, echo=FALSE, comment=FALSE}
 #*Table 1*
 #Install and upload appropriate packages.
-library(pdftools)
 library(tidyverse)
 library(magrittr)
 library(tern)
@@ -18,7 +17,7 @@ library(r2rtf)
 library(formatters)
 
 #Use of Insight Engineering's CADHY data to use as a test dataset.
-load("/cloud/project/Raw Data/Raw Data Output/cadhy.RData")
+load("C:/Users/Dimple/Documents/hepatotox/cadhy.rdata")
 
 #Set seed for reproducibility.#
 set.seed(619)
@@ -182,7 +181,7 @@ main_footer(resultfin2) <-paste("PL=Placebo, T1=Treatment 1, T2=Treatment 2",
                                "\nN = number of applicable subjects in treatment arm; n = actual applicable observed number with values.")
 
 #Output table as a PDF file.#
-table1a2 <- "Table1.pdf"
+table1a2 <- "C:/Users/Dimple/Documents/hepatotox/Table1.pdf"
 
 export_as_pdf(resultfin2, file = table1a2, landscape = TRUE, paginate = FALSE, 
               colwidths = c(36, 14, 14, 14, 16, 16, 16))
