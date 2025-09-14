@@ -1,5 +1,89 @@
 [
   {
+    "objectID": "Table 01.html",
+    "href": "Table 01.html",
+    "title": "About",
+    "section": "",
+    "text": "This is a code block.\n\n#Table 1 #Install and upload appropriate packages. \nlibrary(tidyverse) \nlibrary(magrittr) \nlibrary(tern) \nlibrary(dplyr) \nlibrary(rtables) \nlibrary(r2rtf) \nlibrary(formatters)\n\n#Use of Insight Engineering's CADHY data to use as a test dataset. \nload(\"C:\\Users\\Dimple\\Documents\\hepatotox\\hepatotox-site\\cadhy.RData\")\n\n#Set seed for reproducibility.\nset.seed(619)\n\n#Removed any NA values. Also, added a record sequence number via RUNNUM. \nadhy &lt;- df_explicit_na(cadhy) \ncadhy2 &lt;- adhy %&gt;% add_column(RUNNUM=runif(nrow(.)))\n\n\nDefine values of interest in PARAMCD variable.\n\nparamcd_tbili_alt &lt;- c(\"BLAL\", \"BGAL\", \"BA2AL\", \"BA5AL\") paramcd_tbili_ast &lt;- c(\"BLAS\", \"BGAS\", \"BA2AS\", \"BA5AS\") param_extra &lt;- c(\"BL2AL2CB\", \"BL2AL2CU\", \"BL2AS2CB\", \"BL2AS2CU\")\n\nSelect laboratory test parameters.\n\nadhy_liver_tot &lt;- cadhy2 %&gt;% filter( SAFFL == \"Y\", AVISIT %in% c(\"POST-BASELINE\"), PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast, param_extra), AVAL %in% c(0, 1, 2, 3, 4) )\n\n#ADaM Programmers should have already included a variable #similar to BIOCHEMREL & ADVREL that follow the metadata's criteria for findings #related to biochemical tests & findings related to adverse events, respectively. adhy_liver2 &lt;- cadhy2 %&gt;% mutate(BIOCHEMREL = ifelse(.8 &gt; RUNNUM & RUNNUM &gt; .5, \"Yes\", \"No\")) %&gt;% mutate(ADVREL = ifelse(.55 &gt; RUNNUM & RUNNUM &gt; .25, \"Yes\", \"No\")) %&gt;% filter( SAFFL == \"Y\", AVISIT %in% c(\"POST-BASELINE\"), PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast, param_extra), AVAL %in% c(1, 2, 3, 4) )\n\n#Add appropriate labels for final table output. adhy_liver3 &lt;- adhy_liver2 %&gt;% mutate(FINBOTH = with_label(BIOCHEMREL == \"Yes\" & ADVREL == \"Yes\", \" Findings Related to Both\\n Adverse Events and Biochemical\\n Tests\"), FINAEREL = with_label(ADVREL == \"Yes\", \" Findings Related to Adverse\\n Events\"), FINBCTEST = with_label(BIOCHEMREL == \"Yes\", \" Findings Related to\\n Biochemical Tests\") )\n\n#Flag total number of findings without duplicates. adhy_liver4 &lt;- adhy_liver3 %&gt;%mutate(TOP = case_when(ADVREL == \"Yes\" & BIOCHEMREL == \"No\" & FINBOTH == \"FALSE\"~\"Y\", ADVREL == \"No\" & BIOCHEMREL == \"Yes\" & FINBOTH == \"FALSE\"~\"Y\", .default = \"N\")) %&gt;% mutate(TABLESEQ = RUNNUM) %&gt;% mutate(FINTOP = with_label(TOP == \"Y\", \"Any Potential Liver Safety Findings\")) %&gt;% mutate(ROWSPL1 = case_when(FINTOP == \"FALSE\" | FINTOP == \"TRUE\" ~ \" \"))\n\n#Rename the treatment arms. levels(adhy_liver4$ACTARMCD) &lt;- c(\"T1\", \"PL\", \"T2\")\nlevels(adhy_liver4$ACTARM) &lt;- c(\"T1\\n n/N(%)\", \"PL\\n n/N(%)\", \"T2\\n n/N(%)\")\n\nadhy_liver4$ACTARMCD &lt;- factor(adhy_liver4$ACTARMCD,levels = c(\"PL\", \"T1\", \"T2\")) aefin_vars &lt;- c(\"FINBOTH\", \"FINAEREL\", \"FINBCTEST\")\n\n#Create a custom format function. format_frac_perc &lt;- function(x, output = NULL) {# x[1] is N, x[2] is the % (as decimal) perc &lt;- round(x[2] * 100, 1) denom &lt;- (x[1] / (x[2] * 100)) * 100 # Calculate denominator paste0(x[1],\"/\", denom, \" (\", perc, \"%)\") }\n\n#Build & render table's pseudo facet 1a. lyt_fin1a &lt;- basic_table(show_colcounts = TRUE) %&gt;% split_rows_by(c(\"ROWSPL1\")) %&gt;% split_cols_by(\"ACTARMCD\", show_colcounts = TRUE, labels_var = \"ACTARM\", split_fun = add_riskdiff(arm_x = c(\"T1\"), arm_y = c(\"PL\"), col_label = paste0(\"\\n\", \"Risk\", \"\\n\", \"Difference\", \"\\n\", c(\"T1\"), \"-\", c(\"PL\"), \"\\n\", \"(95% CI)\"))) %&gt;% count_patients_with_event( \"TABLESEQ\", filters = c(\"TOP\"=\"Y\"), denom = \"N_col\", riskdiff = TRUE, .labels = c(count_fraction = \"Any Potential Liver Safety Findings\"), .formats = c(count_fraction = format_frac_perc))\n\nresult_tabtop1a &lt;- build_table(lyt_fin1a, df = adhy_liver4)\n\n#Build & render table's pseudo facet 1b. lyt_fin1b &lt;- basic_table(show_colcounts = TRUE) %&gt;% split_rows_by(c(\"ROWSPL1\")) %&gt;% split_cols_by(\"ACTARMCD\", show_colcounts = TRUE, labels_var = \"ACTARM\", split_fun = add_riskdiff(arm_x = c(\"T2\"), arm_y = c(\"PL\", \"T1\"), col_label = paste0(\"Risk\", \"\\n\", \"Difference\", \"\\n\", \"T2-\", c(\"PL\", \"T1\"), \"\\n\", \"(95% CI)\"))) %&gt;% count_patients_with_event( \"TABLESEQ\", filters = c(\"TOP\"=\"Y\"), denom = \"N_col\", riskdiff = TRUE, .labels = c(count_fraction = \"Any Potential Liver Safety Findings\"), .formats = c(count_fraction = format_frac_perc))\n\nresult_tabtop1b &lt;- build_table(lyt_fin1b, df = adhy_liver4)\n\n#Bind specific columns from 2 top facets: 1a & 1b 1d. resulttopfin &lt;- cbind_rtables(result_tabtop1a[, 1:ncol(result_tabtop1a)], result_tabtop1b[, 4:ncol(result_tabtop1b)])\n\n#Constructing & rendering the bottom half of the table: facet 2a. lyt_fin2a &lt;- basic_table(show_colcounts = TRUE) %&gt;% split_cols_by(\"ACTARMCD\", show_colcounts = TRUE, labels_var = \"ACTARM\", split_fun = add_riskdiff(arm_x = c(\"T1\"), arm_y = c(\"PL\"), col_label = paste0(\"\\n\", \"Risk\", \"\\n\", \"Difference\", \"\\n\", c(\"T1\"), \"-\", c(\"PL\"), \"\\n\", \"(95% CI)\"))) %&gt;% count_patients_with_flags( \"RUNNUM\", flag_variables = aefin_vars, denom = \"N_col\", var_labels = \"\", show_labels = \"visible\", riskdiff = TRUE, .formats = c(count_fraction = format_frac_perc), .indent_mods = 1 )\n\nresult_tabbot2a &lt;- build_table(lyt_fin2a, df = adhy_liver4)\n\n#Constructing & rendering the bottom half of the table: facet 2b. lyt_fin2b &lt;- basic_table(show_colcounts = TRUE) %&gt;% split_cols_by(\"ACTARMCD\", show_colcounts = TRUE, labels_var = \"ACTARM\", split_fun = add_riskdiff(arm_x = c(\"T2\"), arm_y = c(\"PL\", \"T1\"), col_label = paste0(\"Risk\", \"\\n\", \"Difference\", \"\\n\", \"T2-\", c(\"PL\", \"T1\"), \"\\n\", \"(95% CI)\"))) %&gt;% count_patients_with_flags( \"RUNNUM\", flag_variables = aefin_vars, denom = \"N_col\", var_labels = \"\", show_labels = \"visible\", riskdiff = TRUE, .formats = c(count_fraction = format_frac_perc), .indent_mods = )\n\nresult_tabbot2b &lt;- build_table(lyt_fin2b, df = adhy_liver4)\n\n#Bind specific columns from all 4 facets: 2a & 2b. resultbot &lt;- cbind_rtables(result_tabbot2a[, 1:ncol(result_tabbot2a)], result_tabbot2b[, 4:ncol(result_tabbot2b)])\n\nresultbot\n\n#Bind specific rows from top & bottom halves of the table. resultfin &lt;- rbind( resulttopfin[nrow(resulttopfin), ], resultbot[3:nrow(resultbot), ], resultbot[2, ] )\n\nresultfin2 &lt;- insert_rrow(resultfin, rrow(\"Number of Subjects with Liver\\nSafety Findings(a)\"), at = 1)\n\nmain_title(resultfin2) &lt;- paste(\"Table 1\", \"\\nOverview of Reported Potential Liver Safety Findings\", \"\\n&lt;Analysis Set&gt;\") main_footer(resultfin2) &lt;-paste(\"PL=Placebo, T1=Treatment 1, T2=Treatment 2\", \"\\nNote (a): A potential liver safety finding is defined as meeting any of the laboratory thresholds.\", \"\\nN = number of applicable subjects in treatment arm; n = actual applicable observed number with values.\")\n\n#Output table as a PDF file.# table1a2 &lt;- \"/cloud/project/Tables and Figures/Program Output/Table1.pdf\"\n\nexport_as_pdf(resultfin2, file = table1a2, landscape = TRUE, paginate = FALSE, colwidths = c(36, 14, 14, 14, 16, 16, 16))\n\nHere’s the PDF version."
+  },
+  {
+    "objectID": "Table 05.html",
+    "href": "Table 05.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "Table 03.html",
+    "href": "Table 03.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "Liver Enzymes Overview.html",
+    "href": "Liver Enzymes Overview.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "Figure 04.html",
+    "href": "Figure 04.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "Figure 02.html",
+    "href": "Figure 02.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "Figure 01.html",
+    "href": "Figure 01.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "Figure 03.html",
+    "href": "Figure 03.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "Introduction to Hepatotox.html",
+    "href": "Introduction to Hepatotox.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "Table 02.html",
+    "href": "Table 02.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "Table 04.html",
+    "href": "Table 04.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Hepatotox Package",
