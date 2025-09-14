@@ -1,0 +1,51 @@
+---
+title: "Table 4 Sample ADAE ADSL Data"
+author: "Dimple K Patel"
+date: "2025-01-27"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(tern)
+library(random.cdisc.data)
+library(tidyverse)
+library(magrittr)
+library(tern)
+library(dplyr)
+library(rtables)
+library(r2rtf)
+library(formatters)
+
+adsl <- radsl(N = 999, study_duration = 1, seed = 1)
+adae <- radae(adsl, seed = 1)
+
+adae2 <- adae %>% 
+  mutate(SMQ01NAM = sample(x = c("Liver neoplasms, benign (incl cysts and polyps)", "Hepatitis, non-infectious", "Liver neoplasms, malignant and unspecified", "Hepatic failure, fibrosis, and cirrhosis and other liver damage-related conditions", ""), prob = c(0.043, .036, .061, .025, .871), n(), replace = TRUE)) %>% 
+  mutate(SMQ02NAM = sample(x = c("Liver Malignant Tumors", "Cirrhosis", ""), prob = c(0.01113, 0.095, .7937), n(), replace = TRUE)) %>% 
+  mutate(SMQ01SC = case_when(SMQ01NAM %in% c("Liver neoplasms, benign (incl cysts and polyps)", "Hepatitis, non-infectious", "Liver neoplasms, malignant and unspecified", "Hepatic failure, fibrosis, and cirrhosis and other liver damage-related conditions") ~ "Narrow"), SMQ02SC = case_when(SMQ02NAM %in% c("Liver Malignant Tumors", "Cirrhosis") ~ "Broad")) 
+  
+
+# Set working directory
+setwd("C:/Users/Dimple/Desktop/PHUSE/PHUSE Hepatotoxicity White Paper/")  
+
+# Save data frame
+save(adae2, file = "adaeset.Rda")          
+save(adsl, file = "adsl1set.Rda")   
+
+```
+
+## R Markdown
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

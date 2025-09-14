@@ -1,0 +1,143 @@
+---
+title: "Figure 5 Sample Data"
+author: "Dimple K Patel"
+date: "2025-04-27"
+output: html_document
+---
+
+```{r}
+#Download appropriate libraries.----
+library(dplyr)
+library(tidyr)
+library(shiny)
+library(ggplot2)
+library(patchwork)
+library(magrittr)
+
+set.seed(123)
+
+#Simulate biomarker data.----
+patients <- 1:200
+study_days <- c(-28, -14, 0, 14, 28, 56, 70, 84)
+
+biomarker_data <- expand.grid(
+  PatientID = patients,
+  StudyDay = study_days
+)
+
+biomarker_data <- biomarker_data %>%
+  mutate(
+    ALT_SGPT = runif(n(), 0.8, 10),
+    AST_SGOT = runif(n(), 0.8, 9),
+    Alkaline_Phosphatase = runif(n(), 0.8, 2),
+    GGT = runif(n(), 0.8, 12),
+    Total_Bilirubin = runif(n(), 0.8, 2)
+  )
+
+biomarker_long <- pivot_longer(biomarker_data, 
+                                cols = -c(PatientID, StudyDay), 
+                                names_to = "Marker", 
+                                values_to = "Value")
+
+#Create a repeated sequence of treatments----
+treatment_groups <- rep(c("Treatment 1", "Treatment 2", "Placebo"), length.out = length(patients))
+
+#Randomly shuffle the treatment assignments----
+treatment_groups <- sample(treatment_groups)
+
+#Create the patient-treatment data frame----
+patient_treatments <- data.frame(
+  PatientID = patients,
+  Treatment = treatment_groups
+)
+
+#Merge with wide format biomarker data.----
+biomarker_data1 <- biomarker_data %>%
+  left_join(patient_treatments, by = "PatientID")
+
+#Merge with long format biomarker data.----
+biomarker_longa <- biomarker_long %>%
+  left_join(patient_treatments, by = "PatientID")
+
+#Fix biomarker text labels.
+biomarker_long1 <- biomarker_longa %>%
+  mutate(Marker = recode(Marker,
+    "ALT_SGPT" = "ALT (SGPT)",
+    "AST_SGOT" = "AST (SGOT)",
+    "Alkaline_Phosphatase" = "Alkaline Phosphatase",
+    "GGT" = "GGT",
+    "Total_Bilirubin" = "Total Bilirubin"
+  ))
+
+#AE names (only real adverse events).----
+ae_names <- c(
+  "Nasopharyngitis", "Hepatic Function Abnormal", "Gastritis",
+  "Diarrhea", "Eczema", "Upper respiratory tract infection",
+  "Osteoarthritis", "Large intestine polyp"
+)
+
+#Color settings.----
+alternate_colors <- c("pink", "gray")  # for real AEs
+
+# Map for treatment AE colors.----
+treatment_colors <- c(
+  "Treatment 1" = "darkblue",
+  "Treatment 2" = "darkgreen",
+  "Placebo" = "darkred"
+)
+
+#Function to generate AE data per patient.----
+generate_ae_data <- function(patient_id) {
+  
+  #Look up patient's assigned treatment.----
+  patient_treatment <- patient_treatments %>%
+    filter(PatientID == patient_id) %>%
+    pull(Treatment)
+  
+  #Randomly decide total number of AEs: between 1 and 4.----
+  total_AEs <- sample(1:4, 1)
+  
+  #If total AEs > 1, randomly select (total_AEs - 1) other AEs.----
+  if (total_AEs > 1) {
+    selected_AEs <- sample(ae_names, total_AEs - 1)
+  } else {
+    selected_AEs <- character(0)
+  }
+  
+  #Final AE list: treatment AE first + real AEs.----
+  patient_AEs <- c(patient_treatment, selected_AEs)
+  
+  #Color vector:.----
+  #- First AE (treatment) gets the mapped dark color.----
+  #- Other AEs alternate pink/gray.----
+  patient_colors <- c(
+    treatment_colors[patient_treatment],
+    rep(alternate_colors, length.out = length(selected_AEs))
+  )
+  
+  #Generate random StartDay and Duration.----
+  n_events <- length(patient_AEs)
+  
+  data.frame(
+    PatientID = patient_id,
+    AE = patient_AEs,
+    StartDay = sample(1:70, n_events),
+    Duration = sample(5:30, n_events),
+    Color = patient_colors
+  ) %>%
+    mutate(EndDay = StartDay + Duration)
+}
+
+#Generate AE data for all patients.----
+ae_data <- do.call(rbind, lapply(patients, generate_ae_data))
+
+#Set working directory.----
+setwd("C:/Users/Dimple/Desktop/PHUSE/PHUSE Hepatotoxicity White Paper/")       
+
+#Save data frame;----
+save(biomarker_data1, file = "adlbsetf5biow.Rda")
+save(biomarker_long1, file = "adlbsetf5biol.Rda")          
+save(ae_data, file = "adslsetf5ae.Rda")   
+
+```
+
