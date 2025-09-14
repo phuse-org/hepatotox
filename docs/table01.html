@@ -11,7 +11,7 @@
     .grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:calc(45vh) auto;gap:0}
     .cell{padding:18px;box-sizing:border-box;border-bottom:1px solid #eee}
     .top{height:45vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;position:relative}
-    .codeblock{width:100%;height:100%;overflow:auto;background:#0b1220;color:#e6eef8;border-radius:8px;padding:12px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;font-size:13px;box-sizing:border-box}
+    .codeblock{width:100%;height:100%;overflow:auto;background:#0b1220;color:#e6eef8;border-radius:8px;padding:12px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;font-size:13px;box-sizing:border-box;margin-bottom:12px;}
     .code-title{font-size:13px;margin-bottom:8px;color:#333;display:flex;align-items:center;justify-content:space-between}
     .bottom{grid-column:1/3;padding:18px;text-align:center}
     img#outputImage{max-width:100%;height:auto;border-radius:6px;border:1px solid #ddd}
@@ -51,7 +51,7 @@ df %>%
             <button class="copyBtn" data-target="code2" style="font-size:12px;padding:4px 8px;background:#475569">Copy</button>
           </div>
           <pre class="codeblock" id="code2" aria-label="R code block">
-<code class="language-r">#No need for data set up as random.cdisc.data provides necessary data set.
+<code class="language-r">#No need for data set up as random.cdisc.data provides needed data set.
 library(random.cdisc.data)
 print(cadhy)
 </code>
@@ -62,15 +62,18 @@ print(cadhy)
       <div class="cell bottom">
         <div style="max-width:900px;margin:0 auto">
           <div class="code-title">Bottom — Output image</div>
-          <img id="outputImage" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAAsTAAALEwEAmpwYAAABQElEQVR4nO3RMQ0AAAgDINc/9F3hBzYgkY0W2n1XgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwG8wAAeQK8s8AAAAASUVORK5CYII=" alt="Replace this image with your output" />
+          <!-- Update this src to point to your image file -->
+          <img id="outputImage" src="images/table01.png" alt="Output image" />
 
           <div class="controls" style="margin-top:14px">
-            <button id="printPage" onclick="window.open('','_blank')">Download page as PDF</button>
-            <button id="printImage" class="secondary" onclick="window.open('','_blank')">Download image as PDF</button>
+            <button id="printPage">Download page as PDF</button>
+            <button id="printImage" class="secondary">Download image as PDF</button>
             <button id="downloadHtml">Download as HTML file</button>
           </div>
 
-          <p style="margin-top:10px;font-size:13px;color:#555">Tip: Replace the <code>src</code> of <code>#outputImage</code> with your image (a data URL or hosted URL). The "Download page as PDF" button uses the browser's print dialog so you can save to PDF.</p>
+          <p style="margin-top:10px;font-size:13px;color:#555">
+            Tip: Replace the <code>src</code> of <code>#outputImage</code> with your image (a data URL or hosted URL). "Download page as PDF" uses the browser print dialog.
+          </p>
         </div>
       </div>
     </div>
@@ -78,7 +81,7 @@ print(cadhy)
   </div>
 
   <script>
-    // Copy to clipboard for code blocks
+    // Copy individual R code blocks to clipboard
     document.querySelectorAll('.copyBtn').forEach(function(btn){
       btn.addEventListener('click', function(){
         var targetId = btn.getAttribute('data-target');
@@ -91,7 +94,7 @@ print(cadhy)
       });
     });
 
-    // Open page as PDF in a new tab (user can save as PDF)
+    // Open page as PDF in a new tab
     document.getElementById('printPage').addEventListener('click', function(){
       var w = window.open('', '_blank');
       w.document.write(document.documentElement.outerHTML);
