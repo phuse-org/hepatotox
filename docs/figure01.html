@@ -1,0 +1,247 @@
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Table 3: Shifts in Liver Biochemical Tests Based on Thresholds</title>
+
+  <!-- ✅ Quarto/Bootstrap assets (match index.html) -->
+  <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+  <script src="site_libs/quarto-nav/headroom.min.js"></script>
+  <script src="site_libs/clipboard/clipboard.min.js"></script>
+  <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+  <script src="site_libs/quarto-search/fuse.min.js"></script>
+  <script src="site_libs/quarto-search/quarto-search.js"></script>
+  <meta name="quarto:offset" content="./">
+  <script src="site_libs/quarto-html/quarto.js"></script>
+  <script src="site_libs/quarto-html/popper.min.js"></script>
+  <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+  <script src="site_libs/quarto-html/anchor.min.js"></script>
+  <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+  <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <script src="site_libs/bootstrap/bootstrap.min.js"></script>
+  <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+  <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <style>
+    :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
+    body{margin:0;padding:0;background:#f7f7fb;}
+    .container{max-width:1100px;margin:100px auto 40px;background:#fff;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(20,20,40,0.06);}
+    h1{margin:0 0 6px;text-align:center;font-size:20px;}
+    .subtitle{text-align:center;color:#444;margin-bottom:18px;font-size:14px;}
+
+    /* code wrapper */
+    .code-wrapper{position:relative;border:1px solid #e6e6e6;border-radius:8px;background:#f2f2f2;overflow:hidden;}
+    .code-viewport{max-height:55vh;overflow:auto;padding:12px;font-family:"Fira Code", Consolas, monospace;font-size:13px;line-height:1.4;background:transparent;}
+    .lines{min-width:min-content;}
+    .line{display:flex;align-items:flex-start;gap:12px;white-space:pre;}
+    .ln{width:60px;text-align:right;color:#666;user-select:none;flex:0 0 60px;padding-right:6px;}
+    .content{flex:1 1 auto;white-space:pre;overflow:visible;color:#111;}
+
+    /* Copy button */
+    .copy-btn{position:absolute;top:8px;right:8px;z-index:3;padding:6px 10px;border-radius:6px;border:0;background:#2563eb;color:#fff;cursor:pointer;font-weight:600;}
+    .copy-btn:active{transform:translateY(1px);}
+
+    /* image and buttons */
+    .image-container{text-align:center;margin-top:16px;}
+    .image-container img{max-width:100%;height:auto;border-radius:6px;border:1px solid #ddd;display:inline-block;}
+
+    .buttons{text-align:center;margin-top:14px;}
+    .buttons a.btn{display:inline-block;margin:6px;padding:10px 18px;border-radius:8px;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;}
+    .buttons a.btn:hover{background:#1e4db7;}
+
+    footer{text-align:center;font-size:13px;color:#666;margin-top:18px;}
+
+    @media(max-width:700px){
+      .ln{width:48px;flex:0 0 48px;text-align:right;}
+      .copy-btn{top:6px;right:6px;}
+    }
+  </style>
+</head>
+<body class="nav-fixed fullcontent">
+
+  <!-- ✅ Full navbar copied from index.html -->
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+        <div class="navbar-brand-container mx-auto">
+          <a class="navbar-brand" href="./index.html">
+            <span class="navbar-title">Hepatotox Catalog</span>
+          </a>
+        </div>
+        <div id="quarto-search" class="" title="Search"></div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation"
+          onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav navbar-nav-scroll me-auto">
+            <li class="nav-item"><a class="nav-link" href="./index.html"><span class="menu-text">Home</span></a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tables" data-bs-toggle="dropdown">Tables</a>
+              <ul class="dropdown-menu" aria-labelledby="nav-menu-tables">
+                <li><a class="dropdown-item" href="./table01.html">Table 01</a></li>
+                <li><a class="dropdown-item" href="./table02.html">Table 02</a></li>
+                <li><a class="dropdown-item" href="./table03.html">Table 03</a></li>
+                <li><a class="dropdown-item" href="./table04.html">Table 04</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="nav-menu-figures" data-bs-toggle="dropdown">Figures</a>
+              <ul class="dropdown-menu" aria-labelledby="nav-menu-figures">
+                <li><a class="dropdown-item" href="./figure01.html">Figure 01</a></li>
+                <li><a class="dropdown-item" href="./figure02.html">Figure 02</a></li>
+                <li><a class="dropdown-item" href="./figure03.html">Figure 03</a></li>
+                <li><a class="dropdown-item" href="./figure04.html">Figure 04</a></li>
+                <li><a class="dropdown-item" href="./figure05.html">Figure 05</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="./resources.qmd">Resources</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ✅ Page content -->
+  <div class="container">
+    <h1>Table 3: Shifts in Liver Biochemical Tests Based on Thresholds</h1>
+    <div class="subtitle">
+      The datasets used for the program are modified versions of the <strong>ADLB.Rda & ADSL.Rda</strong> 
+      from the <strong>random.cdisc.data</strong> library. Copy the code below to generate a table of 
+      shifts in liver biochemical tests based on thresholds.
+    </div>
+
+    <div class="code-wrapper" id="codeWrapper" aria-label="R program code area">
+      <button class="copy-btn" id="copyBtn">Copy Code</button>
+      <div class="code-viewport" id="codeViewport" tabindex="0" aria-label="R program scrollable code">
+        <div class="lines" id="lines"></div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px;font-weight:600;">The generated output of the liver enzyme ALT & partially AST is below:</p>
+    <div class="image-container">
+
+    <iframe src="https://YOUR-SHINY-APP-URL" 
+            style="width:100%; height:600px; border:1px solid #ddd; border-radius:6px;">
+    </iframe>
+
+      
+    </div>
+
+    
+  </div>
+
+  <!-- ✅ R code preserved -->
+  <script id="rawCode" type="text/plain">
+#Load appropriate libraries.
+library(dplyr)
+library(tern)
+library(random.cdisc.data)
+library(tidyverse)
+library(magrittr)
+library(rtables)
+library(r2rtf)
+library(formatters)
+
+#Load an ADLB dataset.
+load(file = "/cloud/project/Raw Data/Raw Data Output/adlbt3.Rda")          
+
+#Load ADSL for future treatment arm reference.
+load(file = "/cloud/project/Raw Data/Raw Data Output/adslt3.Rda") 
+
+#NAs are explicit missing levels.
+adlb2aa <- df_explicit_na(adlbt3)
+
+#Rename the treatment arms & parameter codes.
+levels(adlb2aa$ACTARMCD) <- c("T1 (N=318)", "PL (N=355)", "T2 (N=326)")
+levels(adlb2aa$ACTARM) <- c("T1\n n/N (%)", "PL\n n/N (%)", "T2\n n/N (%)")
+levels(adlb2aa$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
+levels(adlb2aa$PARAMCD) <- c("ALP", "ALT", "AST", "Total Bilirubin")
+adlb2aa$PARAMCD <- factor(adlb2aa$PARAMCD, levels = c("ALT", "AST", "Total Bilirubin", "ALP"))
+adlb2aa$PARAM <- factor(adlb2aa$PARAM, levels = c("Alanine Aminotransferase Measurement", "Aspartate Aminotransferase Measurement",
+ "Total Bilirubin Measurement", "Alkaline Phosphatase Measurement"))
+adlb2aa$ACTARMCD <- factor(adlb2aa$ACTARMCD, levels = c("PL (N=355)", "T1 (N=318)", "T2 (N=326)")) 
+
+adlb2a <- adlb2aa %>% add_column(RUNNUM=runif(nrow(.)))
+
+#Flag the maximum post-baseline result.
+adlb2b <- adlb2a %>% filter(SAFFL == "Y" & AVISITN %in% c(1, 2)) %>%
+  group_by(USUBJID, PARAMCD) %>% slice_max(AVAL) %>% mutate(MPBR = "Y")
+
+
+#Adding Missing as a factor level to AVALCHY & fix MISSING value in BASECHY variables &
+#reorder levels.
+adlb2b$AVALCHY <- factor(adlb2b$AVALCHY, levels = c("< 3x ULN", ">= 3 to < 5x ULN", ">= 5 to < 10x ULN", ">= 10 to < 20x ULN", ">= 20x ULN", "Missing"))
+levels(adlb2b$BASECHY)[levels(adlb2b$BASECHY) == "<Missing>"] <- "Missing"
+adlb2b$BASECHY <- factor(adlb2b$BASECHY, levels = c("< 3x ULN", ">= 3 to < 5x ULN", ">= 5 to < 10x ULN", ">= 10 to < 20x ULN", ">= 20x ULN", "Missing"))
+
+#Filter laboratory shift values for subjects with Placebo Treatment and ALT as PARAMCD.
+adlbplal <- adlb2b %>% filter(ACTARMCD == "PL" & PARAMCD == "ALT")
+
+#Create a basic table structure to calculate maximum post baseline result.
+basic_lyt <- basic_table() %>%
+  split_cols_by("AVALCHY") %>%
+  append_topleft("Maximum Baseline Value") %>%
+  split_rows_by(
+    var = "PARAMCD"
+  ) %>%
+  split_rows_by(
+    var = "ACTARMCD"
+  ) %>% 
+  split_rows_by(
+    var = "BASECHY",
+    indent_mod = 5L
+  ) %>% 
+  summarize_num_patients(
+    var = "USUBJID",
+    .stats = "unique",
+    .labels = c(unique = NULL)
+  ) 
+ 
+maxpost <- build_table(basic_lyt, adlb2b)
+
+
+#Add title/footnotes and header.
+main_title(maxpost) <- paste("Table 3", 
+  "\nShifts in Liver Biochemical Tests Based on Thresholds", "\n<Analysis Set>")
+subtitles(maxpost) <- paste("                                                                             Maximum Post-Baseline Result")
+section_div(maxpost) <- " "
+main_footer(maxpost) <-paste("PL=Placebo, T1=Treatment 1, T2=Treatment 2, ALT=alanine aminotransferase, AST=aspartate aminotransferase, ALP=alkaline phosphatase;",
+ "\nN=number of applicable subjects in treatment arm; n=actual applicable observed number with values.")
+
+#Output table as a PDF file.
+table3a <-"~/Table 3.pdf"
+export_as_pdf(maxpost, file = table3a, landscape = TRUE, paginate = TRUE, 
+              colwidths = c(33, 11, 15, 16, 17, 12, 11))
+  </script>
+
+  <script>
+    (function(){
+      let raw = document.getElementById('rawCode').textContent.replace(/\r/g, '').replace(/^\n+/, '').replace(/\n+$/, '');
+      const linesArray = raw.split('\n');
+      const linesContainer = document.getElementById('lines');
+      const frag = document.createDocumentFragment();
+      linesArray.forEach((text, idx) => {
+        const row = document.createElement('div'); row.className='line';
+        const ln = document.createElement('div'); ln.className='ln'; ln.textContent = idx+1;
+        const content = document.createElement('div'); content.className='content'; content.textContent=text;
+        row.appendChild(ln); row.appendChild(content); frag.appendChild(row);
+      });
+      linesContainer.appendChild(frag);
+
+      document.getElementById('copyBtn').addEventListener('click', async ()=>{
+        try {
+          await navigator.clipboard.writeText(raw);
+          let b=document.getElementById('copyBtn');
+          b.textContent='Copied!';
+          setTimeout(()=>b.textContent='Copy Code',1200);
+        } catch(e) {
+          alert('Copy failed');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
