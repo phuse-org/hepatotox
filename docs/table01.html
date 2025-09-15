@@ -49,27 +49,31 @@
 </head>
 <body>
   <div class="container">
-    <h1>Table 1: Overview of Reported Potential Liver Safety Findings</h1>
-    <div class="subtitle">Dataset used for the program is <strong>cadhy.Rdata</strong> from the <strong>random.cdisc.data</strong> library.
-Copy the code below to generate a table of reported potential liver safety findings.</div>
-
-    <div class="code-wrapper" id="codeWrapper" aria-label="R program code area">
-      <button class="copy-btn" id="copyBtn">Copy Code</button>
-      <div class="code-viewport" id="codeViewport" tabindex="0" aria-label="R program scrollable code">
-        <div class="lines" id="lines"></div>
-      </div>
-    </div>
-
-    <div class="image-container">
-      <img src="images/table01.png" alt="Table output (table01.png)">
-    </div>
-
-    <div class="buttons">
-      <a class="btn" href="Table1.pdf" download>Download PDF</a>
-      <a class="btn" href="table01op.html" target="_blank">Open HTML</a>
-    </div>
-
+  <h1>Table 1: Overview of Reported Potential Liver Safety Findings</h1>
+  <div class="subtitle">
+    Dataset used for the program is <strong>cadhy.Rdata</strong> from the 
+    <strong>random.cdisc.data</strong> library. Copy the code below to generate a table of reported potential liver safety findings.
   </div>
+
+  <div class="code-wrapper" id="codeWrapper" aria-label="R program code area">
+    <button class="copy-btn" id="copyBtn">Copy Code</button>
+    <div class="code-viewport" id="codeViewport" tabindex="0" aria-label="R program scrollable code">
+      <div class="lines" id="lines"></div>
+    </div>
+  </div>
+
+  <!-- ✅ This line will now display -->
+  <p style="margin-top:20px;font-weight:600;">Generated output is below:</p>
+
+  <div class="image-container">
+    <img src="images/table01.png" alt="Table output (table01.png)">
+  </div>
+
+  <div class="buttons">
+    <a class="btn" href="Table1.pdf" download>Download PDF</a>
+    <a class="btn" href="table01op.html" target="_blank">Open HTML</a>
+  </div>
+</div>
 
   <!-- Full R code included (unchanged, same as before) -->
   <script id="rawCode" type="text/plain">
@@ -91,8 +95,8 @@ adhy <- df_explicit_na(cadhy)
 cadhy2 <- adhy %>% add_column(RUNNUM=runif(nrow(.)))
 
 #Define values of interest in PARAMCD variable.
-paramcd_tbili_alt <- c("BLAL", "BGAL", "BA2AL", "BA5AL") paramcd_tbili_ast 
-<- c("BLAS", "BGAS", "BA2AS", "BA5AS")
+paramcd_tbili_alt <- c("BLAL", "BGAL", "BA2AL", "BA5AL") 
+paramcd_tbili_ast <- c("BLAS", "BGAS", "BA2AS", "BA5AS")
 param_extra <- c("BL2AL2CB", "BL2AL2CU", "BL2AS2CB", "BL2AS2CU")
 
 #Select laboratory test parameters.
