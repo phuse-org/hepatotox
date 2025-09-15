@@ -24,8 +24,6 @@ website:
             href: table03.html
           - text: "Table 04"
             href: table04.html
-          - text: "Table 05"
-            href: table05.html
       - text: "Figures"
         menu:
           - text: "Figure 01"
@@ -35,6 +33,8 @@ website:
           - text: "Figure 03"
             href: figure03.html
           - text: "Figure 04"
+            href: figure04.html
+          - text: "Figure 05"
             href: figure04.html
       - text: "Resources"
         href: resources.html
