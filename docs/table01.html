@@ -1,241 +1,176 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Table 1: Overview of Reported Potential Liver Safety Findings</title>
-<style>
-  :root {
-    font-family: Segoe UI, Roboto, system-ui, -apple-system, sans-serif;
-    color:#222;
-  }
-  body {
-    margin:0;
-    padding:20px;
-    background:#f7f7fb;
-  }
-  .container {
-    max-width:1000px;
-    margin:0 auto;
-    background:#fff;
-    border-radius:10px;
-    box-shadow:0 6px 18px rgba(20,20,40,0.08);
-    overflow:hidden;
-    padding:20px;
-  }
-  .page-title {
-    text-align:center;
-    margin:0 0 25px 0;
-    font-size:22px;
-    font-weight:bold;
-    color:#222;
-  }
-  .grid {
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    grid-template-rows:45vh auto;
-    gap:0;
-  }
-  .cell {
-    padding:12px;
-    box-sizing:border-box;
-    border-bottom:1px solid #eee;
-  }
-  .top {
-    display:flex;
-    flex-direction:column;
-    height:100%;
-  }
-  .codeblock {
-    background:#e9e9e9;
-    color:#222;
-    border-radius:6px;
-    padding:12px;
-    font-family:"Fira Code", Consolas, monospace;
-    font-size:13px;
-    margin-bottom:12px;
-    max-height:350px;     /* fixed block height */
-    overflow-y:auto;      /* vertical scroll */
-    overflow-x:auto;      /* horizontal scroll */
-    white-space:pre;      /* preserve code formatting */
-  }
-  .code-title {
-    font-size:13px;
-    margin-bottom:4px;
-    color:#333;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-  }
-  .bottom {
-    grid-column:1/3;
-    text-align:center;
-    padding:12px;
-  }
-  img#outputImage {
-    max-width:100%;
-    height:auto;
-    border-radius:6px;
-    border:1px solid #ddd;
-  }
-  .controls {
-    display:flex;
-    gap:8px;
-    justify-content:center;
-    margin-top:12px;
-    flex-wrap:wrap;
-  }
-  button {
-    background:#2563eb;
-    color:#fff;
-    border:none;
-    padding:10px 14px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:600;
-  }
-  button.secondary {
-    background:#475569;
-  }
-  footer {
-    padding:10px 18px;
-    font-size:12px;
-    color:#666;
-    text-align:center;
-  }
-  @media(max-width:800px){
-    .grid {
-      grid-template-columns:1fr;
-      grid-template-rows:auto auto auto;
+  <meta charset="UTF-8">
+  <title>Table 1: Overview of Reported Potential Liver Safety Findings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
     }
-  }
-</style>
+    header {
+      background: #fff;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    header h1 {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h2 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #444;
+    }
+    pre {
+      background: #f1f1f1;
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 250px; /* shorter blocks */
+      line-height: 1.4;
+      counter-reset: line;
+      font-size: 13px;
+    }
+    code {
+      display: block;
+      white-space: pre;
+    }
+    /* Line numbers */
+    pre code span {
+      display: block;
+      counter-increment: line;
+      position: relative;
+      padding-left: 45px;
+    }
+    pre code span::before {
+      content: counter(line);
+      position: absolute;
+      left: 0;
+      width: 35px;
+      text-align: right;
+      color: #666;
+      font-size: 12px;
+      padding-right: 10px;
+      border-right: 2px solid #2563eb; /* vertical blue line */
+      user-select: none;
+    }
+    .btns {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      background: #2563eb;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    button:hover {
+      background: #1e4db7;
+    }
+    .image-box {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .image-box img {
+      max-width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #777;
+      margin: 20px 0 10px;
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>Table 1: Overview of Reported Potential Liver Safety Findings</h1>
+  </header>
 
-<div class="container">
-  <h1 class="page-title">Table 1: Overview of Reported Potential Liver Safety Findings</h1>
+  <div class="container">
+    <h2>Program Code — R code (non-executable)</h2>
+    <pre><code>
+<span>#Table 1</span>
+<span>#Install and upload appropriate packages.</span>
+<span>library(tidyverse)</span>
+<span>library(magrittr)</span>
+<span>library(tern)</span>
+<span>library(dplyr)</span>
+<span>library(rtables)</span>
+<span>library(r2rtf)</span>
+<span>library(formatters)</span>
+<span>#Set seed for reproducibility.</span>
+<span>set.seed(619)</span>
+<span>#Removed any NA values. Also, added a record sequence number via RUNNUM.</span>
+<span>adhy &lt;- df_explicit_na(cadhy)</span>
+<span>cadhy2 &lt;- adhy %&gt;% add_column(RUNNUM=runif(nrow(.)))</span>
+    </code></pre>
 
-  <div class="grid">
-    <!-- Left code block -->
-    <div class="cell top" style="border-right:1px solid #eee;">
-      <div class="code-title">
-        <span>Program Code — R code (non-executable)</span>
-        <button class="copyBtn" data-target="code1">Copy</button>
-      </div>
-      <pre class="codeblock" id="code1"><code>#Table 1 
-#Install and upload appropriate packages. 
-library(tidyverse) 
-library(magrittr) 
-library(tern) 
-library(dplyr) 
-library(rtables) 
-library(r2rtf) 
-library(formatters)
-
-#Set seed for reproducibility.
-set.seed(619)
-
-#Removed any NA values. Also, added a record sequence number via RUNNUM. 
-adhy <- df_explicit_na(cadhy) 
-cadhy2 <- adhy %>% add_column(RUNNUM=runif(nrow(.)))
-
-#Define values of interest in PARAMCD variable.
-paramcd_tbili_alt <- c("BLAL", "BGAL", "BA2AL", "BA5AL") 
-paramcd_tbili_ast <- c("BLAS", "BGAS", "BA2AS", "BA5AS") 
-param_extra <- c("BL2AL2CB", "BL2AL2CU", "BL2AS2CB", "BL2AS2CU")
-
-#Select laboratory test parameters.
-adhy_liver_tot <- cadhy2 %>% filter(SAFFL=="Y", AVISIT %in% c("POST-BASELINE"), PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast, param_extra), AVAL %in% c(0,1,2,3,4))
-
-#ADaM Programmers should have already included a variable similar to BIOCHEMREL & ADVREL
-adhy_liver2 <- cadhy2 %>% mutate(BIOCHEMREL=ifelse(.8>RUNNUM & RUNNUM>.5,"Yes","No")) %>% 
-mutate(ADVREL=ifelse(.55>RUNNUM & RUNNUM>.25,"Yes","No")) %>% filter(SAFFL=="Y", AVISIT %in% c("POST-BASELINE"), PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast, param_extra), AVAL %in% c(1,2,3,4))
-
-#Add appropriate labels for final table output.
-adhy_liver3 <- adhy_liver2 %>% mutate(FINBOTH=with_label(BIOCHEMREL=="Yes" & ADVREL=="Yes"," Findings Related to Both\n Adverse Events and Biochemical\n Tests"),
-FINAEREL=with_label(ADVREL=="Yes"," Findings Related to Adverse\n Events"), 
-FINBCTEST=with_label(BIOCHEMREL=="Yes"," Findings Related to\n Biochemical Tests"))
-
-#Flag total number of findings without duplicates.
-adhy_liver4 <- adhy_liver3 %>% mutate(TOP=case_when(ADVREL=="Yes" & BIOCHEMREL=="No" & FINBOTH=="FALSE"~"Y",
-ADVREL=="No" & BIOCHEMREL=="Yes" & FINBOTH=="FALSE"~"Y", .default="N")) %>% 
-mutate(TABLESEQ=RUNNUM) %>% mutate(FINTOP=with_label(TOP=="Y","Any Potential Liver Safety Findings")) %>% mutate(ROWSPL1=case_when(FINTOP=="FALSE"|FINTOP=="TRUE"~" "))
-
-#Rename treatment arms.
-levels(adhy_liver4$ACTARMCD) <- c("T1","PL","T2")
-levels(adhy_liver4$ACTARM) <- c("T1\n n/N(%)","PL\n n/N(%)","T2\n n/N(%)")
-adhy_liver4$ACTARMCD <- factor(adhy_liver4$ACTARMCD,levels=c("PL","T1","T2"))
-aefin_vars <- c("FINBOTH","FINAEREL","FINBCTEST")
-
-#Custom format function
-format_frac_perc <- function(x, output=NULL){perc<-round(x[2]*100,1);denom<-(x[1]/(x[2]*100))*100;paste0(x[1],"/",denom," (",perc,"%") )}
-
-#Build table (pseudo-code snippet)
-lyt_fin1a <- basic_table(show_colcounts=TRUE) %>% split_rows_by(c("ROWSPL1")) %>% split_cols_by("ACTARMCD")</code></pre>
+    <div class="image-box">
+      <img src="table01.png" alt="Output image">
     </div>
 
-    <!-- Right code block -->
-    <div class="cell top">
-      <div class="code-title">
-        <span>Data Setup — R code</span>
-        <button class="copyBtn" data-target="code2">Copy</button>
-      </div>
-      <pre class="codeblock" id="code2"><code>#Download CADHY liver dataset from CDISC library.
-library(random.cdisc.data)
-cadhy
-</code></pre>
-    </div>
+    <h2>Second R Code Block</h2>
+    <pre><code>
+<span>paramcd_alt &lt;- c("BLALT","BGALT","BA2ALT","BASALT")</span>
+<span>paramcd_tbil &lt;- c("BLBLS","BGASS","BA2ASS","BASAS")</span>
+<span>param_extra &lt;- c("BL2AL2CB","BL2AL2GQ","BL2AS2CB","BL2AS2CU")</span>
+<span>#Select laboratory test parameters.</span>
+<span>adhy_filt &lt;- cadhy2 %&gt;% filter(PARAMCD %in% c(paramcd_alt,paramcd_tbil,param_extra))</span>
+    </code></pre>
 
-    <!-- Bottom image + buttons -->
-    <div class="cell bottom">
-      <img id="outputImage" src="table01.png" alt="Output image"/>
-      <div class="controls">
-        <button id="printPage">Download page as PDF</button>
-        <button id="printImage" class="secondary">Download image as PDF</button>
-        <button id="downloadHtml">Download as HTML file</button>
-      </div>
+    <div class="btns">
+      <button onclick="window.print()">Download page as PDF</button>
+      <button onclick="downloadImage()">Download image as PNG</button>
+      <button onclick="copyCode()">Copy code to Clipboard</button>
     </div>
   </div>
-  <footer>Generated page — non-executable R code blocks.</footer>
-</div>
 
-<script>
-  document.querySelectorAll('.copyBtn').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const code = document.getElementById(btn.dataset.target);
-      navigator.clipboard.writeText(code.innerText).then(()=>{
-        btn.innerText="Copied!";
-        setTimeout(()=>btn.innerText="Copy",1000);
+  <footer>
+    Generated page — non-executable R code blocks with line numbers.
+  </footer>
+
+  <script>
+    function copyCode() {
+      const codeBlocks = document.querySelectorAll("pre code");
+      let allCode = "";
+      codeBlocks.forEach(block => {
+        block.querySelectorAll("span").forEach(line => {
+          allCode += line.textContent + "\n";
+        });
       });
-    });
-  });
+      navigator.clipboard.writeText(allCode).then(() => {
+        alert("Code copied to clipboard!");
+      });
+    }
 
-  document.getElementById('printPage').addEventListener('click', ()=>{
-    const w = window.open('','_blank'); 
-    w.document.write(document.documentElement.outerHTML); 
-    w.document.close();
-    w.onload=()=>setTimeout(()=>w.print(),350);
-  });
-
-  document.getElementById('printImage').addEventListener('click', ()=>{
-    const img = document.getElementById('outputImage'); 
-    const w=window.open('','_blank');
-    w.document.write('<html><head><title>Image PDF</title><style>body{margin:0;padding:0;display:flex;align-items:center;justify-content:center;height:100vh}img{max-width:100%;height:auto}</style></head><body>'+img.outerHTML+'</body></html>');
-    w.document.close(); 
-    w.onload=()=>setTimeout(()=>w.print(),350);
-  });
-
-  document.getElementById('downloadHtml').addEventListener('click', ()=>{
-    const blob=new Blob(['<!doctype html>\n'+document.documentElement.outerHTML],{type:'text/html'});
-    const a=document.createElement('a'); 
-    a.href=URL.createObjectURL(blob); 
-    a.download='table01.html'; 
-    document.body.appendChild(a); 
-    a.click(); 
-    a.remove();
-  });
-</script>
-
+    function downloadImage() {
+      const link = document.createElement("a");
+      link.href = "table01.png";
+      link.download = "table01.png";
+      link.click();
+    }
+  </script>
 </body>
 </html>
