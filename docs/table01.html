@@ -178,14 +178,16 @@ export_as_pdf(resultfin2, file = table1a2, landscape = TRUE, paginate = FALSE, c
     linesContainer.appendChild(frag);
 
     document.getElementById('copyBtn').addEventListener('click', async ()=>{
-      try{await navigator.clipboard.writeText(raw); let b=document.getElementById('copyBtn'); b.textContent='Copied!'; setTimeout(()=>b.textContent='Copy Code',1200);}catch(e){alert('Copy failed');}
+      try {
+        await navigator.clipboard.writeText(raw);
+        let b=document.getElementById('copyBtn');
+        b.textContent='Copied!';
+        setTimeout(()=>b.textContent='Copy Code',1200);
+      } catch(e) {
+        alert('Copy failed');
+      }
     });
 
-    document.getElementById('downloadHtml').addEventListener('click', ()=>{
-      const blob=new Blob(['<!doctype html>\\n'+document.documentElement.outerHTML],{type:'text/html'});
-      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='Table1_snapshot.html'; a.click();
-    });
+    // ❌ Removed the snapshot HTML generator here
   })();
 </script>
-</body>
-</html>
