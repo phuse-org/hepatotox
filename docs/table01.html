@@ -8,22 +8,21 @@
   :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
   body{margin:0;padding:20px;background:#f7f7fb;}
   .container{max-width:1000px;margin:0 auto;background:#fff;border-radius:10px;box-shadow:0 6px 18px rgba(20,20,40,0.08);overflow:hidden;}
-  .grid{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:45vh auto;gap:0;}
+  .grid{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:auto auto;gap:0;}
   .cell{padding:12px;box-sizing:border-box;border-bottom:1px solid #eee;}
   .top{display:flex;flex-direction:column;height:100%;}
-
   .codeblock{
-    flex:1;
-    overflow:auto;
-    background:#e0e0e0;
+    background:#e9e9e9;
     color:#222;
     border-radius:6px;
     padding:12px;
-    font-family:Helvetica, Arial, sans-serif;
+    font-family:"Fira Code", Consolas, monospace;
     font-size:13px;
     margin-bottom:12px;
+    max-height:350px;     /* ✅ cap height */
+    overflow:auto;        /* ✅ scroll inside */
+    white-space:pre;      /* keep formatting */
   }
-
   .code-title{
     font-size:13px;
     margin-bottom:4px;
@@ -32,7 +31,6 @@
     justify-content:space-between;
     align-items:center;
   }
-
   .bottom{grid-column:1/3;text-align:center;padding:12px;}
   img#outputImage{max-width:100%;height:auto;border-radius:6px;border:1px solid #ddd;}
   .controls{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
@@ -48,12 +46,11 @@
   <div class="grid">
     <!-- Left code block -->
     <div class="cell top" style="border-right:1px solid #eee;">
-      <div style="display:flex;flex-direction:column;height:100%;">
-        <div class="code-title">
-          <span>Program Code — R code (non-executable)</span>
-          <button class="copyBtn" data-target="code1">Copy</button>
-        </div>
-        <pre class="codeblock" id="code1"><code>#Table 1 
+      <div class="code-title">
+        <span>Program Code — R code (non-executable)</span>
+        <button class="copyBtn" data-target="code1">Copy</button>
+      </div>
+      <pre class="codeblock" id="code1"><code>#Table 1 
 #Install and upload appropriate packages. 
 library(tidyverse) 
 library(magrittr) 
@@ -69,55 +66,20 @@ set.seed(619)
 #Removed any NA values. Also, added a record sequence number via RUNNUM. 
 adhy <- df_explicit_na(cadhy) 
 cadhy2 <- adhy %>% add_column(RUNNUM=runif(nrow(.)))
-
-#Define values of interest in PARAMCD variable.
-paramcd_tbili_alt <- c("BLAL", "BGAL", "BA2AL", "BA5AL") 
-paramcd_tbili_ast <- c("BLAS", "BGAS", "BA2AS", "BA5AS") 
-param_extra <- c("BL2AL2CB", "BL2AL2CU", "BL2AS2CB", "BL2AS2CU")
-
-#Select laboratory test parameters.
-adhy_liver_tot <- cadhy2 %>% filter(SAFFL=="Y", AVISIT %in% c("POST-BASELINE"), PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast, param_extra), AVAL %in% c(0,1,2,3,4))
-
-#ADaM Programmers should have already included a variable similar to BIOCHEMREL & ADVREL
-adhy_liver2 <- cadhy2 %>% mutate(BIOCHEMREL=ifelse(.8>RUNNUM & RUNNUM>.5,"Yes","No")) %>% 
-mutate(ADVREL=ifelse(.55>RUNNUM & RUNNUM>.25,"Yes","No")) %>% filter(SAFFL=="Y", AVISIT %in% c("POST-BASELINE"), PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast, param_extra), AVAL %in% c(1,2,3,4))
-
-#Add appropriate labels for final table output.
-adhy_liver3 <- adhy_liver2 %>% mutate(FINBOTH=with_label(BIOCHEMREL=="Yes" & ADVREL=="Yes"," Findings Related to Both\n Adverse Events and Biochemical\n Tests"),
-FINAEREL=with_label(ADVREL=="Yes"," Findings Related to Adverse\n Events"), 
-FINBCTEST=with_label(BIOCHEMREL=="Yes"," Findings Related to\n Biochemical Tests"))
-
-#Flag total number of findings without duplicates.
-adhy_liver4 <- adhy_liver3 %>% mutate(TOP=case_when(ADVREL=="Yes" & BIOCHEMREL=="No" & FINBOTH=="FALSE"~"Y",
-ADVREL=="No" & BIOCHEMREL=="Yes" & FINBOTH=="FALSE"~"Y", .default="N")) %>% 
-mutate(TABLESEQ=RUNNUM) %>% mutate(FINTOP=with_label(TOP=="Y","Any Potential Liver Safety Findings")) %>% mutate(ROWSPL1=case_when(FINTOP=="FALSE"|FINTOP=="TRUE"~" "))
-
-#Rename treatment arms.
-levels(adhy_liver4$ACTARMCD) <- c("T1","PL","T2")
-levels(adhy_liver4$ACTARM) <- c("T1\n n/N(%)","PL\n n/N(%)","T2\n n/N(%)")
-adhy_liver4$ACTARMCD <- factor(adhy_liver4$ACTARMCD,levels=c("PL","T1","T2"))
-aefin_vars <- c("FINBOTH","FINAEREL","FINBCTEST")
-
-#Custom format function
-format_frac_perc <- function(x, output=NULL){perc<-round(x[2]*100,1);denom<-(x[1]/(x[2]*100))*100;paste0(x[1],"/",denom," (",perc,"%") )}
-
-#Build table (pseudo-code snippet)
-lyt_fin1a <- basic_table(show_colcounts=TRUE) %>% split_rows_by(c("ROWSPL1")) %>% split_cols_by("ACTARMCD")</code></pre>
-      </div>
+...
+</code></pre>
     </div>
 
     <!-- Right code block -->
     <div class="cell top">
-      <div style="display:flex;flex-direction:column;height:100%;">
-        <div class="code-title">
-          <span>Data Setup — R code</span>
-          <button class="copyBtn" data-target="code2">Copy</button>
-        </div>
-        <pre class="codeblock" id="code2"><code>#Download CADHY liver dataset from CDISC library.
+      <div class="code-title">
+        <span>Data Setup — R code</span>
+        <button class="copyBtn" data-target="code2">Copy</button>
+      </div>
+      <pre class="codeblock" id="code2"><code>#Download CADHY liver dataset from CDISC library.
 library(random.cdisc.data)
 cadhy
 </code></pre>
-      </div>
     </div>
 
     <!-- Bottom image + buttons -->
@@ -137,24 +99,36 @@ cadhy
   document.querySelectorAll('.copyBtn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const code = document.getElementById(btn.dataset.target);
-      navigator.clipboard.writeText(code.innerText).then(()=>{btn.innerText="Copied!";setTimeout(()=>btn.innerText="Copy",1000);});
+      navigator.clipboard.writeText(code.innerText).then(()=>{
+        btn.innerText="Copied!";
+        setTimeout(()=>btn.innerText="Copy",1000);
+      });
     });
   });
 
   document.getElementById('printPage').addEventListener('click', ()=>{
-    const w = window.open('','_blank'); w.document.write(document.documentElement.outerHTML); w.document.close();
+    const w = window.open('','_blank'); 
+    w.document.write(document.documentElement.outerHTML); 
+    w.document.close();
     w.onload=()=>setTimeout(()=>w.print(),350);
   });
 
   document.getElementById('printImage').addEventListener('click', ()=>{
-    const img = document.getElementById('outputImage'); const w=window.open('','_blank');
+    const img = document.getElementById('outputImage'); 
+    const w=window.open('','_blank');
     w.document.write('<html><head><title>Image PDF</title><style>body{margin:0;padding:0;display:flex;align-items:center;justify-content:center;height:100vh}img{max-width:100%;height:auto}</style></head><body>'+img.outerHTML+'</body></html>');
-    w.document.close(); w.onload=()=>setTimeout(()=>w.print(),350);
+    w.document.close(); 
+    w.onload=()=>setTimeout(()=>w.print(),350);
   });
 
   document.getElementById('downloadHtml').addEventListener('click', ()=>{
     const blob=new Blob(['<!doctype html>\n'+document.documentElement.outerHTML],{type:'text/html'});
-    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='table01.html'; document.body.appendChild(a); a.click(); a.remove();
+    const a=document.createElement('a'); 
+    a.href=URL.createObjectURL(blob); 
+    a.download='table01.html'; 
+    document.body.appendChild(a); 
+    a.click(); 
+    a.remove();
   });
 </script>
 
