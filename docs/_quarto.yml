@@ -16,7 +16,7 @@ website:
             href: liver-enzyme.html
       - text: "Tables"
         menu:
-          - text: "Table Demo"
+          - text: "Table 01"
             href: table01.html
           - text: "Table 02"
             href: table02.html
@@ -35,7 +35,7 @@ website:
           - text: "Figure 04"
             href: figure04.html
           - text: "Figure 05"
-            href: figure04.html
+            href: figure05.html
       - text: "Resources"
         href: resources.html
 
