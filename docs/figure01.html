@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Figure 01: Interactive Shiny App</title>
+  <title>Figure 01: Plot of Maximum Total Bilirubin Versus Maximum ALT or AST or ALP</title>
 
   <!-- ✅ Quarto/Bootstrap assets (match index.html) -->
   <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -60,50 +60,53 @@
 </head>
 <body class="nav-fixed fullcontent">
 
-  <!-- ✅ Full navbar copied from index.html -->
-  
-<header id="quarto-header" class="navbar navbar-expand-lg navbar-light bg-light" data-bs-theme="light">
-  <div class="container-xl">
-    <a class="navbar-brand" href="./index.html">Hepatotox Catalog</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-            data-bs-target="#quarto-navbar-menu" aria-controls="quarto-navbar-menu" 
-            aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="quarto-navbar-menu">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="tablesDropdown" role="button" 
-             data-bs-toggle="dropdown" aria-expanded="false">Tables</a>
-          <ul class="dropdown-menu" aria-labelledby="tablesDropdown">
-            <li><a class="dropdown-item" href="./table01.html">Table 01</a></li>
-            <li><a class="dropdown-item" href="./table02.html">Table 02</a></li>
-            <li><a class="dropdown-item" href="./table03.html">Table 03</a></li>
-            <li><a class="dropdown-item" href="./table04.html">Table 04</a></li>
+<!-- ✅ Full navbar copied from index.html -->
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+        <div class="navbar-brand-container mx-auto">
+          <a class="navbar-brand" href="./index.html">
+            <span class="navbar-title">Hepatotox Catalog</span>
+          </a>
+        </div>
+        <div id="quarto-search" class="" title="Search"></div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation"
+          onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav navbar-nav-scroll me-auto">
+            <li class="nav-item"><a class="nav-link" href="./index.html"><span class="menu-text">Home</span></a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tables" data-bs-toggle="dropdown">Tables</a>
+              <ul class="dropdown-menu" aria-labelledby="nav-menu-tables">
+                <li><a class="dropdown-item" href="./table01.html">Table 01</a></li>
+                <li><a class="dropdown-item" href="./table02.html">Table 02</a></li>
+                <li><a class="dropdown-item" href="./table03.html">Table 03</a></li>
+                <li><a class="dropdown-item" href="./table04.html">Table 04</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="nav-menu-figures" data-bs-toggle="dropdown">Figures</a>
+              <ul class="dropdown-menu" aria-labelledby="nav-menu-figures">
+                <li><a class="dropdown-item" href="./figure01.html">Figure 01</a></li>
+                <li><a class="dropdown-item" href="./figure02.html">Figure 02</a></li>
+                <li><a class="dropdown-item" href="./figure03.html">Figure 03</a></li>
+                <li><a class="dropdown-item" href="./figure04.html">Figure 04</a></li>
+                <li><a class="dropdown-item" href="./figure05.html">Figure 05</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="./resources.qmd">Resources</a></li>
           </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle active" href="#" id="figuresDropdown" role="button" 
-             data-bs-toggle="dropdown" aria-expanded="false">Figures</a>
-          <ul class="dropdown-menu" aria-labelledby="figuresDropdown">
-            <li><a class="dropdown-item active" href="./figure01.html">Figure 01</a></li>
-            <li><a class="dropdown-item" href="./figure02.html">Figure 02</a></li>
-            <li><a class="dropdown-item" href="./figure03.html">Figure 03</a></li>
-            <li><a class="dropdown-item" href="./figure04.html">Figure 04</a></li>
-            <li><a class="dropdown-item" href="./figure05.html">Figure 05</a></li>
-          </ul>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="./resources.html">Resources</a></li>
-      </ul>
-    </div>
-  </div>
-</header>
-
+        </div>
+      </div>
+    </nav>
+  </header>
 
   <!-- ✅ Page content -->
   <div class="container">
-    <h1>Figure 01: Interactive Shiny App</h1>
+    <h1>Figure 01: Plot of Maximum Total Bilirubin Versus Maximum ALT or AST or ALP</h1>
     <div class="subtitle">
       The datasets used for the program are modified versions of the <strong>ADLB.Rda & ADSL.Rda</strong> 
       from the <strong>random.cdisc.data</strong> library. Copy the code below to generate a table of 
@@ -138,28 +141,31 @@ library(tern)
 library(random.cdisc.data)
 library(tidyverse)
 library(magrittr)
-library(rtables)
 library(r2rtf)
 library(formatters)
+library(grid)
+library(shiny)
+library(plotly)
 
 #Load an ADLB dataset.
-load(file = "/cloud/project/Raw Data/Raw Data Output/adlbt3.Rda")          
+load(file = "/cloud/project/Raw Data/Raw Data Output/adlbf1.Rda")
 
-#Load ADSL for future treatment arm reference.
-load(file = "/cloud/project/Raw Data/Raw Data Output/adslt3.Rda") 
+#Load ADSL dataset.
+load(file = "/cloud/project/Raw Data/Raw Data Output/adslf1.Rda")
 
 #NAs are explicit missing levels.
-adlb2aa <- df_explicit_na(adlbt3)
+adlb2aa <- df_explicit_na(adlbf1)
 
 #Rename the treatment arms & parameter codes.
-levels(adlb2aa$ACTARMCD) <- c("T1 (N=318)", "PL (N=355)", "T2 (N=326)")
-levels(adlb2aa$ACTARM) <- c("T1\n n/N (%)", "PL\n n/N (%)", "T2\n n/N (%)")
+levels(adlb2aa$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adslf1$ACTARMCD) <- c("T1", "PL", "T2")
 levels(adlb2aa$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
-levels(adlb2aa$PARAMCD) <- c("ALP", "ALT", "AST", "Total Bilirubin")
-adlb2aa$PARAMCD <- factor(adlb2aa$PARAMCD, levels = c("ALT", "AST", "Total Bilirubin", "ALP"))
-adlb2aa$PARAM <- factor(adlb2aa$PARAM, levels = c("Alanine Aminotransferase Measurement", "Aspartate Aminotransferase Measurement",
- "Total Bilirubin Measurement", "Alkaline Phosphatase Measurement"))
-adlb2aa$ACTARMCD <- factor(adlb2aa$ACTARMCD, levels = c("PL (N=355)", "T1 (N=318)", "T2 (N=326)")) 
+levels(adlb2aa$PARAMCD) <- c("ALP", "ALT", "AST", "TBILI")
+adlb2aa$PARAMCD <- factor(adlb2aa$PARAMCD, levels = c("ALT", "AST", "TBILI", "ALP"))
+adlb2aa$PARAM <- factor(adlb2aa$PARAM, levels = c("Alanine Aminotransferase Measurement", "Aspartate Aminotransferase Measurement", "Total Bilirubin Measurement", "Alkaline Phosphatase Measurement"))
+adlb2aa$ACTARMCD <- factor(adlb2aa$ACTARMCD, levels = c("PL", "T1", "T2")) 
+adslf1$ACTARMCD <- factor(adslf1$ACTARMCD, levels = c("PL", "T1", "T2")) 
+levels(adslf1$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
 
 adlb2a <- adlb2aa %>% add_column(RUNNUM=runif(nrow(.)))
 
@@ -167,51 +173,199 @@ adlb2a <- adlb2aa %>% add_column(RUNNUM=runif(nrow(.)))
 adlb2b <- adlb2a %>% filter(SAFFL == "Y" & AVISITN %in% c(1, 2)) %>%
   group_by(USUBJID, PARAMCD) %>% slice_max(AVAL) %>% mutate(MPBR = "Y")
 
+#Calculate AVAL in terms of ULN for PARAMCD == (TBILI, ALT,AST, ALP).
+adlb2c <- adlb2b %>% filter(PARAMCD %in% c("ALT", "AST", "TBILI", "ALP") & MPBR == "Y") %>%
+  mutate(MAXU = case_when(PARAMCD == "ALT" ~ AVAL/55, PARAMCD == "AST" ~ AVAL/33, PARAMCD == "ALP" ~ AVAL/147), MAXUB = case_when(PARAMCD == "TBILI" ~ AVAL/1.2))
 
-#Adding Missing as a factor level to AVALCHY & fix MISSING value in BASECHY variables &
-#reorder levels.
-adlb2b$AVALCHY <- factor(adlb2b$AVALCHY, levels = c("< 3x ULN", ">= 3 to < 5x ULN", ">= 5 to < 10x ULN", ">= 10 to < 20x ULN", ">= 20x ULN", "Missing"))
-levels(adlb2b$BASECHY)[levels(adlb2b$BASECHY) == "<Missing>"] <- "Missing"
-adlb2b$BASECHY <- factor(adlb2b$BASECHY, levels = c("< 3x ULN", ">= 3 to < 5x ULN", ">= 5 to < 10x ULN", ">= 10 to < 20x ULN", ">= 20x ULN", "Missing"))
+adlb2all1 <- pivot_wider(adlb2c, id_cols = SUBJID, names_from = PARAMCD, values_from = c(MAXU, MAXUB, AVISIT))
 
-#Filter laboratory shift values for subjects with Placebo Treatment and ALT as PARAMCD.
-adlbplal <- adlb2b %>% filter(ACTARMCD == "PL" & PARAMCD == "ALT")
+adlb2all2 <- merge(x = adlb2all1, y = adslf1[ , c("SUBJID", "ACTARMCD", "ARM")], by = "SUBJID", all.x = TRUE) %>% mutate(ALTr = round(MAXU_ALT, 3), ASTr = round(MAXU_AST, 3), ALPr = round(MAXU_ALP, 3), TBILIr = round(MAXUB_TBILI, 3)) %>%
+  subset(select = c(SUBJID, ACTARMCD, ARM,  ALTr, ASTr, ALPr, TBILIr, AVISIT_ALT, AVISIT_AST)) 
 
-#Create a basic table structure to calculate maximum post baseline result.
-basic_lyt <- basic_table() %>%
-  split_cols_by("AVALCHY") %>%
-  append_topleft("Maximum Baseline Value") %>%
-  split_rows_by(
-    var = "PARAMCD"
-  ) %>%
-  split_rows_by(
-    var = "ACTARMCD"
-  ) %>% 
-  split_rows_by(
-    var = "BASECHY",
-    indent_mod = 5L
-  ) %>% 
-  summarize_num_patients(
-    var = "USUBJID",
-    .stats = "unique",
-    .labels = c(unique = NULL)
-  ) 
- 
-maxpost <- build_table(basic_lyt, adlb2b)
+#Create RShiny app's UI and Server Components.
+ui = navbarPage("Figure 1",
+                  uiOutput("all"),
+                  tabPanel("Plot",
+                           icon = icon("chart-area"),
+                           sidebarLayout(sidebarPanel(
+                             selectInput("Plot", "Please select a Liver Biochemical Test to view:",
+                                         choices = c("ALT", 
+                                                     "AST", 
+                                                     "ALP")),
+                             actionButton("submit", "Submit")),
+                             mainPanel(
+                            titlePanel("Figure 1"), 
+                            plotlyOutput(outputId = "Plots")
+                           ))))
 
+server = function(input, output, session) {
 
-#Add title/footnotes and header.
-main_title(maxpost) <- paste("Table 3", 
-  "\nShifts in Liver Biochemical Tests Based on Thresholds", "\n<Analysis Set>")
-subtitles(maxpost) <- paste("                                                                             Maximum Post-Baseline Result")
-section_div(maxpost) <- " "
-main_footer(maxpost) <-paste("PL=Placebo, T1=Treatment 1, T2=Treatment 2, ALT=alanine aminotransferase, AST=aspartate aminotransferase, ALP=alkaline phosphatase;",
- "\nN=number of applicable subjects in treatment arm; n=actual applicable observed number with values.")
+  observeEvent(input$submit,{
 
-#Output table as a PDF file.
-table3a <-"~/Table 3.pdf"
-export_as_pdf(maxpost, file = table3a, landscape = TRUE, paginate = TRUE, 
-              colwidths = c(33, 11, 15, 16, 17, 12, 11))
+plotalt <- plot_ly(adlb2all2 %>% filter(ACTARMCD == "PL"), 
+            x = ~ALTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            name = "Placebo",
+            marker = list(color = "aquamarine"),
+            hoverinfo = "text",
+            hovertext = ~paste("Subject: ", SUBJID, '<br>Arm:', ARM, '<br>Visit:', AVISIT_ALT,
+                               '<br> x-axis:', ALTr, '<br> y-axis:', TBILIr)) %>%
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T1"),
+            x = ~ALTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "lightslategray"),
+            name = "Treatment 1") %>% 
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T2"),
+            x = ~ALTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "hotpink"),
+            name = "Treatment 2") %>%
+    layout(title = "Plot of Maximum Total Bilirubin Versus Maximum ALT or AST or ALP\n<Analysis Set>",
+           xaxis = list(title = "Alanine Aminotransferase/ULN", showgrid = FALSE),
+           yaxis = list(title = 'Bilirubin/ULN', showgrid = FALSE),
+           plot_bgcolor = "white",
+           paper_bgcolor = "white",
+           shapes = list(
+      list(
+        type = "line",
+        x0 = 0,
+        x1 = 20,
+        y0 = 2,
+        y1 = 2,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      ),
+      list(
+        type = "line",
+        x0 = 3,
+        x1 = 3,
+        y0 = 0,
+        y1 = 12,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      )
+    ))
+  
+plotast <- plot_ly(adlb2all2 %>% filter(ACTARMCD == "PL"), 
+            x = ~ASTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            name = "Placebo",
+            marker = list(color = "aquamarine"),
+            hoverinfo = "text",
+            hovertext = ~paste("Subject: ", SUBJID, '<br>Arm:', ARM, '<br>Visit:', AVISIT_AST,
+                               '<br> x-axis:', ASTr, '<br> y-axis:', TBILIr)) %>%
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T1"),
+            x = ~ASTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "lightslategray"),
+            name = "Treatment 1") %>% 
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T2"),
+            x = ~ASTr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "hotpink"),
+            name = "Treatment 2") %>%
+    layout(title = "Plot of Maximum Total Bilirubin Versus Maximum ALT or AST or ALP\n<Analysis Set>",
+            xaxis = list(title = "Aspartate Aminotransferase/ULN", showgrid = FALSE),
+            yaxis = list(title = 'Bilirubin/ULN', showgrid = FALSE),
+            plot_bgcolor = "white",
+            paper_bgcolor = "white",
+           shapes = list(
+      list(
+        type = "line",
+        x0 = 0,
+        x1 = 20,
+        y0 = 2,
+        y1 = 2,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      ),
+      list(
+        type = "line",
+        x0 = 3,
+        x1 = 3,
+        y0 = 0,
+        y1 = 12,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      )
+      ))
+
+plotalp <- plot_ly(adlb2all2 %>% filter(ACTARMCD == "PL"), 
+            x = ~ALPr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            name = "Placebo",
+            marker = list(color = "aquamarine"),
+            hoverinfo = "text",
+            hovertext = ~paste("Subject: ", SUBJID, '<br>Arm:', ARM, '<br>Visit:', AVISIT_AST,
+                               '<br> x-axis:', ASTr, '<br> y-axis:', TBILIr)) %>%
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T1"),
+            x = ~ALPr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "lightslategray"),
+            name = "Treatment 1") %>% 
+    add_trace(data = adlb2all2 %>% filter(ACTARMCD == "T2"),
+            x = ~ALPr,
+            y = ~TBILIr,
+            type = 'scatter', 
+            color = ~ACTARMCD,
+            mode = 'markers',
+            marker = list(color = "hotpink"),
+            name = "Treatment 2") %>%
+    layout(title = "Plot of Maximum Total Bilirubin Versus Maximum ALT or AST or ALP\n<Analysis Set>",
+            xaxis = list(title = "Aspartate Aminotransferase/ULN", showgrid = FALSE),
+            yaxis = list(title = 'Bilirubin/ULN', showgrid = FALSE),
+            plot_bgcolor = "white",
+            paper_bgcolor = "white",
+           shapes = list(
+      list(
+        type = "line",
+        x0 = 0,
+        x1 = 5,
+        y0 = 2,
+        y1 = 2,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      ),
+      list(
+        type = "line",
+        x0 = 2,
+        x1 = 2,
+        y0 = 0,
+        y1 = 12,
+        line = list(color = "darkgray", width = 1.6, dash = "dash")
+      )
+      ))
+
+    output$Plots = renderPlotly({
+    switch(isolate(input$Plot),
+           "ALT" = plotalt,
+           "AST" = plotast,
+           "ALP" = plotalp
+       )
+})
+
+  })}
+
+shinyApp(ui, server)
   </script>
 
   <script>
