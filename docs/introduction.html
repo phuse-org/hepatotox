@@ -24,6 +24,8 @@
   .buttons a.btn{ margin:6px; padding:10px 18px; border-radius:8px; font-weight:600;}
   pre.webr-output{background:#f4f4f4;padding:10px;border-radius:8px;overflow:auto;font-family:monospace;font-size:13px;}
 </style>
+<link rel="stylesheet" href="https://webr.r-wasm.org/latest/webr.css">
+<script type="module" src="https://webr.r-wasm.org/latest/webr.mjs"></script>
 </head>
 <body class="nav-fixed fullcontent">
 
@@ -72,8 +74,9 @@
   <h1>Table 01: Overview of Reported Safety Liver Findings</h1>
   <div class="subtitle">Here's the code. Copy or run in the browser below:</div>
 
- <!-- ✅ WebR interactive cell -->
-<script type="webr">
+  
+  <!-- ✅ WebR interactive cell -->
+  <script type="webr">
 # Load dataset from GitHub
 load(url("https://raw.githubusercontent.com/yourusername/yourrepo/main/cadhy.rdata"))
 
@@ -85,22 +88,15 @@ set.seed(619)
 summary(cadhy)
 head(cadhy, 10)
 nrow(cadhy)
-</script>
+  </script>
 
-<p style="margin-top:20px;font-weight:600;">The generated output is below:</p>
+  <p style="margin-top:20px;font-weight:600;">The generated output is below:</p>
 
-<!-- ✅ PNG image -->
-<div class="image-container">
-  <img src="images/table01.png" alt="Table output (table01.png)">
-</div>
 
-<!-- ✅ WebR runtime loader -->
-<link rel="stylesheet" href="https://webr.r-wasm.org/latest/webr.css">
-<script type="module">
-  import { defineWebRCells } from "https://webr.r-wasm.org/latest/webr.mjs";
-  defineWebRCells();
-</script>
-
+  <!-- ✅ PNG image -->
+  <div class="image-container">
+    <img src="images/table01.png" alt="Table output (table01.png)">
+  </div>
 
   <!-- ✅ Buttons -->
   <div class="buttons">
