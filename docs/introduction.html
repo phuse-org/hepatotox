@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Table 01: Overview of Reported Safety Liver Findings</title>
+
+<!-- ✅ Quarto/Bootstrap CSS & JS -->
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-html/quarto.js"></script>
+
+<style>
+  :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
+  body{margin:0;padding:20px;background:#f7f7fb;}
+  .container{max-width:1100px;margin:0 auto;background:#fff;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(20,20,40,0.06); margin-top:100px;}
+  h1{margin:0 0 6px;text-align:center;font-size:22px;}
+  .subtitle{text-align:center;color:#444;margin-bottom:20px;font-size:14px;}
+  .image-container{text-align:center; margin-top:16px;}
+  .image-container img{ max-width:100%; height:auto; border-radius:6px; border:1px solid #ddd;}
+  .buttons{text-align:center; margin-top:20px;}
+  .buttons a.btn{ margin:6px; padding:10px 18px; border-radius:8px; font-weight:600;}
+  pre.webr-output{background:#f4f4f4;padding:10px;border-radius:8px;overflow:auto;font-family:monospace;font-size:13px;}
+</style>
+</head>
+<body class="nav-fixed fullcontent">
+
+<!-- ✅ Navbar (copied from introduction.html) -->
+<header id="quarto-header" class="headroom fixed-top">
+  <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+        <a class="navbar-brand" href="./index.html">
+          <span class="navbar-title">Hepatotox Catalog</span>
+        </a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav navbar-nav-scroll me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="./index.html"><span class="menu-text">Home</span></a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Tables</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="./table01.html">Table 01</a></li>
+              <li><a class="dropdown-item" href="./table02.html">Table 02</a></li>
+              <li><a class="dropdown-item" href="./table03.html">Table 03</a></li>
+              <li><a class="dropdown-item" href="./table04.html">Table 04</a></li>
+             </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Figures</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="./figure01.html">Figure 01</a></li>
+              <li><a class="dropdown-item" href="./figure02.html">Figure 02</a></li>
+              <li><a class="dropdown-item" href="./figure03.html">Figure 03</a></li>
+              <li><a class="dropdown-item" href="./figure04.html">Figure 04</a></li>
+              <li><a class="dropdown-item" href="./figure05.html">Figure 05</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="./resources.qmd">Resources</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- ✅ Page content -->
+<div class="container">
+  <h1>Table 01: Overview of Reported Safety Liver Findings</h1>
+  <div class="subtitle">Here's the code. Copy or run in the browser below:</div>
+
+  
+  <!-- ✅ WebR interactive cell -->
+  <script type="webr">
+# Load dataset from GitHub
+load(url("https://raw.githubusercontent.com/yourusername/yourrepo/main/cadhy.rdata"))
+
+library(tidyverse)
+library(dplyr)
+
+set.seed(619)
+
+summary(cadhy)
+head(cadhy, 10)
+nrow(cadhy)
+  </script>
+
+  <p style="margin-top:20px;font-weight:600;">The generated output is below:</p>
+
+
+  <!-- ✅ PNG image -->
+  <div class="image-container">
+    <img src="images/table01.png" alt="Table output (table01.png)">
+  </div>
+
+  <!-- ✅ Buttons -->
+  <div class="buttons">
+    <a class="btn btn-primary" href="Table1.pdf" download>Download PDF</a>
+    <a class="btn btn-success" href="table01op.html" target="_blank">Open HTML</a>
+    <a class="btn btn-warning" href="Table1.docx" download>Download DOCX</a>
+  </div>
+</div>
+
+<!-- ✅ Load WebR runtime -->
+<script type="module">
+  import { defineWebRCells } from "https://webr.r-wasm.org/latest/webr.mjs";
+  defineWebRCells();
+</script>
+
+</body>
+</html>
