@@ -5,12 +5,23 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Table 01: Overview of Reported Safety Liver Findings</title>
 
-<!-- ✅ Quarto/Bootstrap CSS & JS -->
+<!-- ✅ Bootstrap / Quarto assets -->
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
+
+<!-- ✅ WebR runtime -->
+<link rel="stylesheet" href="https://webr.r-wasm.org/latest/webr.css">
+<script type="module">
+  import { WebR, defineWebRCells } from "https://webr.r-wasm.org/latest/webr.mjs";
+
+  // Start WebR and bind code cells
+  const webr = new WebR();
+  await webr.init();
+  defineWebRCells({ webr });
+</script>
 
 <style>
   :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
@@ -24,12 +35,11 @@
   .buttons a.btn{ margin:6px; padding:10px 18px; border-radius:8px; font-weight:600;}
   pre.webr-output{background:#f4f4f4;padding:10px;border-radius:8px;overflow:auto;font-family:monospace;font-size:13px;}
 </style>
-<link rel="stylesheet" href="https://webr.r-wasm.org/latest/webr.css">
-<script type="module" src="https://webr.r-wasm.org/latest/webr.mjs"></script>
 </head>
+
 <body class="nav-fixed fullcontent">
 
-<!-- ✅ Navbar (copied from introduction.html) -->
+<!-- ✅ Navbar -->
 <header id="quarto-header" class="headroom fixed-top">
   <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
     <div class="navbar-container container-fluid">
@@ -40,9 +50,7 @@
       </div>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav navbar-nav-scroll me-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="./index.html"><span class="menu-text">Home</span></a>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Tables</a>
             <ul class="dropdown-menu">
@@ -74,16 +82,13 @@
   <h1>Table 01: Overview of Reported Safety Liver Findings</h1>
   <div class="subtitle">Here's the code. Copy or run in the browser below:</div>
 
-  
   <!-- ✅ WebR interactive cell -->
   <script type="webr">
-# Load dataset from GitHub
-load(url("https://raw.githubusercontent.com/yourusername/yourrepo/main/cadhy.rdata"))
+# Example using CSV instead of .Rdata
+url <- "https://yourusername.github.io/yourrepo/data/cadhy.csv"
+cadhy <- read.csv(url)
 
-library(tidyverse)
 library(dplyr)
-
-set.seed(619)
 
 summary(cadhy)
 head(cadhy, 10)
@@ -91,7 +96,6 @@ nrow(cadhy)
   </script>
 
   <p style="margin-top:20px;font-weight:600;">The generated output is below:</p>
-
 
   <!-- ✅ PNG image -->
   <div class="image-container">
@@ -105,12 +109,6 @@ nrow(cadhy)
     <a class="btn btn-warning" href="Table1.docx" download>Download DOCX</a>
   </div>
 </div>
-
-<!-- ✅ Load WebR runtime -->
-<script type="module">
-  import { defineWebRCells } from "https://webr.r-wasm.org/latest/webr.mjs";
-  defineWebRCells();
-</script>
 
 </body>
 </html>
