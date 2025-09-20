@@ -1,110 +1,134 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Table 01: Overview of Reported Safety Liver Findings</title>
-
-<!-- ✅ Bootstrap / Quarto assets -->
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-
-<!-- ✅ WebR CSS -->
-<link rel="stylesheet" href="https://webr.r-wasm.org/latest/webr.css">
-
-<style>
-  :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
-  body{margin:0;padding:20px;background:#f7f7fb;}
-  .container{max-width:1100px;margin:0 auto;background:#fff;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(20,20,40,0.06); margin-top:100px;}
-  h1{margin:0 0 6px;text-align:center;font-size:22px;}
-  .subtitle{text-align:center;color:#444;margin-bottom:20px;font-size:14px;}
-  .image-container{text-align:center; margin-top:16px;}
-  .image-container img{ max-width:100%; height:auto; border-radius:6px; border:1px solid #ddd;}
-  .buttons{text-align:center; margin-top:20px;}
-  .buttons a.btn{ margin:6px; padding:10px 18px; border-radius:8px; font-weight:600;}
-  pre.webr-output{background:#f4f4f4;padding:10px;border-radius:8px;overflow:auto;font-family:monospace;font-size:13px;}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WebR Runner — visible runnable R code</title>
+  <style>
+    :root{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#f7f9fb;color:#111}
+    body{margin:0}
+    nav{background:#0b69ff;color:#fff;padding:0 20px;display:flex;align-items:center;height:50px}
+    nav .logo{font-weight:700;font-size:18px;margin-right:24px}
+    nav ul{list-style:none;margin:0;padding:0;display:flex;gap:20px}
+    nav ul li{position:relative}
+    nav ul li a{color:#fff;text-decoration:none;padding:14px 8px;display:block}
+    nav ul li:hover > a{background:rgba(255,255,255,0.2);border-radius:4px}
+    nav ul li ul{display:none;position:absolute;top:50px;left:0;background:#0b69ff;border-radius:4px;min-width:120px;z-index:1000}
+    nav ul li:hover ul{display:block}
+    nav ul li ul li a{padding:10px 12px}
+    .container{max-width:900px;margin:32px auto;padding:20px;background:#fff;border-radius:10px;box-shadow:0 6px 20px rgba(20,30,50,0.06)}
+    h1{font-size:20px;margin:0 0 12px}
+    label{display:block;margin:10px 0 6px;font-weight:600}
+    textarea#r-code{width:100%;height:200px;border:1px solid #d6dce7;border-radius:6px;padding:12px;font-family:monospace;font-size:13px;resize:vertical}
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:10px}
+    button, a.download-link{padding:10px 14px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;display:inline-block;text-align:center;color:#fff;font-weight:600;transition: background 0.2s}
+    button.primary{background:#0b69ff}      /* Blue */
+    button.success{background:#22c55e}      /* Green */
+    button.secondary{background:#6b7280}    /* Gray */
+    a.download-link.pdf{background:#0b69ff}  /* Blue */
+    a.download-link.html{background:#22c55e} /* Green */
+    a.download-link.docx{background:#6b7280} /* Gray */
+    button:hover, a.download-link:hover{opacity:0.85}
+    #output{white-space:pre-wrap;background:#0f1724;color:#e6eef8;padding:12px;border-radius:6px;margin-top:12px;min-height:80px}
+    .text-block{margin-top:18px;padding:12px;background:#fbfdff;border:1px dashed #e6eef8;border-radius:6px}
+    .visual{display:block;max-width:100%;margin-top:16px;border-radius:6px}
+    .downloads{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
+    .note{font-size:13px;color:#475569;margin-top:8px}
+  </style>
 </head>
+<body>
 
-<body class="nav-fixed fullcontent">
-
-<!-- ✅ Navbar -->
-<header id="quarto-header" class="headroom fixed-top">
-  <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-    <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
-        <a class="navbar-brand" href="./index.html">
-          <span class="navbar-title">Hepatotox Catalog</span>
-        </a>
-      </div>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav navbar-nav-scroll me-auto">
-          <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Tables</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="./table01.html">Table 01</a></li>
-              <li><a class="dropdown-item" href="./table02.html">Table 02</a></li>
-              <li><a class="dropdown-item" href="./table03.html">Table 03</a></li>
-              <li><a class="dropdown-item" href="./table04.html">Table 04</a></li>
-             </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Figures</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="./figure01.html">Figure 01</a></li>
-              <li><a class="dropdown-item" href="./figure02.html">Figure 02</a></li>
-              <li><a class="dropdown-item" href="./figure03.html">Figure 03</a></li>
-              <li><a class="dropdown-item" href="./figure04.html">Figure 04</a></li>
-              <li><a class="dropdown-item" href="./figure05.html">Figure 05</a></li>
-            </ul>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="./resources.qmd">Resources</a></li>
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="logo">WebR Runner</div>
+    <ul>
+      <li><a href="#">Tables</a>
+        <ul>
+          <li><a href="#">Table 01</a></li>
+          <li><a href="#">Table 02</a></li>
+          <li><a href="#">Table 03</a></li>
+          <li><a href="#">Table 04</a></li>
         </ul>
-      </div>
-    </div>
+      </li>
+      <li><a href="#">Figures</a>
+        <ul>
+          <li><a href="#">Figure 01</a></li>
+          <li><a href="#">Figure 02</a></li>
+          <li><a href="#">Figure 03</a></li>
+          <li><a href="#">Figure 04</a></li>
+          <li><a href="#">Figure 05</a></li>
+        </ul>
+      </li>
+    </ul>
   </nav>
-</header>
 
-<!-- ✅ Page content -->
-<div class="container">
-  <h1>Table 01: Overview of Reported Safety Liver Findings</h1>
-  <div class="subtitle">Here's the code. Copy or run in the browser below:</div>
+  <div class="container">
+    <h1>WebR: runnable R code (visible)</h1>
 
-  <!-- ✅ WebR interactive cell -->
-  <script type="webr">
-x <- rnorm(5)
-summary(x)
-  </script>
+    <!-- Visible R code editor -->
+    <label for="r-code">R code (editable) — press Run to execute with WebR:</label>
+    <textarea id="r-code"># Example: load RData file from GitHub
+cat('Hello from R\\n')
 
-  <p style="margin-top:20px;font-weight:600;">The generated output is below:</p>
+# Load RData file from GitHub
+url <- "https://raw.githubusercontent.com/username/repo/main/data/cadhy.RData"
+download.file(url, "cadhy.RData", mode = "wb")
+load("cadhy.RData")
 
-  <!-- ✅ PNG image -->
-  <div class="image-container">
-    <img src="images/table01.png" alt="Table output (table01.png)">
+# Show first rows of the 'cadhy' dataset
+head(cadhy)
+
+# Simple plot example
+png(filename = "webr-plot.png", width=480, height=320)
+plot(cadhy[,1], cadhy[,2], main="Example Plot from cadhy")
+dev.off()
+cat('Saved plot to webr-plot.png')
+</textarea>
+
+    <div class="row">
+      <button id="run" class="primary">Run</button>
+      <button id="clear" class="secondary">Clear Output</button>
+      <button id="copy" class="success">Copy Code</button>
+      <div style="margin-left:auto;font-size:13px;color:#334155">WebR status: <span id="webr-status">loading...</span></div>
+    </div>
+
+    <!-- Output area -->
+    <label>Output / Console:</label>
+    <div id="output">(output will appear here)</div>
+
+    <!-- Notes -->
+    <div class="text-block">
+      <strong>Notes:</strong>
+      <div class="note">This page uses <code>WebR</code> (R running in your browser via WebAssembly). It loads a <code>.RData</code> file directly from GitHub. Replace the <code>url</code> with your own RData file hosted on GitHub.</div>
+    </div>
+
+    <!-- PNG that will be replaced/updated after R generates it -->
+    <img id="result-png" class="visual" src="" alt="R-generated PNG will appear here" />
+
+    <!-- Download buttons -->
+    <div class="downloads">
+      <a class="download-link pdf" href="your-pdf-file.pdf" target="_blank">Download PDF</a>
+      <a class="download-link html" href="your-output-file.html" target="_blank">Output HTML</a>
+      <a class="download-link docx" href="your-doc-file.docx" target="_blank">Download DOCX</a>
+    </div>
   </div>
 
-  <!-- ✅ Buttons -->
-  <div class="buttons">
-    <a class="btn btn-primary" href="Table1.pdf" download>Download PDF</a>
-    <a class="btn btn-success" href="table01op.html" target="_blank">Open HTML</a>
-    <a class="btn btn-warning" href="Table1.docx" download>Download DOCX</a>
-  </div>
-</div>
+  <!-- Scripts: WebR -->
+  <script type="module">
+    import { WebR } from 'https://webr.r-wasm.org/latest/webr.mjs';
 
-<!-- ✅ Load WebR at very bottom -->
-<script type="module">
-  import { WebR, defineWebRCells } from "https://webr.r-wasm.org/latest/webr.mjs";
+    const outputEl = document.getElementById('output');
+    const statusEl = document.getElementById('webr-status');
+    const runBtn = document.getElementById('run');
+    const clearBtn = document.getElementById('clear');
+    const copyBtn = document.getElementById('copy');
+    const codeEl = document.getElementById('r-code');
+    const imgEl = document.getElementById('result-png');
 
-  window.addEventListener("DOMContentLoaded", async () => {
-    const webr = new WebR();
-    await webr.init();
-    defineWebRCells({ webr });
-  });
-</script>
+    const webr = new WebR({stdout: x => {outputEl.textContent += x}, stderr: x => {outputEl.textContent += x}});
 
-</body>
-</html>
+    (async () => {try{await webr.init(); statusEl.textContent='ready';}catch(e){statusEl.textContent='error'; outputEl.textContent+='\\n[WebR init error] '+e.message;}})();
+
+    async function showPNGFromWebR(filename){try{const uint8=await webr.readFile(filename); if(!uint8||uint8.length===0)return; const blob=new Blob([uint8],{type:'image/png'}); imgEl.src=URL.createObjectURL(blob);}catch(e){console.log('showPNGFromWebR:',e.message);}}
+
+    runBtn.addEventListener('click',async()=>{outputEl.textContent=''; imgEl.src=''; statusEl.textContent='running'; try{await webr.runR(code
