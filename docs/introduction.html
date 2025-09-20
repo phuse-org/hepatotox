@@ -12,16 +12,8 @@
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 
-<!-- ✅ WebR runtime -->
+<!-- ✅ WebR CSS -->
 <link rel="stylesheet" href="https://webr.r-wasm.org/latest/webr.css">
-<script type="module">
-  import { WebR, defineWebRCells } from "https://webr.r-wasm.org/latest/webr.mjs";
-
-  // Start WebR and bind code cells
-  const webr = new WebR();
-  await webr.init();
-  defineWebRCells({ webr });
-</script>
 
 <style>
   :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
@@ -84,15 +76,8 @@
 
   <!-- ✅ WebR interactive cell -->
   <script type="webr">
-# Example using CSV instead of .Rdata
-url <- "https://yourusername.github.io/yourrepo/data/cadhy.csv"
-cadhy <- read.csv(url)
-
-library(dplyr)
-
-summary(cadhy)
-head(cadhy, 10)
-nrow(cadhy)
+x <- rnorm(5)
+summary(x)
   </script>
 
   <p style="margin-top:20px;font-weight:600;">The generated output is below:</p>
@@ -109,6 +94,17 @@ nrow(cadhy)
     <a class="btn btn-warning" href="Table1.docx" download>Download DOCX</a>
   </div>
 </div>
+
+<!-- ✅ Load WebR at very bottom -->
+<script type="module">
+  import { WebR, defineWebRCells } from "https://webr.r-wasm.org/latest/webr.mjs";
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    const webr = new WebR();
+    await webr.init();
+    defineWebRCells({ webr });
+  });
+</script>
 
 </body>
 </html>
