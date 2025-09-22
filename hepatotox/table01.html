@@ -3,16 +3,24 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Table 2: Elevations in Liver Biochemical Tests Based on Thresholds.</title>
+<title>Table 1: Overview of Reported Potential Liver Safety Findings</title>
+
+<!-- ✅ Quarto/Bootstrap CSS & JS from index.html -->
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-html/quarto.js"></script>
+
 <style>
   :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
   body{margin:0;padding:20px;background:#f7f7fb;}
-  .container{max-width:1100px;margin:0 auto;background:#fff;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(20,20,40,0.06);}
+  .container{max-width:1100px;margin:0 auto;background:#fff;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(20,20,40,0.06); margin-top:100px;} /* added margin-top */
   h1{margin:0 0 6px;text-align:center;font-size:20px;}
   .subtitle{text-align:center;color:#444;margin-bottom:18px;font-size:14px;}
 
   /* code wrapper */
-  .code-wrapper{position:relative;border:1px solid #e6e6e6;border-radius:8px;background:#f2f2f2;overflow:hidden;} /* super light gray */
+  .code-wrapper{position:relative;border:1px solid #e6e6e6;border-radius:8px;background:#f2f2f2;overflow:hidden;}
   .code-viewport{
     max-height:55vh;
     overflow:auto;
@@ -47,33 +55,77 @@
   }
 </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Table 2: Elevations in Liver Biochemical Tests Based on Thresholds</h1>
-    <div class="subtitle">Datasets used for the program are modified versions of <strong>adsl.Rdata & adlb.Rdata</strong> from the <strong>random.cdisc.data</strong> library.
-Copy the code below to generate a table of elevated liver  biochemical tests based on thresholds.</div>
+<body class="nav-fixed fullcontent">
 
-    <div class="code-wrapper" id="codeWrapper" aria-label="R program code area">
-      <button class="copy-btn" id="copyBtn">Copy Code</button>
-      <div class="code-viewport" id="codeViewport" tabindex="0" aria-label="R program scrollable code">
-        <div class="lines" id="lines"></div>
+<!-- ✅ Navbar copied from index.html -->
+<header id="quarto-header" class="headroom fixed-top">
+  <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+        <a class="navbar-brand" href="./index.html">
+          <span class="navbar-title">Hepatotox Catalog</span>
+        </a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav navbar-nav-scroll me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="./index.html"><span class="menu-text">Home</span></a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Tables</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="./table01.html">Table 01</a></li>
+              <li><a class="dropdown-item" href="./table02.html">Table 02</a></li>
+              <li><a class="dropdown-item" href="./table03.html">Table 03</a></li>
+	      <li><a class="dropdown-item" href="./table04.html">Table 04</a></li>
+             </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Figures</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="./figure01.html">Figure 01</a></li>
+              <li><a class="dropdown-item" href="./figure02.html">Figure 02</a></li>
+              <li><a class="dropdown-item" href="./figure03.html">Figure 03</a></li>
+              <li><a class="dropdown-item" href="./figure04.html">Figure 04</a></li>
+              <li><a class="dropdown-item" href="./figure05.html">Figure 05</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="./resources.qmd">Resources</a></li>
+        </ul>
       </div>
     </div>
+  </nav>
+</header>
 
-    <p>Generated output is below:</p>
-    <div class="image-container">
-      <img src="images/table02.png" alt="Table output (table02.png)">
-    </div>
-
-    <div class="buttons">
-      <a class="btn" href="Table2.pdf" download>Download PDF</a>
-      <a class="btn" href="table01op.html" target="_blank">Open HTML</a>
-    </div>
-
+<!-- ✅ Original content starts here -->
+<div class="container">
+  <h1>Table 1: Overview of Reported Potential Liver Safety Findings</h1>
+  <div class="subtitle">
+    Dataset used for the program is <strong>cadhy.Rdata</strong> from the 
+    <strong>random.cdisc.data</strong> library. Copy the code below to generate a table of reported potential liver safety findings.
   </div>
 
-  <!-- Full R code included (unchanged, same as before) -->
-  <script id="rawCode" type="text/plain">
+  <div class="code-wrapper" id="codeWrapper" aria-label="R program code area">
+    <button class="copy-btn" id="copyBtn">Copy Code</button>
+    <div class="code-viewport" id="codeViewport" tabindex="0" aria-label="R program scrollable code">
+      <div class="lines" id="lines"></div>
+    </div>
+  </div>
+
+  <p style="margin-top:20px;font-weight:600;">Generated output is below:</p>
+
+  <div class="image-container">
+    <img src="images/table01.png" alt="Table output (table01.png)">
+  </div>
+
+  <div class="buttons">
+    <a class="btn" href="Table1.pdf" download>Download PDF</a>
+    <a class="btn" href="table01op.html" target="_blank">Open HTML</a>
+  </div>
+</div>
+
+<!-- ✅ Scripts unchanged -->
+<script id="rawCode" type="text/plain">
 #Table 1 
 #Install and upload appropriate packages. 
 library(tidyverse) 
@@ -81,8 +133,13 @@ library(magrittr)
 library(tern) 
 library(dplyr) 
 library(rtables) 
-library(r2rtf) 
 library(formatters)
+library(random.cdisc.data)
+
+#Load CADHY dataset.
+url <- "https://raw.githubusercontent.com/phuse-org/hepatotox/main/docs/data/cadhy.Rdata"
+download.file(url, destfile = "cadhy.RData", mode = "wb")
+load("cadhy.RData")
 
 #Set seed for reproducibility.
 set.seed(619)
@@ -92,8 +149,8 @@ adhy <- df_explicit_na(cadhy)
 cadhy2 <- adhy %>% add_column(RUNNUM=runif(nrow(.)))
 
 #Define values of interest in PARAMCD variable.
-paramcd_tbili_alt <- c("BLAL", "BGAL", "BA2AL", "BA5AL") paramcd_tbili_ast 
-<- c("BLAS", "BGAS", "BA2AS", "BA5AS")
+paramcd_tbili_alt <- c("BLAL", "BGAL", "BA2AL", "BA5AL") 
+paramcd_tbili_ast <- c("BLAS", "BGAS", "BA2AS", "BA5AS")
 param_extra <- c("BL2AL2CB", "BL2AL2CU", "BL2AS2CB", "BL2AS2CU")
 
 #Select laboratory test parameters.
@@ -104,7 +161,8 @@ PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast, param_extra), AVAL
 
 #ADaM Programmers should have already included a variable #similar to BIOCHEMREL & ADVREL that follow the metadata's criteria for findings related to biochemical tests & findings related to adverse events, respectively. 
 adhy_liver2 <- cadhy2 %>% mutate(BIOCHEMREL = ifelse(.8 > RUNNUM & RUNNUM > .5, 
-            "Yes", "No")) %>% mutate(ADVREL = ifelse(.55 > RUNNUM & RUNNUM > .25, "Yes", "No")) %>%   filter( SAFFL == "Y", AVISIT %in% c("POST-BASELINE"), PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast, param_extra), AVAL %in% c(1, 2, 3, 4) )
+            "Yes", "No")) %>% mutate(ADVREL = ifelse(.55 > RUNNUM & RUNNUM > .25, "Yes", "No")) %>% 
+	 filter( SAFFL == "Y", AVISIT %in% c("POST-BASELINE"), PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast, param_extra), AVAL %in% c(1, 2, 3, 4) )
 
 #Add appropriate labels for final table output. 
 adhy_liver3 <- adhy_liver2 %>% mutate(FINBOTH = with_label(BIOCHEMREL == "Yes" & ADVREL == "Yes", " Findings Related to Both\n Adverse Events and Biochemical\n Tests"), FINAEREL = with_label(ADVREL == "Yes", " Findings Related to Adverse\n Events"), FINBCTEST = with_label(BIOCHEMREL == "Yes", " Findings Related to\n Biochemical Tests") )
@@ -115,13 +173,15 @@ adhy_liver4 <- adhy_liver3 %>%mutate(TOP = case_when(ADVREL == "Yes" & BIOCHEMRE
 #Rename the treatment arms. levels(adhy_liver4$ACTARMCD) <- c("T1", "PL", "T2")
 levels(adhy_liver4$ACTARM) <- c("T1\n n/N(%)", "PL\n n/N(%)", "T2\n n/N(%)")
 
-adhy_liver4$ACTARMCD <- factor(adhy_liver4$ACTARMCD,levels = c("PL", "T1", "T2")) aefin_vars <- c("FINBOTH", "FINAEREL", "FINBCTEST")
+adhy_liver4$ACTARMCD <- factor(adhy_liver4$ACTARMCD,levels = c("PL", "T1", "T2")) 
+aefin_vars <- c("FINBOTH", "FINAEREL", "FINBCTEST")
 
 #Create a custom format function. 
-format_frac_perc <- function(x, output = NULL) 
-  {# x[1] is N, x[2] is the % (as decimal) 
-  perc <- round(x[2] * 100, 1) denom <- (x[1] / (x[2] * 100)) * 100 
+format_frac_perc <- function(x, output = NULL) {
+    # x[1] is N, x[2] is the % (as decimal) 
+  perc <- round(x[2] * 100, 1) 
     # Calculate denominator 
+  denom <- (x[1] / (x[2] * 100)) * 100 
   paste0(x[1],"/", denom, " (", perc, "%)") }
 
 #Build & render table's pseudo facet 1a. 
@@ -162,7 +222,8 @@ main_title(resultfin2) <- paste("Table 1", "\nOverview of Reported Potential Liv
 #Output table as a PDF file.
 table1a2 <- "~/Table1.pdf"
 
-export_as_pdf(resultfin2, file = table1a2, landscape = TRUE, paginate = FALSE, colwidths = c(36, 14, 14, 14, 16, 16, 16))</script>
+export_as_pdf(resultfin2, file = table1a2, landscape = TRUE, paginate = FALSE, colwidths = c(36, 14, 14, 14, 16, 16, 16))
+</script>
 
 <script>
   (function(){
@@ -188,7 +249,7 @@ export_as_pdf(resultfin2, file = table1a2, landscape = TRUE, paginate = FALSE, c
         alert('Copy failed');
       }
     });
-
-    // ❌ Removed the snapshot HTML generator here
   })();
 </script>
+</body>
+</html>
