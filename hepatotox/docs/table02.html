@@ -1,95 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Table 1 – Overview of Reported Potential Liver Safety Findings
-</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f9f9f9;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Table 2: Elevations in Liver Biochemical Tests Based on Thresholds.</title>
+<style>
+  :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
+  body{margin:0;padding:20px;background:#f7f7fb;}
+  .container{max-width:1100px;margin:0 auto;background:#fff;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(20,20,40,0.06);}
+  h1{margin:0 0 6px;text-align:center;font-size:20px;}
+  .subtitle{text-align:center;color:#444;margin-bottom:18px;font-size:14px;}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+  /* code wrapper */
+  .code-wrapper{position:relative;border:1px solid #e6e6e6;border-radius:8px;background:#f2f2f2;overflow:hidden;} /* super light gray */
+  .code-viewport{
+    max-height:55vh;
+    overflow:auto;
+    padding:12px;
+    font-family: "Fira Code", Consolas, monospace;
+    font-size:13px;
+    line-height:1.4;
+    background:transparent;
+  }
+  .lines{min-width:min-content;}
+  .line{display:flex; align-items:flex-start; gap:12px; white-space:pre;}
+  .ln{width:60px; text-align:right; color:#666; user-select:none; flex:0 0 60px; padding-right:6px;}
+  .content{flex:1 1 auto; white-space:pre; overflow:visible; color:#111;}
 
-    .buttons {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+  /* Copy button */
+  .copy-btn{position:absolute; top:8px; right:8px; z-index:3; padding:6px 10px; border-radius:6px; border:0; background:#2563eb; color:#fff; cursor:pointer; font-weight:600;}
+  .copy-btn:active{transform:translateY(1px);}
 
-    .buttons button {
-      margin: 5px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
-    }
+  /* image and buttons */
+  .image-container{ text-align:center; margin-top:16px; }
+  .image-container img{ max-width:100%; height:auto; border-radius:6px; border:1px solid #ddd; display:inline-block; }
 
-    .buttons button:hover {
-      background-color: #0056b3;
-    }
+  .buttons{ text-align:center; margin-top:14px; }
+  .buttons a.btn{ display:inline-block; margin:6px; padding:10px 18px; border-radius:8px; background:#2563eb; color:#fff; text-decoration:none; font-weight:600; }
+  .buttons a.btn:hover{ background:#1e4db7; }
 
-    .code-container {
-      display: flex;
-      background-color: #f4f4f4;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      max-height: 400px; /* shorter block */
-      overflow-y: scroll;
-      font-family: monospace;
-      font-size: 14px;
-      line-height: 1.4;
-      white-space: pre;
-      padding: 10px;
-    }
+  footer{ text-align:center; font-size:13px; color:#666; margin-top:18px; }
 
-    .line-numbers {
-      text-align: right;
-      margin-right: 10px; /* space instead of blue line */
-      color: #666;
-      user-select: none;
-    }
-
-    .code {
-      flex: 1;
-      white-space: pre;
-    }
-
-    .image-container {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .image-container img {
-      max-width: 90%;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-  </style>
+  @media(max-width:700px){
+    .ln{width:48px; flex:0 0 48px; text-align:right;}
+    .copy-btn{top:6px; right:6px;}
+  }
+</style>
 </head>
 <body>
+  <div class="container">
+    <h1>Table 2: Elevations in Liver Biochemical Tests Based on Thresholds</h1>
+    <div class="subtitle">Datasets used for the program are modified versions of <strong>adsl.Rdata & adlb.Rdata</strong> from the <strong>random.cdisc.data</strong> library.
+Copy the code below to generate a table of elevated liver  biochemical tests based on thresholds.</div>
 
-  <h1>Table 1 – R Program</h1>
+    <div class="code-wrapper" id="codeWrapper" aria-label="R program code area">
+      <button class="copy-btn" id="copyBtn">Copy Code</button>
+      <div class="code-viewport" id="codeViewport" tabindex="0" aria-label="R program scrollable code">
+        <div class="lines" id="lines"></div>
+      </div>
+    </div>
 
-  <div class="buttons">
-    <button>Download PDF</button>
-    <button>Download HTML</button>
+    <p>Generated output is below:</p>
+    <div class="image-container">
+      <img src="images/table02.png" alt="Table output (table02.png)">
+    </div>
+
+    <div class="buttons">
+      <a class="btn" href="Table2.pdf" download>Download PDF</a>
+      <a class="btn" href="table01op.html" target="_blank">Open HTML</a>
+    </div>
+
   </div>
 
-  <div class="code-container">
-    <div class="line-numbers">
-1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>26<br>27<br>28<br>29<br>30<br>31<br>32<br>33<br>34<br>35<br>36<br>37<br>38<br>39<br>40<br>41<br>42<br>43<br>44<br>45<br>46<br>47<br>48<br>49<br>50<br>51<br>52<br>53<br>54<br>55<br>56<br>57<br>58<br>59<br>60<br>61<br>62<br>63<br>64<br>65<br>66<br>67<br>68<br>69<br>70<br>71<br>72<br>73<br>74<br>75<br>76<br>77<br>78<br>79<br>80<br>81<br>82<br>83<br>84<br>85<br>86<br>87<br>88<br>89<br>90<br>91<br>92<br>93<br>94<br>95<br>96<br>97<br>98<br>99<br>100<br>101<br>102<br>103<br>104<br>105<br>106<br>107<br>108<br>109<br>110<br>111<br>112<br>113<br>114<br>115<br>116<br>117<br>118<br>119<br>120<br>121<br>122<br>123<br>124<br>125<br>126<br>127<br>128<br>129<br>130<br>131<br>132<br>133<br>134<br>135<br>136<br>137<br>138<br>139<br>140<br>141<br>142<br>143<br>144<br>145<br>146<br>147<br>148<br>149<br>150<br>151<br>152<br>153<br>154<br>155<br>156<br>157<br>158<br>159<br>160<br>161<br>
-    </div>
-    <div class="code">
-#Table 1 #Install and upload appropriate packages. 
+  <!-- Full R code included (unchanged, same as before) -->
+  <script id="rawCode" type="text/plain">
+#Table 1 
+#Install and upload appropriate packages. 
 library(tidyverse) 
 library(magrittr) 
 library(tern) 
@@ -176,13 +162,33 @@ main_title(resultfin2) <- paste("Table 1", "\nOverview of Reported Potential Liv
 #Output table as a PDF file.
 table1a2 <- "~/Table1.pdf"
 
-export_as_pdf(resultfin2, file = table1a2, landscape = TRUE, paginate = FALSE, colwidths = c(36, 14, 14, 14, 16, 16, 16)) 
-    </div>
-  </div>
+export_as_pdf(resultfin2, file = table1a2, landscape = TRUE, paginate = FALSE, colwidths = c(36, 14, 14, 14, 16, 16, 16))</script>
 
-  <div class="image-container">
-    <img src="table1.png" alt="Table 1 Output">
-  </div>
+<script>
+  (function(){
+    let raw = document.getElementById('rawCode').textContent.replace(/\r/g, '').replace(/^\n+/, '').replace(/\n+$/, '');
+    const linesArray = raw.split('\n');
+    const linesContainer = document.getElementById('lines');
+    const frag = document.createDocumentFragment();
+    linesArray.forEach((text, idx) => {
+      const row = document.createElement('div'); row.className='line';
+      const ln = document.createElement('div'); ln.className='ln'; ln.textContent = idx+1;
+      const content = document.createElement('div'); content.className='content'; content.textContent=text;
+      row.appendChild(ln); row.appendChild(content); frag.appendChild(row);
+    });
+    linesContainer.appendChild(frag);
 
-</body>
-</html>
+    document.getElementById('copyBtn').addEventListener('click', async ()=>{
+      try {
+        await navigator.clipboard.writeText(raw);
+        let b=document.getElementById('copyBtn');
+        b.textContent='Copied!';
+        setTimeout(()=>b.textContent='Copy Code',1200);
+      } catch(e) {
+        alert('Copy failed');
+      }
+    });
+
+    // ❌ Removed the snapshot HTML generator here
+  })();
+</script>
