@@ -1,0 +1,48 @@
+project:
+  type: website
+
+website:
+  title: "hepsite"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: Tables
+        menu:
+          - href: table01.qmd
+            text: Table 01
+          - href: table02.qmd
+            text: Table 02
+          - href: table03.qmd
+            text: Table 03
+          - href: table04.qmd
+            text: Table 04
+      - text: Figures
+        menu:
+          - href: figure01.qmd
+            text: Figure 01
+          - href: figure02.qmd
+            text: Figure 02
+          - href: figure03.qmd
+            text: Figure 03
+          - href: figure04.qmd
+            text: Figure 04
+          - href: figure05.qmd
+            text: Figure 05
+      - text: Articles
+        menu:
+          - href: intro-hepatotox.qmd
+            text: Intro to Hepatotox
+          - href: liver-enzymes.qmd
+            text: Liver Enzymes Overview
+          - href: resources.qmd
+            text: Resources
+      - about.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+editor: visual
