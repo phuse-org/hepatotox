@@ -174,10 +174,10 @@ library(r2rtf)
 library(formatters)
 
 #Load ADLB dataset directly from GitHub
-load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/data/adlbt2.Rda"))
+load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/docs/data/adlbt2.Rda"))
 
 #Load ADSL dataset directly from GitHub
-load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/data/adslt2.Rda"))
+load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/docs/data/adslt2.Rda"))
   
 #NAs are explicit missing levels.
 adhy_liver4 <- df_explicit_na(adlbt2)
@@ -631,7 +631,7 @@ main_footer(resultfin1b) <-paste("PL=Placebo, T1=Treatment 1, T2=Treatment 2, AL
 , "\nN=number of applicable subjects in treatment arm; n=actual applicable observed number with values.")
 
 #Output table as a PDF file.
-table2a <- "/cloud/project/Tables and Figures/Program Output/Table 2.pdf"
+table2a <- "~/Table 2.pdf"
 export_as_pdf(resultfin1b, file = table2a, landscape = TRUE, paginate = FALSE, 
               colwidths = c(29, 14, 14, 14, 18, 17, 17))
 
