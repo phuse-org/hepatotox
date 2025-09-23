@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Table 02 – Hepatotox Catalog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Keep your original styles -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Restored original page styles (code wrapper, container, copy button, etc.) -->
+  <style>
+    :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
+    body{margin:0;padding:0;background:#f7f7fb;}
+    .container{max-width:1100px;margin:100px auto 40px;background:#fff;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(20,20,40,0.06);}
+    h1{margin:0 0 6px;text-align:center;font-size:20px;}
+    .subtitle{text-align:center;color:#444;margin-bottom:18px;font-size:14px;}
+
+    /* code wrapper */
+    .code-wrapper{position:relative;border:1px solid #e6e6e6;border-radius:8px;background:#f2f2f2;overflow:hidden;}
+    .code-viewport{max-height:55vh;overflow:auto;padding:12px;font-family:"Fira Code", Consolas, monospace;font-size:13px;line-height:1.4;background:transparent;}
+    .lines{min-width:min-content;}
+    .line{display:flex;align-items:flex-start;gap:12px;white-space:pre;}
+    .ln{width:60px;text-align:right;color:#666;user-select:none;flex:0 0 60px;padding-right:6px;}
+    .content{flex:1 1 auto;white-space:pre;overflow:visible;color:#111;}
+
+    /* Copy button */
+    .copy-btn{position:absolute;top:8px;right:8px;z-index:3;padding:6px 10px;border-radius:6px;border:0;background:#2563eb;color:#fff;cursor:pointer;font-weight:600;}
+    .copy-btn:active{transform:translateY(1px);}
+
+    /* image and buttons */
+    .image-container{text-align:center;margin-top:16px;}
+    .image-container img{max-width:100%;height:auto;border-radius:6px;border:1px solid #ddd;display:inline-block;}
+
+    .buttons{text-align:center;margin-top:14px;}
+    .buttons a.btn{display:inline-block;margin:6px;padding:10px 18px;border-radius:8px;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;}
+    .buttons a.btn:hover{background:#1e4db7;}
+
+    footer{text-align:center;font-size:13px;color:#666;margin-top:18px;}
+
+    @media(max-width:700px){
+      .ln{width:48px;flex:0 0 48px;text-align:right;}
+      .copy-btn{top:6px;right:6px;}
+    }
+  </style>
+
+  <!-- Navbar styling (keeps deep navy look and readable dropdowns) -->
+  <style>
+    .navbar-custom {
+      background-color: #003366; /* deep navy */
+    }
+
+    .navbar-custom .nav-link {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #ffffff;
+    }
+    .navbar-custom .nav-link:hover {
+      color: #ffcc00;
+    }
+    .navbar-custom .dropdown-menu {
+      background-color: #003366;
+    }
+    .navbar-custom .dropdown-item {
+      color: #ffffff;
+    }
+    .navbar-custom .dropdown-item:hover {
+      background-color: #002244;
+      color: #ffcc00;
+    }
+  </style>
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<!-- Fixed Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+  <div class="container-fluid">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="./index.html">
+      <img src="hepatotox-hex.png" alt="Hepatotox Logo" width="40" height="40" class="d-inline-block align-text-top">
+      Hepatotox Catalog
+    </a>
+
+    <!-- Mobile toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="articlesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Articles</a>
+          <ul class="dropdown-menu" aria-labelledby="articlesDropdown">
+            <li><a class="dropdown-item" href="./introduction.html">Introduction to Hepatotox</a></li>
+            <li><a class="dropdown-item" href="./liver-enzyme.html">Liver Enzymes Overview</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="tablesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Tables</a>
+          <ul class="dropdown-menu" aria-labelledby="tablesDropdown">
+            <li><a class="dropdown-item" href="./table01.html">Table 01</a></li>
+            <li><a class="dropdown-item active" href="./table02.html">Table 02</a></li>
+            <li><a class="dropdown-item" href="./table03.html">Table 03</a></li>
+            <li><a class="dropdown-item" href="./table04.html">Table 04</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="figuresDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Figures</a>
+          <ul class="dropdown-menu" aria-labelledby="figuresDropdown">
+            <li><a class="dropdown-item" href="./figure01.html">Figure 01</a></li>
+            <li><a class="dropdown-item" href="./figure02.html">Figure 02</a></li>
+            <li><a class="dropdown-item" href="./figure03.html">Figure 03</a></li>
+            <li><a class="dropdown-item" href="./figure04.html">Figure 04</a></li>
+            <li><a class="dropdown-item" href="./figure05.html">Figure 05</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item"><a class="nav-link" href="./resources.qmd">Resources</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <!-- ✅ Page content -->
+  <div class="container">
+    <h1>Table 1: Overview of Reported Potential Liver Safety Findings."</h1>
+    <div class="subtitle">
+      The dataset used for the program is the <strong>cadhy.rda</strong> 
+      from the <strong>random.cdisc.data</strong> library. Copy the code below to generate a table of 
+      reported potential liver safety findings.
+    </div>
+
+    <div class="code-wrapper" id="codeWrapper" aria-label="R program code area">
+      <button class="copy-btn" id="copyBtn">Copy Code</button>
+      <div class="code-viewport" id="codeViewport" tabindex="0" aria-label="R program scrollable code">
+        <div class="lines" id="lines"></div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px;font-weight:600;">Generated output is below:</p>
+    <div class="image-container">
+      <img src="table01.png" alt="Table output (table01.png)">
+    </div>
+
+    <div class="buttons">
+      <a class="btn" href="Table1.pdf" download>Download PDF</a>
+      <a class="btn" href="table01op.html" target="_blank">Open HTML</a>
+    </div>
+  </div>
+
+  <!-- ✅ R code preserved -->
+  <script id="rawCode" type="text/plain">
+#Attach appropriate libraries.
+library(tidyverse)
+library(tern)
+library(random.cdisc.data)
+library(magrittr)
+library(rtables)
+library(r2rtf)
+library(formatters)
+
+#Load CADHY dataset directly from GitHub
+load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/docs/data/cadhy.Rdata"))
+
+#Set seed for reproducibility.#
+set.seed(619)
+
+#Removed any NA values. Also, added a record sequence number via RUNNUM.
+adhy <- df_explicit_na(cadhy)
+cadhy2 <- adhy %>% add_column(RUNNUM=runif(nrow(.)))
+
+# Define values of interest in PARAMCD variable.
+paramcd_tbili_alt <- c("BLAL", "BGAL", "BA2AL", "BA5AL")
+paramcd_tbili_ast <- c("BLAS", "BGAS", "BA2AS", "BA5AS")
+param_extra <- c("BL2AL2CB", "BL2AL2CU", "BL2AS2CB", "BL2AS2CU")
+
+# Select laboratory test parameters.
+adhy_liver_tot <- cadhy2 %>%
+  filter(
+    SAFFL == "Y",
+    AVISIT %in% c("POST-BASELINE"),
+    PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast, param_extra),
+    AVAL %in% c(0, 1, 2, 3, 4)
+  )
+
+#ADaM Programmers should have already included a variable
+#similar to BIOCHEMREL & ADVREL that follow the metadata's criteria for findings
+#related to biochemical tests & findings related to adverse events, respectively.
+adhy_liver2 <- cadhy2 %>% 
+  mutate(BIOCHEMREL = ifelse(.8 > RUNNUM & RUNNUM > .5, "Yes", "No")) %>% 
+  mutate(ADVREL = ifelse(.55 > RUNNUM & RUNNUM > .25, "Yes", "No")) %>% 
+  filter(
+    SAFFL == "Y",
+    AVISIT %in% c("POST-BASELINE"),
+    PARAMCD %in% c(paramcd_tbili_alt, paramcd_tbili_ast, param_extra),
+    AVAL %in% c(1, 2, 3, 4)
+  )
+
+#Add appropriate labels for final table output.
+adhy_liver3 <- adhy_liver2 %>% 
+  mutate(FINBOTH = with_label(BIOCHEMREL == "Yes" &
+         ADVREL == "Yes", "   Findings Related to Both\n   Adverse Events and Biochemical\n   Tests"),
+         FINAEREL = with_label(ADVREL == "Yes", "   Findings Related to Adverse\n   Events"),
+         FINBCTEST = with_label(BIOCHEMREL == "Yes", "   Findings Related to\n   Biochemical Tests")
+  ) 
+
+#Flag total number of findings without duplicates.
+adhy_liver4 <- adhy_liver3 %>%                                                  
+  mutate(TOP = case_when(ADVREL == "Yes" & BIOCHEMREL == "No"
+  & FINBOTH == "FALSE"~"Y", ADVREL == "No" & BIOCHEMREL == "Yes" & FINBOTH
+  == "FALSE"~"Y", .default = "N")) %>% 
+  mutate(TABLESEQ = RUNNUM) %>% 
+  mutate(FINTOP = with_label(TOP == "Y", "Any Potential Liver Safety Findings")) %>%
+  mutate(ROWSPL1 = case_when(FINTOP == "FALSE" | FINTOP == "TRUE" ~ " ")) 
+
+#Rename the treatment arms.
+levels(adhy_liver4$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adhy_liver4$ACTARM) <- c("T1\n n/N(%)", "PL\n n/N(%)", "T2\n n/N(%)")
+
+adhy_liver4$ACTARMCD <- factor(adhy_liver4$ACTARMCD,levels = c("PL", "T1", "T2")) 
+aefin_vars <- c("FINBOTH", "FINAEREL", "FINBCTEST")
+
+#Create a custom format function.
+format_frac_perc <- function(x, output = NULL) {  
+  # x[1] is N, x[2] is the % (as decimal)
+  perc <- round(x[2] * 100, 1)
+  denom <- (x[1] / (x[2] * 100)) * 100 # Calculate denominator
+  paste0(x[1],"/", denom, " (", perc, "%)")
+}
+
+#Build & render table's pseudo facet 1a.
+lyt_fin1a <- basic_table(show_colcounts = TRUE) %>% 
+  split_rows_by(c("ROWSPL1")) %>%
+  split_cols_by("ACTARMCD", show_colcounts = TRUE, labels_var = "ACTARM", 
+  split_fun = add_riskdiff(arm_x = c("T1"), arm_y = c("PL"), 
+  col_label = paste0("\n", "Risk", "\n", "Difference", "\n", 
+  c("T1"), "-", c("PL"), "\n", "(95% CI)"))) %>% 
+  count_patients_with_event(
+    "TABLESEQ",
+    filters = c("TOP"="Y"),
+    denom = "N_col", riskdiff = TRUE,
+    .labels = c(count_fraction = "Any Potential Liver Safety Findings"),
+    .formats = c(count_fraction = format_frac_perc)) 
+
+result_tabtop1a <- build_table(lyt_fin1a, df = adhy_liver4)
+
+#Build & render table's pseudo facet 1b.
+lyt_fin1b <- basic_table(show_colcounts = TRUE) %>% 
+  split_rows_by(c("ROWSPL1")) %>%
+  split_cols_by("ACTARMCD", show_colcounts = TRUE, labels_var = "ACTARM", 
+  split_fun = add_riskdiff(arm_x = c("T2"), arm_y = c("PL", "T1"), 
+  col_label = paste0("Risk", "\n", "Difference", 
+ "\n", "T2-",  c("PL", "T1"), "\n", "(95% CI)"))) %>% 
+  count_patients_with_event(
+    "TABLESEQ",
+    filters = c("TOP"="Y"),
+    denom = "N_col", riskdiff = TRUE,
+    .labels = c(count_fraction = "Any Potential Liver Safety Findings"),
+    .formats = c(count_fraction = format_frac_perc))
+
+result_tabtop1b <- build_table(lyt_fin1b, df = adhy_liver4)
+
+#Bind specific columns from 2 top facets: 1a & 1b 1d.
+resulttopfin <- cbind_rtables(result_tabtop1a[, 1:ncol(result_tabtop1a)], 
+                              result_tabtop1b[, 4:ncol(result_tabtop1b)])
+
+#Constructing & rendering the bottom half of the table: facet 2a.
+lyt_fin2a <- basic_table(show_colcounts = TRUE) %>%
+  split_cols_by("ACTARMCD", show_colcounts = TRUE, labels_var = "ACTARM",
+  split_fun = add_riskdiff(arm_x = c("T1"), 
+  arm_y = c("PL"), col_label = paste0("\n", "Risk", "\n", "Difference", "\n", 
+  c("T1"), "-", c("PL"), "\n", "(95% CI)"))) %>%
+  count_patients_with_flags(
+    "RUNNUM",
+    flag_variables = aefin_vars,
+    denom = "N_col",
+    var_labels = "",
+    show_labels = "visible", 
+    riskdiff = TRUE,
+    .formats = c(count_fraction = format_frac_perc),
+    .indent_mods = 1
+   )
+
+result_tabbot2a <- build_table(lyt_fin2a, df = adhy_liver4)
+
+#Constructing & rendering the bottom half of the table: facet 2b.
+lyt_fin2b <- basic_table(show_colcounts = TRUE) %>% 
+  split_cols_by("ACTARMCD", show_colcounts = TRUE, labels_var = "ACTARM",
+  split_fun = add_riskdiff(arm_x = c("T2"),
+ arm_y = c("PL", "T1"), col_label = paste0("Risk", "\n", "Difference", 
+  "\n", "T2-",  c("PL", "T1"), "\n", "(95% CI)"))) %>% 
+  count_patients_with_flags(
+    "RUNNUM",
+    flag_variables = aefin_vars,
+    denom = "N_col",
+    var_labels = "",
+    show_labels = "visible", 
+    riskdiff = TRUE,
+    .formats = c(count_fraction = format_frac_perc),
+    .indent_mods = 
+  )
+
+result_tabbot2b <- build_table(lyt_fin2b, df = adhy_liver4)
+
+#Bind specific columns from all 4 facets: 2a & 2b.
+resultbot <- cbind_rtables(result_tabbot2a[, 1:ncol(result_tabbot2a)], 
+                           result_tabbot2b[, 4:ncol(result_tabbot2b)])
+
+resultbot
+
+#Bind specific rows from top & bottom halves of the table.
+resultfin <- rbind(
+  resulttopfin[nrow(resulttopfin), ],
+  resultbot[3:nrow(resultbot), ],
+  resultbot[2, ]
+)
+
+resultfin2 <- insert_rrow(resultfin, rrow("Number of Subjects with Liver\nSafety Findings(a)"), at = 1)
+
+main_title(resultfin2) <- paste("Table 1", 
+                               "\nOverview of Reported Potential Liver Safety Findings", "\n<Analysis Set>")
+main_footer(resultfin2) <-paste("PL=Placebo, T1=Treatment 1, T2=Treatment 2",
+                               "\nNote (a): A potential liver safety finding is defined as meeting any of the laboratory thresholds.",
+                               "\nN = number of applicable subjects in treatment arm; n = actual applicable observed number with values.")
+
+#Output table as a PDF file.#
+table1a2 <- "~/Table1.pdf"
+
+export_as_pdf(resultfin2, file = table1a2, landscape = TRUE, paginate = FALSE, 
+              colwidths = c(36, 14, 14, 14, 16, 16, 16))
+
+
+  </script>
+
+  <script>
+    (function(){
+      let raw = document.getElementById('rawCode').textContent.replace(/\r/g, '').replace(/^\n+/, '').replace(/\n+$/, '');
+      const linesArray = raw.split('\n');
+      const linesContainer = document.getElementById('lines');
+      const frag = document.createDocumentFragment();
+      linesArray.forEach((text, idx) => {
+        const row = document.createElement('div'); row.className='line';
+        const ln = document.createElement('div'); ln.className='ln'; ln.textContent = idx+1;
+        const content = document.createElement('div'); content.className='content'; content.textContent=text;
+        row.appendChild(ln); row.appendChild(content); frag.appendChild(row);
+      });
+      linesContainer.appendChild(frag);
+
+      document.getElementById('copyBtn').addEventListener('click', async ()=>{
+        try {
+          await navigator.clipboard.writeText(raw);
+          let b=document.getElementById('copyBtn');
+          b.textContent='Copied!';
+          setTimeout(()=>b.textContent='Copy Code',1200);
+        } catch(e) {
+          alert('Copy failed');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
