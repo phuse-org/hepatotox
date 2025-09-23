@@ -1,8 +1,11 @@
 ---
-title: "index"
-format: live-html
+format: 
+  html:
+   theme: minty
+   css: styles.css
 engine: knitr
 editor: visual
+
 ---
 
 # **Hepatotox Catalog**
