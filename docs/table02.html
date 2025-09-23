@@ -213,8 +213,427 @@ adhy_liver4al <- adhy_liver3al %>%
         PARAMCD == "ALT" & AVALCHY %in% c("> 5x ULN") ~ "   > 5x ULN",
         PARAMCD == "ALT" & AVALCHY %in% c("> 10x ULN") ~ "   > 10x ULN",
         PARAMCD == "ALT" & AVALCHY %in% c("> 20x ULN") ~ "   > 20x ULN")),
+      EVFLAG = case_when(PARAMCD %in% paramcd_alt & AVALCHY %in% c("> 3x ULN",
+      "> 5x ULN", "> 10x ULN", "> 20x ULN") ~ "Y", .default = "N"))
 
-... (file truncated for brevity) ...
+table(adhy_liver4al$ALT_CAT, adhy_liver4al$EVFLAG)
+
+#Create a custom format function to be used in all of the table output's facets.
+format_frac_perc <- function(x, output = NULL) {  
+  # x[1] is N, x[2] is the % (as decimal)
+  perc <- round(x[2] * 100, 1)
+  denom <- (x[1] / (x[2] * 100)) * 100 # Calculate denominator
+  paste0(x[1],"/", denom, " (", perc, "%)")
+}
+
+#Create custom functions for each facet.
+faceta <- function(val1, val2){
+    basic_table(show_colcounts = TRUE) %>% 
+    split_cols_by("ACTARMCD", show_colcounts = TRUE, labels_var = "ACTARM",
+    split_fun = add_riskdiff(arm_x = c("T1"), 
+    arm_y = c("PL"), 
+    col_label = paste0("\n", "Risk", "\n", "Difference", "\n", 
+    c("T1"), "-", c("PL"), "\n", "(95% CI)"))) %>%
+    count_patients_with_event(
+    "RUNNUM",
+    filters = c("EVFLAG"="Y", AVALCHY = val1),
+    denom = "N_col", riskdiff = TRUE,
+    .formats = c(count_fraction = format_frac_perc),
+    .labels = c(count_fraction = val2)) 
+}
+
+facetb <- function(val1, val2){
+    basic_table(show_colcounts = TRUE) %>% 
+    split_cols_by("ACTARMCD", show_colcounts = TRUE, labels_var = "ACTARM",
+    split_fun = add_riskdiff(arm_x = c("T2"), 
+    arm_y = c("PL", "T1"), 
+    col_label = paste0("\n", "Risk", "\n", "Difference", "\n", 
+    c("T2-"), c("PL", "T1"), "\n", "(95% CI)")))  %>%
+    count_patients_with_event(
+    "RUNNUM",
+    filters = c("EVFLAG"="Y", AVALCHY = val1),
+    denom = "N_col", riskdiff = TRUE,
+    .formats = c(count_fraction = format_frac_perc),
+    .labels = c(count_fraction = val2)) 
+}
+
+#Build & render table's facets for ALT.
+alt1a1 <- faceta("> 3x ULN", "   > 3x ULN")
+alt1a2 <- faceta("> 5x ULN", "   > 5x ULN")
+alt1a3 <- faceta("> 10x ULN", "   > 10x ULN")
+alt1a4 <- faceta("> 20x ULN", "   > 20x ULN")
+
+alt1b1 <- facetb("> 3x ULN", "   > 3x ULN")
+alt1b2 <- facetb("> 5x ULN", "   > 5x ULN")
+alt1b3 <- facetb("> 10x ULN", "   > 10x ULN")
+alt1b4 <- facetb("> 20x ULN", "   > 20x ULN")
+
+result_tabtop1a1 <- build_table(alt1a1, df = adhy_liver4al)
+result_tabtop1a2 <- build_table(alt1a2, df = adhy_liver4al)
+result_tabtop1a3 <- build_table(alt1a3, df = adhy_liver4al)
+result_tabtop1a4 <- build_table(alt1a4, df = adhy_liver4al)
+
+result_tabtop1a11 <- insert_rrow(result_tabtop1a1, rrow("ALT"), at = 1)
+
+resultalt1afin <- rbind(
+  result_tabtop1a11[1:2, ],
+  result_tabtop1a2[1, ],
+  result_tabtop1a3[1, ],
+  result_tabtop1a4[1, ]
+)
+
+result_tabtop1b1 <- build_table(alt1b1, df = adhy_liver4al)
+result_tabtop1b2 <- build_table(alt1b2, df = adhy_liver4al)
+result_tabtop1b3 <- build_table(alt1b3, df = adhy_liver4al)
+result_tabtop1b4 <- build_table(alt1b4, df = adhy_liver4al)
+
+result_tabtop1b11 <- insert_rrow(result_tabtop1b1, rrow("ALT"), at = 1)
+
+resultalt1bfin <- rbind(
+  result_tabtop1b11[1:2, ],
+  result_tabtop1b2[1, ],
+  result_tabtop1b3[1, ],
+  result_tabtop1b4[1, ]
+)
+
+# Define values of interest in PARAMCD variable for AST criteria.
+paramcd_ast <- c("AST")
+adhy_liver2as <- adhy_liver4a %>%
+  filter(
+    SAFFL == "Y",
+    AVISIT %in% c("BASELINE"),
+    PARAMCD %in% c(paramcd_ast)
+  )
+
+# Let's be explicit about factor levels for AVISIT and PARAMCD for AST criteria.
+adhy_liver3as <- adhy_liver2as %>%
+  mutate(
+    AVISIT = factor(AVISIT, levels = c("BASELINE")),
+    PARAMCD = factor(PARAMCD, levels = c(paramcd_ast)))
+
+adhy_liver4as <- adhy_liver3as %>%
+  mutate(AST_CAT = factor(
+      case_when(
+        PARAMCD == "AST" & AVALCHY %in% c("> 3x ULN") ~ "   > 3x ULN",
+        PARAMCD == "AST" & AVALCHY %in% c("> 5x ULN") ~ "   > 5x ULN",
+        PARAMCD == "AST" & AVALCHY %in% c("> 10x ULN") ~ "   > 10x ULN",
+        PARAMCD == "AST" & AVALCHY %in% c("> 20x ULN") ~ "   > 20x ULN")),
+      EVFLAG = case_when(PARAMCD %in% paramcd_ast & AVALCHY %in% c("> 3x ULN",
+      "> 5x ULN", "> 10x ULN", "> 20x ULN") ~ "Y", .default = "N"))
+
+#Build & render table's facets for AST.
+ast2a1 <- faceta("> 3x ULN", "   > 3x ULN")
+ast2a2 <- faceta("> 5x ULN", "   > 5x ULN")
+ast2a3 <- faceta("> 10x ULN", "   > 10x ULN")
+ast2a4 <- faceta("> 20x ULN", "   > 20x ULN")
+
+ast2b1 <- facetb("> 3x ULN", "   > 3x ULN")
+ast2b2 <- facetb("> 5x ULN", "   > 5x ULN")
+ast2b3 <- facetb("> 10x ULN", "   > 10x ULN")
+ast2b4 <- facetb("> 20x ULN", "   > 20x ULN")
+
+result_tabtop2a1 <- build_table(ast2a1, df = adhy_liver4as)
+result_tabtop2a2 <- build_table(ast2a2, df = adhy_liver4as)
+result_tabtop2a3 <- build_table(ast2a3, df = adhy_liver4as)
+result_tabtop2a4 <- build_table(ast2a4, df = adhy_liver4as)
+
+result_tabtop2a11 <- insert_rrow(result_tabtop2a1, rrow("AST"), at = 1)
+
+resultast2afin <- rbind(
+  result_tabtop2a11[1:2, ],
+  result_tabtop2a2[1, ],
+  result_tabtop2a3[1, ],
+  result_tabtop2a4[1, ]
+)
+
+result_tabtop2b1 <- build_table(ast2b1, df = adhy_liver4as)
+result_tabtop2b2 <- build_table(ast2b2, df = adhy_liver4as)
+result_tabtop2b3 <- build_table(ast2b3, df = adhy_liver4as)
+result_tabtop2b4 <- build_table(ast2b4, df = adhy_liver4as)
+
+result_tabtop2b11 <- insert_rrow(result_tabtop2b1, rrow("AST"), at = 1)
+
+resultast2bfin <- rbind(
+  result_tabtop2b11[1:2, ],
+  result_tabtop2b2[1, ],
+  result_tabtop2b3[1, ],
+  result_tabtop2b4[1, ]
+)
+
+#Define values of interest in PARAMCD variable for Total Bilirubin criteria.
+paramcd_tbili <- c("TBILI")
+
+adhy_liver2tb <- adhy_liver4a %>%
+  filter(
+    SAFFL == "Y",
+    AVISIT %in% c("BASELINE"),
+    PARAMCD %in% c(paramcd_tbili)
+  )
+
+#Let's be explicit about factor levels for AVISIT and PARAMCD for TBILI criteria.
+adhy_liver3tb <- adhy_liver2tb %>%
+  mutate(
+    AVISIT = factor(AVISIT, levels = c("BASELINE")),
+    PARAMCD = factor(PARAMCD, levels = c(paramcd_tbili)))
+
+adhy_liver4tb <- adhy_liver3tb %>%
+  mutate(TBI_CAT = factor(
+      case_when(
+        PARAMCD == "TBILI" & AVALCHY %in% c("> 2x ULN") ~ "   > 2x ULN",
+        PARAMCD == "TBILI" & AVALCHY %in% c("> 5x ULN") ~ "   > 5x ULN",
+        PARAMCD == "TBILI" & AVALCHY %in% c("> 8x ULN") ~ "   > 8x ULN")),
+      EVFLAG = case_when(PARAMCD %in% paramcd_tbili & AVALCHY %in% c("> 2x ULN",
+      "> 5x ULN", "> 8x ULN") ~ "Y", .default = "N"))
+
+#Build & render table's facets for TBILI
+tbili3a1 <- faceta("> 2x ULN", "   > 2x ULN")
+tbili3a2 <- faceta("> 5x ULN", "   > 5x ULN")
+tbili3a3 <- faceta("> 8x ULN", "   > 8x ULN")
+
+tbili3b1 <- facetb("> 2x ULN", "   > 2x ULN")
+tbili3b2 <- facetb("> 5x ULN", "   > 5x ULN")
+tbili3b3 <- facetb("> 8x ULN", "   > 8x ULN")
+
+resulttbili3a1 <- build_table(tbili3a1, df = adhy_liver4tb)
+resulttbili3a2 <- build_table(tbili3a2, df = adhy_liver4tb)
+resulttbili3a3 <- build_table(tbili3a3, df = adhy_liver4tb)
+resulttbili3a11 <- insert_rrow(resulttbili3a1, rrow("Total Bilirubin"), at = 1)
+
+resulttbili3afin <- rbind(
+  resulttbili3a11[1:2, ],
+  resulttbili3a2[1, ],
+  resulttbili3a3[1, ]
+)
+
+print(resulttbili3afin)
+
+resulttbili3b1 <- build_table(tbili3b1, df = adhy_liver4tb)
+resulttbili3b2 <- build_table(tbili3b2, df = adhy_liver4tb)
+resulttbili3b3 <- build_table(tbili3b3, df = adhy_liver4tb)
+resulttbili3b11 <- insert_rrow(resulttbili3b1, rrow("Total Bilirubin"), at = 1)
+
+resulttbili3bfin <- rbind(
+  resulttbili3b11[1:2, ],
+  resulttbili3b2[1, ],
+  resulttbili3b3[1, ]
+)
+
+print(resulttbili3bfin)
+
+#Define values of interest in PARAMCD variable for ALP criteria.
+paramcd_alp <- c("ALP")
+
+adhy_liver2alp <- adhy_liver4a %>%
+  filter(
+    SAFFL == "Y",
+    AVISIT %in% c("BASELINE"),
+    PARAMCD %in% c(paramcd_alp)
+  )
+
+#Let's be explicit about factor levels for AVISIT and PARAMCD for ALP criteria.
+adhy_liver3alp <- adhy_liver2alp %>%
+  mutate(
+    AVISIT = factor(AVISIT, levels = c("BASELINE")),
+    PARAMCD = factor(PARAMCD, levels = c(paramcd_alp)))
+
+adhy_liver4alp <- adhy_liver3alp %>%
+  mutate(ALP_CAT = factor(
+      case_when(
+        PARAMCD =="ALP" & AVALCHY %in% c("> 2x ULN") ~ "   > 2x ULN",
+        PARAMCD =="ALP" & AVALCHY %in% c("> 3x ULN") ~ "   > 3x ULN")),
+      EVFLAG = case_when(PARAMCD %in% paramcd_alp & AVALCHY %in% c("> 2x ULN",
+      "> 3x ULN") ~ "Y", .default = "N"))
+
+#Build & render table's facets for ALP.
+alp4a1 <- faceta("> 2x ULN", "   > 2x ULN")
+alp4a2 <- faceta("> 3x ULN", "   > 3x ULN")
+
+alp4b1 <- facetb("> 2x ULN", "   > 2x ULN")
+alp4b2 <- facetb("> 3x ULN", "   > 3x ULN")
+
+resultalp4a1 <- build_table(alp4a1, df = adhy_liver4alp)
+resultalp4a2 <- build_table(alp4a2, df = adhy_liver4alp)
+resultalp4a11 <- insert_rrow(resultalp4a1, rrow("ALP"), at = 1)
+
+resultalp4afin <- rbind(
+  resultalp4a11[1:2, ],
+  resultalp4a2[1, ]
+)
+
+print(resultalp4afin)
+
+resultalp4b1 <- build_table(alp4b1, df = adhy_liver4alp)
+resultalp4b2 <- build_table(alp4b2, df = adhy_liver4alp)
+resultalp4b11 <- insert_rrow(resultalp4b1, rrow("ALP"), at = 1)
+
+resultalp4bfin <- rbind(
+  resultalp4b11[1:2, ],
+  resultalp4b2[1, ]
+)
+
+print(resultalp4bfin)
+
+# Define values of interest in PARAMCD variable criteria met for AST/ALT + Total Bilirubin.
+paramcd_tot <- c("ALT", "AST", "TBILI")
+
+adhy_liver4tota <- adhy_liver4a %>%
+  filter(
+    SAFFL == "Y",
+    AVISIT %in% c("BASELINE"),
+    PARAMCD %in% c(paramcd_tot)
+  )
+
+adhy_liver4totb <- adhy_liver4tota %>%
+  mutate(ALT_CAT = factor(
+      case_when(
+        PARAMCD == "ALT" & AVALCHY %in% c("> 3x ULN") ~ "   > 3x ULN",
+        PARAMCD == "ALT" & AVALCHY %in% c("> 5x ULN") ~ "   > 5x ULN",
+        PARAMCD == "ALT" & AVALCHY %in% c("> 10x ULN") ~ "   > 10x ULN",
+        PARAMCD == "ALT" & AVALCHY %in% c("> 20x ULN") ~ "   > 20x ULN")),
+      EVALT = case_when(PARAMCD %in% paramcd_alt & AVALCHY %in% c("> 3x ULN",
+      "> 5x ULN", "> 10x ULN", "> 20x ULN") ~ "Y", .default = "N")) %>%
+  mutate(AST_CAT = factor(
+      case_when(
+        PARAMCD == "AST" & AVALCHY %in% c("> 3x ULN") ~ "   > 3x ULN",
+        PARAMCD == "AST" & AVALCHY %in% c("> 5x ULN") ~ "   > 5x ULN",
+        PARAMCD == "AST" & AVALCHY %in% c("> 10x ULN") ~ "   > 10x ULN",
+        PARAMCD == "AST" & AVALCHY %in% c("> 20x ULN") ~ "   > 20x ULN")),
+      EVAST = case_when(PARAMCD %in% paramcd_ast & AVALCHY %in% c("> 3x ULN",
+      "> 5x ULN", "> 10x ULN", "> 20x ULN") ~ "Y", .default = "N")) %>%
+  mutate(TBI_CAT = factor(
+      case_when(
+        PARAMCD == "TBILI" & AVALCHY %in% c("> 2x ULN") ~ "   > 2x ULN",
+        PARAMCD == "TBILI" & AVALCHY %in% c("> 5x ULN") ~ "   > 5x ULN",
+        PARAMCD == "TBILI" & AVALCHY %in% c("> 8x ULN") ~ "   > 8x ULN")),
+      EVTBI = case_when(PARAMCD %in% paramcd_tbili & AVALCHY %in% c("> 2x ULN",
+      "> 5x ULN", "> 8x ULN") ~ "Y", .default = "N")) 
+  
+
+#Transpose ADHY table to total up ALT or AST and Total Bilirubin Counts.#
+adhy_liver4totc <- pivot_wider(adhy_liver4totb, id_cols = SUBJID, values_from = c("EVTBI", "EVALT", "EVAST"), names_from = PARAMCD) %>% 
+left_join(adslt2[, c("SUBJID", "ACTARM", "ARM", "ACTARMCD", "USUBJID")], by = "SUBJID") %>% add_column(RUNNUM=runif(nrow(.)))
+
+#Rename the treatment arms.
+levels(adhy_liver4totc$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adhy_liver4totc$ACTARM) <- c("T1\n n/N (%)", "PL\n n/N (%)", "T2\n n/N (%)")
+levels(adhy_liver4totc$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
+
+adhy_liver4totc$ACTARMCD <- factor(adhy_liver4totc$ACTARMCD, levels = c("PL", "T1", "T2")) 
+
+#Create appropriate event flags for each criteria.
+adhy_liver4totd <- adhy_liver4totc %>% 
+  mutate(EVFL1 = case_when(EVALT_ALT == "Y" & 
+  EVTBI_TBILI == "Y" ~ "ALT > 3x ULN and Total Bilirubin > 2x ULN", .default = "N"))
+  
+adhy_liver4tote <- adhy_liver4totc %>% 
+  mutate(EVFL1 =    case_when(EVAST_AST == "Y" & 
+  EVTBI_TBILI == "Y" ~ "AST > 3x ULN and Total Bilirubin > 2x ULN", .default = "N"))
+  
+adhy_liver4totf <- adhy_liver4totc %>% 
+  mutate(EVFL1 = case_when((EVALT_ALT == "Y" | EVAST_AST == "Y") & EVTBI_TBILI == "Y" ~ 
+ "ALT or AST > 3x ULN and Total Bilirubin > 2x ULN", .default = "N"))
+
+#Build & render table's pseudo facet 5a for Total ALT/AST + Bilirubin criteria.
+#Create custom functions for each facet.
+facetacomb <- function(val1, val2){
+    basic_table(show_colcounts = TRUE) %>% 
+    split_cols_by("ARM", show_colcounts = TRUE, labels_var = "ACTARM",
+    split_fun = add_riskdiff(arm_x = c("Treatment 1"), 
+    arm_y = c("Placebo"), 
+    col_label = paste0("\n", "Risk", "\n", "Difference", "\n", 
+    c("T1"), "-", c("PL"), "\n", "(95% CI)"))) %>%
+    count_patients_with_event(
+    "RUNNUM",
+    filters = c("EVFL1"= val1),
+    denom = "N_col", riskdiff = TRUE,
+    .formats = c(count_fraction = format_frac_perc),
+    .labels = c(count_fraction = val2)) 
+}
+
+facetbcomb <- function(val1, val2){
+    basic_table(show_colcounts = TRUE) %>% 
+    split_cols_by("ARM", show_colcounts = TRUE, labels_var = "ACTARM",
+    split_fun = add_riskdiff(arm_x = c("Treatment 2"), 
+    arm_y = c("Placebo", "Treatment 1"), 
+    col_label = paste0("\n", "Risk", "\n", "Difference", "\n", 
+    c("T2-"), c("PL", "T1"), "\n", "(95% CI)"))) %>%
+    count_patients_with_event(
+    "RUNNUM",
+    filters = c("EVFL1"= val1),
+    denom = "N_col", riskdiff = TRUE,
+    .formats = c(count_fraction = format_frac_perc),
+    .labels = c(count_fraction = val2)) 
+}
+
+ttot5a <- facetacomb("ALT > 3x ULN and Total Bilirubin > 2x ULN", "ALT > 3x ULN and Total Bilirubin > 2x ULN")
+resulttot5a <- build_table(ttot5a, df = adhy_liver4totd)
+
+ttot5b <- facetbcomb("ALT > 3x ULN and Total Bilirubin > 2x ULN", "ALT > 3x ULN and Total Bilirubin > 2x ULN")
+resulttot5b <- build_table(ttot5b, df = adhy_liver4totd)
+
+ttot6a <- facetacomb("AST > 3x ULN and Total Bilirubin > 2x ULN", "AST > 3x ULN and Total Bilirubin > 2x ULN")
+resulttot6a <- build_table(ttot6a, df = adhy_liver4tote)
+
+ttot6b <- facetbcomb("AST > 3x ULN and Total Bilirubin > 2x ULN", "AST > 3x ULN and Total Bilirubin > 2x ULN")
+resulttot6b <- build_table(ttot6b, df = adhy_liver4tote)
+
+ttot7a <- facetacomb("ALT or AST > 3x ULN and Total Bilirubin > 2x ULN", "ALT or AST > 3x ULN and Total Bilirubin > 2x ULN")
+resulttot7a <- build_table(ttot7a, df = adhy_liver4totf)
+
+ttot7b <- facetbcomb("ALT or AST > 3x ULN and Total Bilirubin > 2x ULN", "ALT or AST > 3x ULN and Total Bilirubin > 2x ULN")
+resulttot7b <- build_table(ttot7b, df = adhy_liver4totf)
+
+#Build final table for output by first combining A + B facets of each section together 
+#column.
+result1 <- cbind_rtables(resultalt1afin[, 1:ncol(resultalt1afin)], 
+                           resultalt1bfin[, 4:ncol(resultalt1bfin)])
+
+result2 <- cbind_rtables(resultast2afin[, 1:ncol(resultast2afin)], 
+                           resultast2bfin[, 4:ncol(resultast2bfin)])
+
+result3 <- cbind_rtables(resulttbili3afin[, 1:ncol(resulttbili3afin)], 
+                           resulttbili3bfin[, 4:ncol(resulttbili3bfin)])
+
+result4 <- cbind_rtables(resultalp4afin[, 1:ncol(resultalp4afin)], 
+                           resultalp4bfin[, 4:ncol(resultalp4bfin)])
+
+result5 <- cbind_rtables(resulttot5a[, 2], resulttot5a[, 1], resulttot5a[, 3:4],
+                           resulttot5b[, 4:ncol(resulttot5b)])
+
+result6 <- cbind_rtables(resulttot6a[, 2], resulttot6a[, 1], resulttot6a[, 3:4],
+                           resulttot6b[, 4:ncol(resulttot6b)])
+
+result7 <- cbind_rtables(resulttot7a[, 2], resulttot7a[, 1], resulttot7a[, 3:4],
+                           resulttot7b[, 4:ncol(resulttot7b)])
+
+resultbot <- rbind( 
+  result5[1, ],
+  result6[1, ],
+  result7[1, ]
+)
+
+col_info(resultbot) <- col_info(result1)
+
+#Bind specific rows from all subsections of the table..
+resultfin1a <- rbind(
+  result1[1:nrow(result1), ],
+  result2[1:nrow(result2), ],
+  result3[1:nrow(result3), ],
+  result4[1:nrow(result4), ],
+  resultbot[1:3, ]
+)
+
+resultfin1b <- insert_rrow(resultfin1a, rrow("ALT or AST and Total Bilirubin"), at = 18)
+
+main_title(resultfin1b) <- paste("Table 2", 
+  "\nElevations in Liver Biochemical Tests Based on Thresholds", "\n<Analysis Set>")
+main_footer(resultfin1b) <-paste("PL=Placebo, T1=Treatment 1, T2=Treatment 2, ALT=alanine aminotransferase, AST=aspartate aminotransferase, ALP=alkaline phosphatase;"
+, "\nN=number of applicable subjects in treatment arm; n=actual applicable observed number with values.")
+
+#Output table as a PDF file.
+table2a <- "/cloud/project/Tables and Figures/Program Output/Table 2.pdf"
+export_as_pdf(resultfin1b, file = table2a, landscape = TRUE, paginate = FALSE, 
+              colwidths = c(29, 14, 14, 14, 18, 17, 17))
 
   </script>
 
