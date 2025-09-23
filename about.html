@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Dimple Patel">
 
-<title>Table 1 – Hepatotox TLG Catalog</title>
+<title>About – hepsite</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -32,7 +65,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/tabby.min.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
@@ -70,9 +102,10 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -80,7 +113,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Hepatotox TLG Catalog</span>
+    <span class="navbar-title">hepsite</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -99,20 +132,20 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-tables">    
         <li>
-    <a class="dropdown-item" href="./tables/table01.qmd">
- <span class="dropdown-text">Table 1 – Overview of Reported Liver Safety Findings</span></a>
+    <a class="dropdown-item" href="./table01.qmd">
+ <span class="dropdown-text">Table 01</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./tables/table02.qmd">
- <span class="dropdown-text">Table 2 – Elevations in Liver Biochemical Tests Based on Thresholds</span></a>
+    <a class="dropdown-item" href="./table02.qmd">
+ <span class="dropdown-text">Table 02</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./tables/table03.qmd">
- <span class="dropdown-text">Table 3 – Shifts in Liver Biochemical Tests Based on Thresholds</span></a>
+    <a class="dropdown-item" href="./table03.qmd">
+ <span class="dropdown-text">Table 03</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./tables/table04.qmd">
- <span class="dropdown-text">Table 4 – Summary of Treatment Emergent Adverse Events of Adverse Events Meeting the Liver Safety SMQ (or FMQ)</span></a>
+    <a class="dropdown-item" href="./table04.qmd">
+ <span class="dropdown-text">Table 04</span></a>
   </li>  
     </ul>
   </li>
@@ -122,33 +155,49 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-figures">    
         <li>
-    <a class="dropdown-item" href="./figures/figure01.qmd">
- <span class="dropdown-text">Figure 1 – Plot of Maximum Total Bilirubin Versus Maximum ALT or AST or ALP</span></a>
+    <a class="dropdown-item" href="./figure01.qmd">
+ <span class="dropdown-text">Figure 01</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./figures/figure02.qmd">
- <span class="dropdown-text">Figure 2 – Scatterplot of Baseline Versus Maximum Values for Liver Biochemical Tests</span></a>
+    <a class="dropdown-item" href="./figure02.qmd">
+ <span class="dropdown-text">Figure 02</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./figures/figure03.qmd">
- <span class="dropdown-text">Figure 3 – Line Plot for Liver Biochemical Tests</span></a>
+    <a class="dropdown-item" href="./figure03.qmd">
+ <span class="dropdown-text">Figure 03</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./figures/figure04.qmd">
- <span class="dropdown-text">Figure 4 – Forest Plot of DILI Adverse Events Based on the SMQ (or FMQ)</span></a>
+    <a class="dropdown-item" href="./figure04.qmd">
+ <span class="dropdown-text">Figure 04</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./figures/figure05.qmd">
- <span class="dropdown-text">Figure 5 – Patient Profiles of Subjects of Interest</span></a>
+    <a class="dropdown-item" href="./figure05.qmd">
+ <span class="dropdown-text">Figure 05</span></a>
   </li>  
     </ul>
   </li>
-</ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/phuse-org/hepatotox"> <i class="bi bi-github" role="img">
-</i> 
-<span class="menu-text"></span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Articles</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
+        <li>
+    <a class="dropdown-item" href="./intro-hepatotox.qmd">
+ <span class="dropdown-text">Intro to Hepatotox</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./liver-enzymes.qmd">
+ <span class="dropdown-text">Liver Enzymes Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./resources.qmd">
+ <span class="dropdown-text">Resources</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="./about.html" aria-current="page"> 
+<span class="menu-text">About</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -161,25 +210,21 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Table 1</h1>
+<h1 class="title">About</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Dimple Patel </p>
-          </div>
-  </div>
     
   
     
@@ -190,98 +235,11 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>About this site</p>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>FALSE ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-FALSE ✔ dplyr     1.1.4     ✔ readr     2.1.5
-FALSE ✔ forcats   1.0.0     ✔ stringr   1.5.1
-FALSE ✔ ggplot2   3.5.2     ✔ tibble    3.2.1
-FALSE ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-FALSE ✔ purrr     1.1.0     
-FALSE ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-FALSE ✖ dplyr::filter() masks stats::filter()
-FALSE ✖ dplyr::lag()    masks stats::lag()
-FALSE ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
-FALSE 
-FALSE Attaching package: 'magrittr'
-FALSE 
-FALSE 
-FALSE The following object is masked from 'package:purrr':
-FALSE 
-FALSE     set_names
-FALSE 
-FALSE 
-FALSE The following object is masked from 'package:tidyr':
-FALSE 
-FALSE     extract
-FALSE 
-FALSE 
-FALSE Loading required package: rtables
-FALSE 
-FALSE Loading required package: formatters
-FALSE 
-FALSE 
-FALSE Attaching package: 'formatters'
-FALSE 
-FALSE 
-FALSE The following object is masked from 'package:purrr':
-FALSE 
-FALSE     %||%
-FALSE 
-FALSE 
-FALSE The following object is masked from 'package:base':
-FALSE 
-FALSE     %||%
-FALSE 
-FALSE 
-FALSE 
-FALSE Attaching package: 'rtables'
-FALSE 
-FALSE 
-FALSE The following object is masked from 'package:utils':
-FALSE 
-FALSE     str
-FALSE 
-FALSE 
-FALSE Registered S3 method overwritten by 'tern':
-FALSE   method   from 
-FALSE   tidy.glm broom</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>FALSE                                                                                                                                                      
-FALSE                                                                                                   Risk                Risk                Risk       
-FALSE                                                                                                Difference          Difference          Difference    
-FALSE                                             PL                T1                T2                T1-PL               T2-PL               T2-T1      
-FALSE                                            n/N(%)            n/N(%)            n/N(%)           (95% CI)            (95% CI)            (95% CI)     
-FALSE                                           (N=884)           (N=906)           (N=917)           (N=1790)            (N=1801)            (N=1823)     
-FALSE —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
-FALSE                                                                                                                                                      
-FALSE      Findings Related to Both          49/884 (5.5%)     49/906 (5.4%)     57/917 (6.2%)    -0.1 (-2.2 - 2.0)   0.7 (-1.5 - 2.8)    0.8 (-1.3 - 3.0) 
-FALSE      Adverse Events and Biochemical                                                                                                                  
-FALSE      Tests                                                                                                                                           
-FALSE      Findings Related to Adverse      279/884 (31.6%)   261/906 (28.8%)   288/917 (31.4%)   -2.8 (-7.0 - 1.5)   -0.2 (-4.4 - 4.1)   2.6 (-1.6 - 6.8) 
-FALSE      Events                                                                                                                                          
-FALSE      Findings Related to              271/884 (30.7%)   264/906 (29.1%)   261/917 (28.5%)   -1.5 (-5.8 - 2.7)   -2.2 (-6.4 - 2.0)   -0.7 (-4.8 - 3.5)
-FALSE      Biochemical Tests</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>FALSE $file
-FALSE [1] "C:/Users/Dimple/Documents/hepatotox/Table1.pdf"
-FALSE 
-FALSE $npages
-FALSE [1] 1
-FALSE 
-FALSE $exceeds_width
-FALSE [1] TRUE
-FALSE 
-FALSE $exceeds_height
-FALSE [1] FALSE
-FALSE 
-FALSE $lpp
-FALSE [1] 43
-FALSE 
-FALSE $cpp
-FALSE [1] 133</code></pre>
+<pre><code>[1] 2</code></pre>
 </div>
 </div>
 
@@ -308,10 +266,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
-  const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-  tabsets.forEach(function(tabset) {
-    const tabby = new Tabby('#' + tabset.id);
-  });
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {

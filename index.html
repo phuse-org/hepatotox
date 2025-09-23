@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Hepatotoxicity Analyses and Displays – Hepatotox TLG Catalog</title>
+<title>hepsite</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/tabby.min.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
@@ -69,9 +68,10 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -79,7 +79,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Hepatotox TLG Catalog</span>
+    <span class="navbar-title">hepsite</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -98,20 +98,20 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-tables">    
         <li>
-    <a class="dropdown-item" href="./tables/table01.qmd">
- <span class="dropdown-text">Table 1 – Overview of Reported Liver Safety Findings</span></a>
+    <a class="dropdown-item" href="./table01.qmd">
+ <span class="dropdown-text">Table 01</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./tables/table02.qmd">
- <span class="dropdown-text">Table 2 – Elevations in Liver Biochemical Tests Based on Thresholds</span></a>
+    <a class="dropdown-item" href="./table02.qmd">
+ <span class="dropdown-text">Table 02</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./tables/table03.qmd">
- <span class="dropdown-text">Table 3 – Shifts in Liver Biochemical Tests Based on Thresholds</span></a>
+    <a class="dropdown-item" href="./table03.qmd">
+ <span class="dropdown-text">Table 03</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./tables/table04.qmd">
- <span class="dropdown-text">Table 4 – Summary of Treatment Emergent Adverse Events of Adverse Events Meeting the Liver Safety SMQ (or FMQ)</span></a>
+    <a class="dropdown-item" href="./table04.qmd">
+ <span class="dropdown-text">Table 04</span></a>
   </li>  
     </ul>
   </li>
@@ -121,33 +121,49 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-figures">    
         <li>
-    <a class="dropdown-item" href="./figures/figure01.qmd">
- <span class="dropdown-text">Figure 1 – Plot of Maximum Total Bilirubin Versus Maximum ALT or AST or ALP</span></a>
+    <a class="dropdown-item" href="./figure01.qmd">
+ <span class="dropdown-text">Figure 01</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./figures/figure02.qmd">
- <span class="dropdown-text">Figure 2 – Scatterplot of Baseline Versus Maximum Values for Liver Biochemical Tests</span></a>
+    <a class="dropdown-item" href="./figure02.qmd">
+ <span class="dropdown-text">Figure 02</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./figures/figure03.qmd">
- <span class="dropdown-text">Figure 3 – Line Plot for Liver Biochemical Tests</span></a>
+    <a class="dropdown-item" href="./figure03.qmd">
+ <span class="dropdown-text">Figure 03</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./figures/figure04.qmd">
- <span class="dropdown-text">Figure 4 – Forest Plot of DILI Adverse Events Based on the SMQ (or FMQ)</span></a>
+    <a class="dropdown-item" href="./figure04.qmd">
+ <span class="dropdown-text">Figure 04</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./figures/figure05.qmd">
- <span class="dropdown-text">Figure 5 – Patient Profiles of Subjects of Interest</span></a>
+    <a class="dropdown-item" href="./figure05.qmd">
+ <span class="dropdown-text">Figure 05</span></a>
   </li>  
     </ul>
   </li>
-</ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/phuse-org/hepatotox"> <i class="bi bi-github" role="img">
-</i> 
-<span class="menu-text"></span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-articles" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Articles</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-articles">    
+        <li>
+    <a class="dropdown-item" href="./intro-hepatotox.qmd">
+ <span class="dropdown-text">Intro to Hepatotox</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./liver-enzymes.qmd">
+ <span class="dropdown-text">Liver Enzymes Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./resources.qmd">
+ <span class="dropdown-text">Resources</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -160,49 +176,58 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#hepatotox-catalog" id="toc-hepatotox-catalog" class="nav-link active" data-scroll-target="#hepatotox-catalog"><strong>Hepatotox Catalog</strong></a>
+  <ul class="collapse">
+  <li><a href="#white-paper" id="toc-white-paper" class="nav-link" data-scroll-target="#white-paper"><strong>White Paper</strong></a></li>
+  <li><a href="#shiny-app-demo" id="toc-shiny-app-demo" class="nav-link" data-scroll-target="#shiny-app-demo">Shiny App Demo</a></li>
+  <li><a href="#usage-setup-and-pre-processing-of-synthetic-data." id="toc-usage-setup-and-pre-processing-of-synthetic-data." class="nav-link" data-scroll-target="#usage-setup-and-pre-processing-of-synthetic-data."><strong>Usage Setup and pre-processing of synthetic data.</strong></a></li>
+  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license"><strong>License</strong></a></li>
+  <li><a href="#contributing" id="toc-contributing" class="nav-link" data-scroll-target="#contributing"><strong>Contributing</strong></a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Hepatotoxicity Analyses and Displays</h1>
-</div>
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<section id="appendix" class="level1">
-<h1>Appendix</h1>
-<section id="tables" class="level2">
-<h2 class="anchored" data-anchor-id="tables">Tables</h2>
-<ul>
-<li><a href="tables/table01.qmd">Table 1 – Overview of Reported Liver Safety Findings</a></li>
-<li><a href="tables/table02.qmd">Table 2 – Elevations in Liver Biochemical Tests Based on Thresholds</a></li>
-<li><a href="tables/table03.qmd">Table 3 – Shifts in Liver Biochemical Tests Based on Thresholds</a></li>
-<li><a href="tables/table04.qmd">Table 4 – Summary of Treatment Emergent Adverse Events of Adverse Events Meeting the Liver Safety SMQ (or FMQ)</a></li>
-</ul>
+<section id="hepatotox-catalog" class="level1">
+<h1><strong>Hepatotox Catalog</strong></h1>
+<p><img src="images/hepatotox-hex.png" class="img-fluid" width="126"></p>
+<p>The catalog is a series of outputs for a Stage 1 Hepatotoxicity white paper considering a set of aggregate analyses and displays to rule out potential drug-induced liver injury (DILI). The catalog was generated using TERN and random.cdisc.data packages.</p>
+<p>This repository provides a collection of hepatotoxicity-related analyses and outputs generated using the R language. The target audience is the clinical trials community, including statisticians, data scientists, and other professionals interested in applying R to clinical trials data.</p>
+<section id="white-paper" class="level3">
+<h3 class="anchored" data-anchor-id="white-paper"><strong>White Paper</strong></h3>
+<p>The analyses and displays in this catalog were based on the recommendations in a white paper developed by the PHUSE Safety Analytics working group. The white paper is titled:</p>
+<p>“Recommendations for Analyses and Displays Associated with Hepatotoxicity with a Focus on Phase 2–4 Clinical Trials and Integrated Submission Documents. Stage 1: Initial Assessment and Screening for Potential of Hepatotoxicity.”</p>
+<p>View PDF</p>
 </section>
-<section id="figures" class="level2">
-<h2 class="anchored" data-anchor-id="figures">Figures</h2>
-<ul>
-<li><a href="figures/figure01.qmd">Figure 1 – Plot of Maximum Total Bilirubin Versus Maximum ALT or AST or ALP</a></li>
-<li><a href="figures/figure02.qmd">Figure 2 – Scatterplot of Baseline Versus Maximum Values for Liver Biochemical Tests</a></li>
-<li><a href="figures/figure03.qmd">Figure 3 – Line Plot for Liver Biochemical Tests</a></li>
-<li><a href="figures/figure04.qmd">Figure 4 – Forest Plot of DILI Adverse Events Based on the SMQ (or FMQ)</a></li>
-<li><a href="figures/figure05.qmd">Figure 5 – Patient Profiles of Subjects of Interest</a></li>
-</ul>
+<section id="shiny-app-demo" class="level3">
+<h3 class="anchored" data-anchor-id="shiny-app-demo">Shiny App Demo</h3>
+<p>The following is an output comparing maximum total bilirubin vs.&nbsp;maximum other liver enzymes (ALT, AST, or ALP).</p>
+<p>Interact with the Shiny App directly below:</p>
+</section>
+<section id="usage-setup-and-pre-processing-of-synthetic-data." class="level3">
+<h3 class="anchored" data-anchor-id="usage-setup-and-pre-processing-of-synthetic-data."><strong>Usage Setup and pre-processing of synthetic data.</strong></h3>
+<p>The output generated by the given code.</p>
+<p>An interactive application that can alternatively be used to produce and interact with the graph. Interacting with Catalog R Code The full source code of each article can be viewed by viewing the on the “Source Code” code block at the top of the page and copied using the “Copy” button.</p>
+<p>Individual code chunks from within the article can also be viewed and copied. The Reproducibility tab contains session information and allows one to install the packages required to properly run the code.</p>
+</section>
+<section id="license" class="level3">
+<h3 class="anchored" data-anchor-id="license"><strong>License</strong></h3>
+<p>This catalog as well as code examples are licensed under the Apache License, Version 2.0 - see the LICENSE file for details.</p>
+</section>
+<section id="contributing" class="level3">
+<h3 class="anchored" data-anchor-id="contributing"><strong>Contributing</strong></h3>
+<p>We welcome contributions big and small to the TLG catalog. Please refer to the Contributing guide for more information on how you can contribute.</p>
+<p>Development This website is built using Quarto and hosted on GitHub Pages.</p>
 
 
 </section>
@@ -229,10 +254,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
-  const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-  tabsets.forEach(function(tabset) {
-    const tabby = new Tabby('#' + tabset.id);
-  });
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
