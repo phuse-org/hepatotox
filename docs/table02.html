@@ -82,7 +82,7 @@
   <div class="container-fluid">
     <!-- Brand/logo -->
     <a class="navbar-brand" href="./index.html">
-      <img src="docs/hepatotox-hex.png" alt="Hepatotox Logo" width="40" height="40" class="d-inline-block align-text-top">
+      <img src="hepatotox-hex.png" alt="Hepatotox Logo" width="40" height="40" class="d-inline-block align-text-top">
       Hepatotox Catalog
     </a>
 
@@ -173,12 +173,12 @@ library(rtables)
 library(r2rtf)
 library(formatters)
 
-#Load an ADLB dataset.
-load(file = "/cloud/project/Raw Data/Raw Data Output/adlbt2.Rda")          
+#Load ADLB dataset directly from GitHub
+load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/data/adlbt2.Rda"))
 
-#Load ADSL for future treatment arm reference.
-load(file = "/cloud/project/Raw Data/Raw Data Output/adslt2.Rda")       
-
+#Load ADSL dataset directly from GitHub
+load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/data/adslt2.Rda"))
+  
 #NAs are explicit missing levels.
 adhy_liver4 <- df_explicit_na(adlbt2)
 
@@ -190,7 +190,7 @@ levels(adhy_liver4$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
 adhy_liver4$ACTARMCD <- factor(adhy_liver4$ACTARMCD, levels = c("PL", "T1", "T2")) 
 adhy_liver4a <- adhy_liver4 %>% add_column(RUNNUM=runif(nrow(.)))
 
-# Define values of interest in PARAMCD variable for ALT criteria.
+#Define values of interest in PARAMCD variable for ALT criteria.
 paramcd_alt <- c("ALT")
 
 adhy_liver2al <- adhy_liver4a %>%
