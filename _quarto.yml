@@ -1,0 +1,43 @@
+project:
+  type: website
+
+website:
+  title: "Hepatotox Catalog"
+  navbar:
+    left:
+      - text: "Home"
+        href: index.html
+      - text: "Articles"
+        menu:
+          - text: "Introduction to Hepatotox"
+            href: introduction.html
+          - text: "Liver Enzymes Overview"
+            href: liver-enzyme.html
+      - text: "Tables"
+        menu:
+          - text: "Table 01"
+            href: table01.html
+          - text: "Table 02"
+            href: table02.html
+          - text: "Table 03"
+            href: table03.html
+          - text: "Table 04"
+            href: table04.html
+          - text: "Table 05"
+            href: table05.html
+      - text: "Figures"
+        menu:
+          - text: "Figure 01"
+            href: figure01.html
+          - text: "Figure 02"
+            href: figure02.html
+          - text: "Figure 03"
+            href: figure03.html
+          - text: "Figure 04"
+            href: figure04.html
+      - text: "Resources"
+        href: resources.html
+
+format:
+  html:
+    css: styles.css
