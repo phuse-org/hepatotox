@@ -1,0 +1,323 @@
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Figure 05: Patient Profile of Subjects of Interest</title>
+
+  <!-- ✅ Quarto/Bootstrap assets (match index.html) -->
+  <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+  <script src="site_libs/quarto-nav/headroom.min.js"></script>
+  <script src="site_libs/clipboard/clipboard.min.js"></script>
+  <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+  <script src="site_libs/quarto-search/fuse.min.js"></script>
+  <script src="site_libs/quarto-search/quarto-search.js"></script>
+  <meta name="quarto:offset" content="./">
+  <script src="site_libs/quarto-html/quarto.js"></script>
+  <script src="site_libs/quarto-html/popper.min.js"></script>
+  <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+  <script src="site_libs/quarto-html/anchor.min.js"></script>
+  <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+  <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <script src="site_libs/bootstrap/bootstrap.min.js"></script>
+  <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+  <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <style>
+    :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
+    body{margin:0;padding:0;background:#f7f7fb;}
+    .container{max-width:1100px;margin:100px auto 40px;background:#fff;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(20,20,40,0.06);}
+    h1{margin:0 0 6px;text-align:center;font-size:20px;}
+    .subtitle{text-align:center;color:#444;margin-bottom:18px;font-size:14px;}
+
+    /* code wrapper */
+    .code-wrapper{position:relative;border:1px solid #e6e6e6;border-radius:8px;background:#f2f2f2;overflow:hidden;}
+    .code-viewport{max-height:55vh;overflow:auto;padding:12px;font-family:"Fira Code", Consolas, monospace;font-size:13px;line-height:1.4;background:transparent;}
+    .lines{min-width:min-content;}
+    .line{display:flex;align-items:flex-start;gap:12px;white-space:pre;}
+    .ln{width:60px;text-align:right;color:#666;user-select:none;flex:0 0 60px;padding-right:6px;}
+    .content{flex:1 1 auto;white-space:pre;overflow:visible;color:#111;}
+
+    /* Copy button */
+    .copy-btn{position:absolute;top:8px;right:8px;z-index:3;padding:6px 10px;border-radius:6px;border:0;background:#2563eb;color:#fff;cursor:pointer;font-weight:600;}
+    .copy-btn:active{transform:translateY(1px);}
+
+    /* image and buttons */
+    .image-container{text-align:center;margin-top:16px;}
+    .image-container img{max-width:100%;height:auto;border-radius:6px;border:1px solid #ddd;display:inline-block;}
+
+    .buttons{text-align:center;margin-top:14px;}
+    .buttons a.btn{display:inline-block;margin:6px;padding:10px 18px;border-radius:8px;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;}
+    .buttons a.btn:hover{background:#1e4db7;}
+
+    footer{text-align:center;font-size:13px;color:#666;margin-top:18px;}
+
+    @media(max-width:700px){
+      .ln{width:48px;flex:0 0 48px;text-align:right;}
+      .copy-btn{top:6px;right:6px;}
+    }
+  </style>
+
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    .navbar-custom {
+      background-color: #003366; /* deep navy */
+    }
+    .navbar-custom .nav-link {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #ffffff;
+    }
+    .navbar-custom .nav-link:hover {
+      color: #ffcc00;
+    }
+    .navbar-custom .dropdown-menu {
+      background-color: #003366;
+    }
+    .navbar-custom .dropdown-item {
+      color: #ffffff;
+    }
+    .navbar-custom .dropdown-item:hover {
+      background-color: #002244;
+      color: #ffcc00;
+    }
+  </style>
+
+</head>
+<body class="nav-fixed fullcontent">
+
+<!-- ✅ Full navbar copied from index.html -->
+  
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="./index.html">
+      <img src="hepatotox-hex.png" alt="Hepatotox Logo" width="40" height="40" class="d-inline-block align-text-top">
+      Hepatotox Catalog
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="articlesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Articles</a>
+          <ul class="dropdown-menu" aria-labelledby="articlesDropdown">
+            <li><a class="dropdown-item" href="./introduction.html">Introduction to Hepatotox</a></li>
+            <li><a class="dropdown-item" href="./liver-enzyme.html">Liver Enzymes Overview</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="tablesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Tables</a>
+          <ul class="dropdown-menu" aria-labelledby="tablesDropdown">
+            <li><a class="dropdown-item" href="./table01.html">Table 01</a></li>
+            <li><a class="dropdown-item" href="./table02.html">Table 02</a></li>
+            <li><a class="dropdown-item" href="./table03.html">Table 03</a></li>
+            <li><a class="dropdown-item" href="./table04.html">Table 04</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="figuresDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Figures</a>
+          <ul class="dropdown-menu" aria-labelledby="figuresDropdown">
+            <li><a class="dropdown-item" href="./figure01.html">Figure 01</a></li>
+            <li><a class="dropdown-item" href="./figure02.html">Figure 02</a></li>
+            <li><a class="dropdown-item" href="./figure03.html">Figure 03</a></li>
+            <li><a class="dropdown-item" href="./figure04.html">Figure 04</a></li>
+            <li><a class="dropdown-item" href="./figure05.html">Figure 05</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="./resources.qmd">Resources</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- ✅ Page content -->
+  <div class="container">
+    <h1>Figure 05: Patient Profile of Subjects of Interest</h1>
+    <div class="subtitle">
+      The datasets used for the program are simulated datasets and a modified version of random.cdisc.data's ADAE dataset. Copy the code below to create an interactive plot
+of patient profile of subjects of interest.
+    </div>
+
+    <div class="code-wrapper" id="codeWrapper" aria-label="R program code area">
+      <button class="copy-btn" id="copyBtn">Copy Code</button>
+      <div class="code-viewport" id="codeViewport" tabindex="0" aria-label="R program scrollable code">
+        <div class="lines" id="lines"></div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px;font-weight:600;">The generated output is below:</p>
+    <div class="image-container">
+
+    <iframe src="https://rxu6nu-dimple-patel.shinyapps.io/fig5_app/" 
+            style="width:100%; height:600px; border:1px solid #ddd; border-radius:6px;">
+    </iframe>
+
+      
+    </div>
+
+    
+  </div>
+
+  <!-- ✅ R code preserved -->
+  <script id="rawCode" type="text/plain">
+#Load appropriate libraries.
+library(dplyr)
+library(tidyr)
+library(shiny)
+library(ggplot2)
+library(patchwork)
+library(magrittr)
+
+#Load datasets
+load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/docs/data/biowidef5.Rda"))
+load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/docs/data/biolongf5.Rda"))
+load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/docs/data/adaef5.Rda"))
+
+#Create list of unique patient IDs.----
+patients <- unique(biolongf5$PatientID)
+
+#Define study_days if not already done
+study_days <- seq(-28, 100, by = 14) 
+
+#UI.----
+ui <- fluidPage(
+  titlePanel("Figure 5"),
+    sidebarPanel(
+      selectInput("patient", "Select Patient ID", choices = patients, selected = patients[1])
+    ),
+    mainPanel(
+      plotOutput("comboPlot", height = "650px")
+    )
+  )
+
+
+# Server.----
+server <- function(input, output) {
+  
+  output$comboPlot <- renderPlot({
+    patient_id <- input$patient
+    
+    patient_biomarkers <- biolongf5 %>% filter(PatientID == patient_id)
+    patient_ae <- adaef5 %>% filter(PatientID == patient_id)
+    
+    x_limits <- c(-28, 100)
+    
+
+    p1 <- ggplot(patient_biomarkers, aes(x = StudyDay, y = Value, color = Marker)) +
+      geom_point(size = 3) +
+      geom_line(aes(linetype = Marker), size = 1) +
+      scale_y_continuous("ALT, AST, TBILI, ALK, GGT (x ULN)", limits = c(0, 13), 
+      breaks = c(1, 3, 5, 10, 13)) +
+      theme_minimal() +
+      labs(color = NULL, linetype = NULL) + 
+      theme(
+        legend.position = "top",
+        plot.background = element_rect(color = "black", fill = NA, linewidth = 1),
+        legend.text = element_text(size = 14),
+        axis.title.x = element_blank(),  
+        axis.text.x = element_blank(),  
+        axis.ticks.x = element_blank(),
+        axis.text.y = element_text(size = 14),         
+        axis.title.y = element_text(size = 14),        
+        plot.title = element_text(size = 18)
+      ) +
+      scale_x_continuous("", limits = x_limits, breaks = study_days, expand = c(0, 0)) +
+      ggtitle(paste("Patient", patient_id, " Profile of Subjects of Interest")) +
+      geom_hline(yintercept = c(0, 1, 3, 5, 10), linetype = "dashed", color = "gray40") +
+      geom_segment(aes(x = 0, xend = 0, y = 13, yend = -Inf), 
+               linetype = "dashed", color = "gray40", size = 1) 
+    
+    # Bottom plot: AE Timeline.----
+  p2 <- ggplot(patient_ae, aes(y = AE)) +
+    geom_segment(aes(x = StartDay, xend = EndDay, yend = AE, color = AE), size = 7) + 
+    geom_text(aes(x = StartDay - 2, label = AE), hjust = 1, color = "black", size = 6) +
+    scale_x_continuous(
+      name = "Study Day",
+      limits = x_limits,
+      breaks = study_days,      # match p1
+      expand = c(0, 0)          # ensures tight alignment
+    ) +
+    theme_minimal() +
+    theme(
+      axis.title.y = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      legend.position = "none",
+      plot.background = element_blank(),  # removed border to avoid seam
+      axis.title.x = element_text()       # ensures x-axis label shows (optional)
+    ) +
+    scale_x_continuous(
+      name = "Study Day",
+      limits = x_limits,
+      breaks = study_days,  # match p1
+      expand = c(0, 0)     # ensures tight alignment
+    ) +
+    theme(
+      axis.title.y = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      legend.position = "none",
+      plot.background = element_blank(),  # removed border to avoid seam
+      #axis.title.x = element_text(),      # ensures x-axis label shows
+      axis.ticks.x = element_line(color = "black"),  # Add black tick marks on x-axis
+      axis.line.x = element_line(color = "black"),    # Add black x-axis line
+      axis.text.x = element_text(size = 14),
+      axis.title.x = element_text(size = 14)
+    )
+
+    # Remove individual plot borders
+      p1 <- p1 + theme(plot.background = element_blank())
+      p2 <- p2 + theme(plot.background = element_blank())
+      
+    # Add vertical dashed line to both p1 and p2 at x = 0.
+      vertical_line <- geom_vline(xintercept = 0, linetype = "dashed", color = "gray40", size = 1)
+
+    # Combine plots.----
+      combined_plot <- (p1 / p2) +
+      plot_layout(heights = c(2, 1)) +
+      plot_annotation(theme = theme(plot.background = element_rect(color = "black", fill = NA, linewidth = 1))) +
+      vertical_line
+      
+      combined_plot
+  })
+}
+
+#Run the app.----
+shinyApp(ui = ui, server = server)
+  </script>
+
+  <script>
+    (function(){
+      let raw = document.getElementById('rawCode').textContent.replace(/\r/g, '').replace(/^\n+/, '').replace(/\n+$/, '');
+      const linesArray = raw.split('\n');
+      const linesContainer = document.getElementById('lines');
+      const frag = document.createDocumentFragment();
+      linesArray.forEach((text, idx) => {
+        const row = document.createElement('div'); row.className='line';
+        const ln = document.createElement('div'); ln.className='ln'; ln.textContent = idx+1;
+        const content = document.createElement('div'); content.className='content'; content.textContent=text;
+        row.appendChild(ln); row.appendChild(content); frag.appendChild(row);
+      });
+      linesContainer.appendChild(frag);
+
+      document.getElementById('copyBtn').addEventListener('click', async ()=>{
+        try {
+          await navigator.clipboard.writeText(raw);
+          let b=document.getElementById('copyBtn');
+          b.textContent='Copied!';
+          setTimeout(()=>b.textContent='Copy Code',1200);
+        } catch(e) {
+          alert('Copy failed');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
