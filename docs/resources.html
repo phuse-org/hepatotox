@@ -2,39 +2,101 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Introduction to Hepatotox</title>
+  <title>Resources — Hepatotox Catalog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
   <style>
-    :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
-    body{margin:0;padding:0;background:#f7f7fb;}
-    .container{max-width:900px;margin:90px auto 40px;background:#fff;border-radius:10px;padding:22px;box-shadow:0 6px 18px rgba(20,20,40,0.06);}
-    h1{margin:0 0 20px;text-align:center;font-size:24px;font-weight:700;}
+    :root {
+      font-family: Segoe UI, Roboto, system-ui, -apple-system, sans-serif;
+      color: #222;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f7f7fb;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 90px auto 40px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 22px;
+      box-shadow: 0 6px 18px rgba(20,20,40,0.06);
+    }
+
+    h1 {
+      margin: 0 0 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: navy; /* match landing page */
+    }
 
     .essay {
-      font-size:16px;
-      line-height:1.6;
-      color:#111;
-      font-family: "Georgia", "Times New Roman", serif;
-      text-align: justify;   /* justify alignment */
+      font-size: 16px;
+      line-height: 1.6;
+      color: #111;
+      font-family: Segoe UI, Roboto, system-ui, -apple-system, sans-serif; /* match landing page */
+      text-align: justify;
     }
 
-    .essay p {
-      margin-bottom: 1em; /* space between paragraphs */
-    }
+    .essay p { margin-bottom: 1em; }
 
-    /* Navbar styles */
+    /* Navbar styles (match index.html) */
     .navbar-custom { background-color: #003366; }
-    .navbar-custom .nav-link { font-size: 1.05rem; font-weight: 500; color: #ffffff; }
+    .navbar-custom .nav-link {
+      font-size: 1.1rem;  /* match landing page */
+      font-weight: 500;
+      color: #ffffff;
+    }
     .navbar-custom .nav-link:hover { color: #ffcc00; }
     .navbar-custom .dropdown-menu { background-color: #003366; }
-    .navbar-custom .dropdown-item { color: #ffffff; }
-    .navbar-custom .dropdown-item:hover { background-color: #002244; color: #ffcc00; }
-  </style>
+    .navbar-custom .dropdown-item {
+      font-size: 1.05rem; /* match landing page */
+      color: #ffffff;
+    }
+    .navbar-custom .dropdown-item:hover {
+      background-color: #002244;
+      color: #ffcc00;
+    }
+
+    /* GitHub button */
+    .btn-github {
+      background-color: #24292e;
+      color: #fff;
+      border: none;
+      margin-bottom: 1em;
+    }
+    .btn-github:hover { background-color: #444c56; color: #fff; }
+    .btn-github i { margin-right: 8px; }
+
+    /* Other resources section */
+    .other-resources {
+      margin-top: 2em;
+      text-align: left;
+    }
+    .other-resources h2 {
+      font-size: 1.2rem;   /* smaller font size */
+      font-weight: 600;
+      color: navy;         /* match landing page */
+      margin-bottom: 0.8em;
+    }
+    .other-resources a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .other-resources a:hover { text-decoration: underline; }
+
+</style>
 </head>
 <body class="nav-fixed fullcontent">
 
@@ -42,7 +104,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="./index.html">
-      <img src="hepatotox-hex.png" alt="Logo" width="34" height="34" class="d-inline-block align-text-top">
+      <img src="hepatotox-hex.png" alt="Logo" width="40" height="40" class="d-inline-block align-text-top">
       Hepatotox Catalog
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -81,7 +143,7 @@
           </ul>
         </li>
 
-        <li class="nav-item"><a class="nav-link" href="./resources.qmd">Resources</a></li>
+        <li class="nav-item"><a class="nav-link" href="./resources.html">Resources</a></li>
       </ul>
     </div>
   </div>
@@ -89,23 +151,23 @@
 
 <!-- Main content -->
 <div class="container">
-  <h1>Introduction to Hepatotox</h1>
-  <div class="essay">
-    <p>The Hepatotox package was developed to support clinical trials investigating drug-induced liver injury (DILI), also referred to as hepatotoxicity. 
-      Because DILI remains a leading cause of late-stage drug development failures and post-marketing withdrawals, standardized tools for analyzing liver safety signals are essential.
-      The Hepatotox package addresses this need by providing a consistent set of analyses and visual displays that help researchers detect, interpret, and communicate patterns of 
-      liver enzyme changes in response to investigational drugs. </p>
+  <h1>Resources</h1>
+  <div class="essay text-center">
+    <p>
+      You can access the Hepatotox package, including programs and datasets, directly on GitHub:
+    </p>
+    <a href="https://github.com/phuse-org/hepatotox/" target="_blank" class="btn btn-github">
+      <i class="fab fa-github"></i> Visit Hepatotox on GitHub
+    </a>
 
-    <p>Built using R programming and Shiny applications, the package combines robust statistical workflows with interactive visualizations. 
-      These tools allow trial teams to explore enzyme elevations, bilirubin trends, and combinations of biomarkers that can indicate emerging safety concerns. 
-      Beyond static tables, the package emphasizes intuitive graphical displays—such as scatter plots and forest plots—that highlight clinically meaningful findings that might 
-      otherwise be overlooked in raw listings. </p>
-
-    <p>By standardizing how liver safety data are summarized and displayed, the Hepatotox package serves both scientific and regulatory audiences. Clinical researchers gain an 
-      efficient way to interpret complex datasets, while regulatory reviewers benefit from transparent, reproducible analyses aligned with current guidance on DILI evaluation. As
-       such, the package represents a practical step forward in harmonizing liver safety assessments across trials, ultimately supporting safer drug development and clearer 
-       decision-making.</p>
+    <div class="other-resources">
+      <h2>Other Resources</h2>
+      <p>
+        <a href="https://phuse.s3.eu-central-1.amazonaws.com/Deliverables/Safety+Analytics/WP091.pdf" target="_blank">
+          PHUSE Safety Analytics: WP091 (PDF)
+        </a>
+      </p>
+    </div>
   </div>
 </div>
-</body>
-</html>
+</b
