@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Liver Enzymes Overview — Hepatotox Catalog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+
+  <style>
+    :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
+    body{margin:0;padding:0;background:#f7f7fb;}
+    .container{max-width:900px;margin:90px auto 40px;background:#fff;border-radius:10px;padding:22px;box-shadow:0 6px 18px rgba(20,20,40,0.06);}
+    h1{margin:0 0 20px;text-align:center;font-size:24px;font-weight:700;}
+
+    .essay {
+      font-size:16px;
+      line-height:1.6;
+      color:#111;
+      font-family: "Georgia", "Times New Roman", serif;
+      text-align: justify;   /* justify alignment */
+    }
+
+    .essay p {
+      margin-bottom: 1em; /* space between paragraphs */
+    }
+
+    /* Navbar styles */
+    .navbar-custom { background-color: #003366; }
+    .navbar-custom .nav-link { font-size: 1.05rem; font-weight: 500; color: #ffffff; }
+    .navbar-custom .nav-link:hover { color: #ffcc00; }
+    .navbar-custom .dropdown-menu { background-color: #003366; }
+    .navbar-custom .dropdown-item { color: #ffffff; }
+    .navbar-custom .dropdown-item:hover { background-color: #002244; color: #ffcc00; }
+  </style>
+</head>
+<body class="nav-fixed fullcontent">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="./index.html">
+      <img src="hepatotox-hex.png" alt="Logo" width="34" height="34" class="d-inline-block align-text-top">
+      Hepatotox Catalog
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="articlesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Articles</a>
+          <ul class="dropdown-menu" aria-labelledby="articlesDropdown">
+            <li><a class="dropdown-item" href="./introduction.html">Introduction to Hepatotox</a></li>
+            <li><a class="dropdown-item" href="./liver-enzyme.html">Liver Enzymes Overview</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="tablesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Tables</a>
+          <ul class="dropdown-menu" aria-labelledby="tablesDropdown">
+            <li><a class="dropdown-item" href="./table01.html">Table 01</a></li>
+            <li><a class="dropdown-item" href="./table02.html">Table 02</a></li>
+            <li><a class="dropdown-item" href="./table03.html">Table 03</a></li>
+            <li><a class="dropdown-item" href="./table04.html">Table 04</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="figuresDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Figures</a>
+          <ul class="dropdown-menu" aria-labelledby="figuresDropdown">
+            <li><a class="dropdown-item" href="./figure01.html">Figure 01</a></li>
+            <li><a class="dropdown-item" href="./figure02.html">Figure 02</a></li>
+            <li><a class="dropdown-item" href="./figure03.html">Figure 03</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item"><a class="nav-link" href="./resources.qmd">Resources</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main content -->
+<div class="container">
+  <h1>Liver Enzymes Overview</h1>
+  <div class="essay">
+    <p>The Hepatotox package was developed to support clinical trials investigating drug-induced liver injury (DILI), also referred to as hepatotoxicity. 
+      Because DILI remains a leading cause of late-stage drug development failures and post-marketing withdrawals, standardized tools for analyzing liver safety signals are essential.
+      The Hepatotox package addresses this need by providing a consistent set of analyses and visual displays that help researchers detect, interpret, and communicate patterns of 
+      liver enzyme changes in response to investigational drugs. </p>
+
+    <p>Built using R programming and Shiny applications, the package combines robust statistical workflows with interactive visualizations. 
+      These tools allow trial teams to explore enzyme elevations, bilirubin trends, and combinations of biomarkers that can indicate emerging safety concerns. 
+      Beyond static tables, the package emphasizes intuitive graphical displays—such as scatter plots and forest plots—that highlight clinically meaningful findings that might 
+      otherwise be overlooked in raw listings. </p>
+
+    <p>By standardizing how liver safety data are summarized and displayed, the Hepatotox package serves both scientific and regulatory audiences. Clinical researchers gain an 
+      efficient way to interpret complex datasets, while regulatory reviewers benefit from transparent, reproducible analyses aligned with current guidance on DILI evaluation. As
+       such, the package represents a practical step forward in harmonizing liver safety assessments across trials, ultimately supporting safer drug development and clearer 
+       decision-making.</p>
+  </div>
+</div>
+</body>
+</html>
