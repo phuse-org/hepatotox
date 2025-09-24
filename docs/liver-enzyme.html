@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Liver Enzymes Overview — Hepatotox Catalog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+
+  <style>
+    :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
+    body{margin:0;padding:0;background:#f7f7fb;}
+    .container{max-width:900px;margin:90px auto 40px;background:#fff;border-radius:10px;padding:22px;box-shadow:0 6px 18px rgba(20,20,40,0.06);}
+    h1{margin:0 0 20px;text-align:center;font-size:24px;font-weight:700;}
+
+    .essay {
+      font-size:16px;
+      line-height:1.6;
+      color:#111;
+      font-family: "Georgia", "Times New Roman", serif;
+      text-align: justify;   /* justify alignment */
+    }
+
+    .essay p {
+      margin-bottom: 1em; /* space between paragraphs */
+    }
+
+    /* Navbar styles */
+    .navbar-custom { background-color: #003366; }
+    .navbar-custom .nav-link { font-size: 1.05rem; font-weight: 500; color: #ffffff; }
+    .navbar-custom .nav-link:hover { color: #ffcc00; }
+    .navbar-custom .dropdown-menu { background-color: #003366; }
+    .navbar-custom .dropdown-item { color: #ffffff; }
+    .navbar-custom .dropdown-item:hover { background-color: #002244; color: #ffcc00; }
+  </style>
+</head>
+<body class="nav-fixed fullcontent">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="./index.html">
+      <img src="hepatotox-hex.png" alt="Logo" width="34" height="34" class="d-inline-block align-text-top">
+      Hepatotox Catalog
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="articlesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Articles</a>
+          <ul class="dropdown-menu" aria-labelledby="articlesDropdown">
+            <li><a class="dropdown-item" href="./introduction.html">Introduction to Hepatotox</a></li>
+            <li><a class="dropdown-item" href="./liver-enzyme.html">Liver Enzymes Overview</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="tablesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Tables</a>
+          <ul class="dropdown-menu" aria-labelledby="tablesDropdown">
+            <li><a class="dropdown-item" href="./table01.html">Table 01</a></li>
+            <li><a class="dropdown-item" href="./table02.html">Table 02</a></li>
+            <li><a class="dropdown-item" href="./table03.html">Table 03</a></li>
+            <li><a class="dropdown-item" href="./table04.html">Table 04</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="figuresDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Figures</a>
+          <ul class="dropdown-menu" aria-labelledby="figuresDropdown">
+            <li><a class="dropdown-item" href="./figure01.html">Figure 01</a></li>
+            <li><a class="dropdown-item" href="./figure02.html">Figure 02</a></li>
+            <li><a class="dropdown-item" href="./figure03.html">Figure 03</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item"><a class="nav-link" href="./resources.qmd">Resources</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main content -->
+<div class="container">
+  <h1>Liver Enzymes Overview</h1>
+  <div class="essay">
+    <p>Liver enzymes and related biomarkers, such as alanine aminotransferase (ALT), aspartate aminotransferase (AST, also known historically as SGOT), alkaline phosphatase (ALP), total bilirubin, and gamma-glutamyl transferase (GGT), are critical tools for assessing liver function and injury. These markers are routinely measured in clinical practice because changes in their levels can signal hepatocellular damage, cholestasis, or impaired bile excretion—conditions that are central to drug-induced liver injury (DILI). Since SGOT is simply another term for AST, they are interchangeable, and only ALT, AST, ALP, bilirubin, and GGT need to be considered separately.</p>
+
+    <p>ALT and AST are intracellular enzymes primarily involved in amino acid metabolism. ALT is largely specific to the liver, making it a sensitive marker for hepatocellular injury. AST is found in both the liver and other tissues, including muscle and heart, and while less liver-specific, it becomes clinically meaningful when elevated alongside ALT. In DILI, elevations of ALT greater than three times the upper limit of normal (ULN) are considered a hallmark of hepatocellular damage, while AST elevations often reinforce the presence of injury but are less specific on their own.</p>
+
+    <p>ALP and GGT are enzymes associated with bile duct function and cholestasis. ALP elevations often indicate obstruction or impaired bile flow, but because ALP can also be elevated due to bone disorders, GGT is commonly measured alongside it to confirm a hepatic origin. In the context of DILI, elevations in ALP and GGT signal cholestatic or mixed patterns of injury. Importantly, persistent or marked increases in these enzymes reflect more severe or prolonged liver damage, which can indicate higher risk for chronic liver dysfunction.</p>
+
+    <p>Total bilirubin is a byproduct of hemoglobin breakdown that must be conjugated and excreted by the liver. Elevated bilirubin levels, particularly when combined with increased ALT or ALP, signify impaired liver excretory function and are considered a strong marker of clinically significant DILI. The so-called “Hy’s Law” underscores this: when drug-induced hepatocellular injury leads to jaundice (elevated bilirubin), there is a significantly higher risk of fatal outcomes or need for liver transplantation. Thus, bilirubin is a key indicator of severity rather than just injury.</p>
+
+    <p>Taken together, these biomarkers provide a framework for classifying the type and severity of DILI. ALT and AST elevations suggest hepatocellular injury, ALP and GGT elevations point to cholestatic injury, and bilirubin elevations mark the functional severity of the damage. By integrating these markers, clinicians can distinguish between mild, transient enzyme elevations and severe, potentially life-threatening liver injury. Understanding and monitoring these enzymes is therefore central to both diagnosing and managing drug-induced liver injury in clinical and regulatory settings.</p>
+  </div>
+</div>
+</body>
+</html>
