@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Figure 04: Forest Plot of DILI Adverse Events Based on the SMQ</title>
+
+  <!-- ✅ Quarto/Bootstrap assets (match index.html) -->
+  <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+  <script src="site_libs/quarto-nav/headroom.min.js"></script>
+  <script src="site_libs/clipboard/clipboard.min.js"></script>
+  <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+  <script src="site_libs/quarto-search/fuse.min.js"></script>
+  <script src="site_libs/quarto-search/quarto-search.js"></script>
+  <meta name="quarto:offset" content="./">
+  <script src="site_libs/quarto-html/quarto.js"></script>
+  <script src="site_libs/quarto-html/popper.min.js"></script>
+  <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+  <script src="site_libs/quarto-html/anchor.min.js"></script>
+  <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+  <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <script src="site_libs/bootstrap/bootstrap.min.js"></script>
+  <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+  <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <style>
+    :root{font-family:Segoe UI, Roboto, system-ui, -apple-system, sans-serif;color:#222;}
+    body{margin:0;padding:0;background:#f7f7fb;}
+    .container{max-width:1100px;margin:100px auto 40px;background:#fff;border-radius:10px;padding:20px;box-shadow:0 6px 18px rgba(20,20,40,0.06);}
+    h1{margin:0 0 6px;text-align:center;font-size:20px;}
+    .subtitle{text-align:center;color:#444;margin-bottom:18px;font-size:14px;}
+
+    /* code wrapper */
+    .code-wrapper{position:relative;border:1px solid #e6e6e6;border-radius:8px;background:#f2f2f2;overflow:hidden;}
+    .code-viewport{max-height:55vh;overflow:auto;padding:12px;font-family:"Fira Code", Consolas, monospace;font-size:13px;line-height:1.4;background:transparent;}
+    .lines{min-width:min-content;}
+    .line{display:flex;align-items:flex-start;gap:12px;white-space:pre;}
+    .ln{width:60px;text-align:right;color:#666;user-select:none;flex:0 0 60px;padding-right:6px;}
+    .content{flex:1 1 auto;white-space:pre;overflow:visible;color:#111;}
+
+    /* Copy button */
+    .copy-btn{position:absolute;top:8px;right:8px;z-index:3;padding:6px 10px;border-radius:6px;border:0;background:#2563eb;color:#fff;cursor:pointer;font-weight:600;}
+    .copy-btn:active{transform:translateY(1px);}
+
+    /* image and buttons */
+    .image-container{text-align:center;margin-top:16px;}
+    .image-container img{max-width:100%;height:auto;border-radius:6px;border:1px solid #ddd;display:inline-block;}
+
+    /* Wider Shiny app iframe */
+    .image-container.wide-app {max-width:1400px; margin:0 auto;}
+    .image-container.wide-app iframe {width:100%; height:800px; border:1px solid #ddd; border-radius:6px;}
+
+    .buttons{text-align:center;margin-top:14px;}
+    .buttons a.btn{display:inline-block;margin:6px;padding:10px 18px;border-radius:8px;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;}
+    .buttons a.btn:hover{background:#1e4db7;}
+
+    footer{text-align:center;font-size:13px;color:#666;margin-top:18px;}
+
+    @media(max-width:700px){
+      .ln{width:48px;flex:0 0 48px;text-align:right;}
+      .copy-btn{top:6px;right:6px;}
+    }
+  </style>
+
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    .navbar-custom {
+      background-color: #003366; /* deep navy */
+    }
+    .navbar-custom .nav-link {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #ffffff;
+    }
+    .navbar-custom .nav-link:hover {
+      color: #ffcc00;
+    }
+    .navbar-custom .dropdown-menu {
+      background-color: #003366;
+    }
+    .navbar-custom .dropdown-item {
+      color: #ffffff;
+    }
+    .navbar-custom .dropdown-item:hover {
+      background-color: #002244;
+      color: #ffcc00;
+    }
+  </style>
+
+</head>
+<body class="nav-fixed fullcontent">
+
+<!-- ✅ Full navbar copied from index.html -->
+  
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="./index.html">
+      <img src="hepatotox-hex.png" alt="Hepatotox Logo" width="40" height="40" class="d-inline-block align-text-top">
+      Hepatotox Catalog
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="articlesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Articles</a>
+          <ul class="dropdown-menu" aria-labelledby="articlesDropdown">
+            <li><a class="dropdown-item" href="./introduction.html">Introduction to Hepatotox</a></li>
+            <li><a class="dropdown-item" href="./liver-enzyme.html">Liver Enzymes Overview</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="tablesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Tables</a>
+          <ul class="dropdown-menu" aria-labelledby="tablesDropdown">
+            <li><a class="dropdown-item" href="./table01.html">Table 01</a></li>
+            <li><a class="dropdown-item" href="./table02.html">Table 02</a></li>
+            <li><a class="dropdown-item" href="./table03.html">Table 03</a></li>
+            <li><a class="dropdown-item" href="./table04.html">Table 04</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="figuresDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Figures</a>
+          <ul class="dropdown-menu" aria-labelledby="figuresDropdown">
+            <li><a class="dropdown-item" href="./figure01.html">Figure 01</a></li>
+            <li><a class="dropdown-item" href="./figure02.html">Figure 02</a></li>
+            <li><a class="dropdown-item" href="./figure03.html">Figure 03</a></li>
+            <li><a class="dropdown-item" href="./figure04.html">Figure 04</a></li>
+            <li><a class="dropdown-item" href="./figure05.html">Figure 05</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="./resources.qmd">Resources</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- ✅ Page content -->
+  <div class="container">
+    <h1>Figure 04: Forest Plot of DILI Adverse Events Based on the SMQ</h1>
+    <div class="subtitle">
+      The datasets used for the program are modified versions of the <strong>ADAE.Rda & ADSL.Rda</strong> 
+      from the <strong>random.cdisc.data</strong> library. Copy the code below to generate an interactive forest plot of DILI adverse events based on the SMQ.
+    </div>
+
+    <div class="code-wrapper" id="codeWrapper" aria-label="R program code area">
+      <button class="copy-btn" id="copyBtn">Copy Code</button>
+      <div class="code-viewport" id="codeViewport" tabindex="0" aria-label="R program scrollable code">
+        <div class="lines" id="lines"></div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px;font-weight:600;">The generated output is below:</p>
+    <div class="image-container wide-app">
+      <iframe src="https://rxu6nu-dimple-patel.shinyapps.io/fig4_app/"></iframe>
+    </div>
+
+  </div>
+
+  <!-- ✅ R code preserved -->
+  <script id="rawCode" type="text/plain">
+#Download appropriate libraries.
+library(dplyr)
+library(tern)
+library(random.cdisc.data)
+library(tidyverse)
+library(magrittr)
+library(formatters)
+library(grid)
+library(shiny)
+library(plotly)
+library(ggvis)
+library(patchwork)
+library(ggprism)
+library(maditr)
+library(gridExtra)
+library(utile.visuals)
+library(forestly)
+library(ggrepel)
+
+#Load ADAE dataset.----
+load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/docs/data/adaef4.Rda"))
+
+#Load ADSL dataset.----
+load(url("https://raw.githubusercontent.com/phuse-org/hepatotox/main/docs/data/adslf4.Rda"))
+
+#NAs are explicit missing levels.----
+adaef4b <- df_explicit_na(adaef4)
+adslf4b <- df_explicit_na(adslf4)
+
+#Rename the treatment arms.----
+levels(adaef4b$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adslf4b$ACTARMCD) <- c("T1", "PL", "T2")
+levels(adaef4b$ARM) <- c("Treatment 1", "Placebo", "Treatment 2")
+adaef4b$ACTARMCD <- factor(adaef4b$ACTARMCD, levels = c("PL", "T1", "T2")) 
+adslf4b$ACTARMCD <- factor(adslf4b$ACTARMCD, levels = c("PL", "T1", "T2")) 
+
+adaef4c <- adaef4b %>% add_column(RUNNUM=runif(nrow(.)))
+
+adaef4d <- adaef4c %>% select(USUBJID, SUBJID, SMQ01NAM, ACTARMCD, ARM)
+
+#Get Frequency Count for Each Adverse Event SMQ & number of patients per treatment arm.----
+freqsmq <- table(adaef4c$SMQ01NAM, adaef4c$ACTARMCD)
+freqsmq1 <- as.data.frame(freqsmq)
+patientct <- table(adaef4c$ACTARMCD)
+patientct2 <- as.data.frame(patientct)
+
+#Rename freqsmq1 dataframe variables & patientct2 variables for increased readability.
+freqsmq2a <- freqsmq1 %>% rename("SMQname" = "Var1", "ACTARMCD" = "Var2")
+patientct2a <- patientct2 %>% rename("ACTARMCD" = "Var1")
+
+#Combine frequency count tables by treatment arm.----
+freqsaect <- merge(freqsmq2a, patientct2a, by = "ACTARMCD")
+
+#Transpose SMQ freq table.----
+freqsmq2 <- freqsaect %>% filter(!SMQname == "<Missing>") %>%
+  pivot_wider(
+    names_from = "ACTARMCD",
+    values_from = c("Freq.x", "Freq.y"),
+    id_cols = "SMQname"
+  ) 
+
+#Calculate frequency of AE SMQ by each treatment arm.----
+freqsmq2a <- freqsmq2 %>% mutate("T1per" = Freq.x_T1/Freq.y_T1*100, "T2per" = Freq.x_T2/Freq.y_T2*100, "PLper"= Freq.x_PL/Freq.y_PL*100)
+
+#Reorder the AE SMQs to match white paper example.
+freqsmq2a1 <- freqsmq2a %>% mutate(ordersmq = case_when(SMQname == "ALANINE AMINOTRANSFERASE INCREASED" ~ 1, SMQname == "HEPATIC ENZYME INCREASED" ~ 2, SMQname == "ASPARTATE AMINOTRANSFERASE INCREASED" ~ 3, SMQname == "LIVER FUNCTION TEST ABNORMAL" ~ 4, SMQname == "GAMMA-GLUTAMYLTRANSFERASE INCREASED" ~ 5, SMQname == "HEPATIC FUNCTION ABNORMAL" ~ 6, SMQname == "LIVER DISORDER" ~ 7, 
+SMQname == "HEPATIC STEATOSIS" ~ 8, SMQname == "BLOOD BILIRUBIN INCREASED" ~ 9)) %>%
+  arrange(ordersmq)
+
+#Calculate risk difference between T1 & PL and then again for T1 and T2. Also calculate Standard #Error and CI intervals.
+freqsmq2b <- freqsmq2a1 %>% mutate(RiskT1PL = T1per - PLper, RiskT2T1 = T2per - T1per) %>%
+  mutate(SET1PL = sqrt(PLper/100*(1-PLper/100)/(Freq.y_PL) + T1per/100*(1-T1per/100)/(Freq.y_T1)),
+         SET2T1 = sqrt(T2per/100*(1-T2per/100)/(Freq.y_T2) + T1per/100*(1-T1per/100)/(Freq.y_T1))) %>% mutate(lowerCIT1PL = RiskT1PL - 1.96*SET1PL, upperCIT1PL = RiskT1PL + 1.96*SET1PL, 
+  lowerCIT2T1 = RiskT2T1 - 1.96*SET2T1, upperCIT2T1 = RiskT2T1 + 1.96*SET2T1)
+
+#Update the data frame to include a treatment_arm column (this is key)----
+LabT1text <- paste("T1 (", freqsmq2a$Freq.y_T1[1], ")", sep = "")
+LabT2text <- paste("T2 (", freqsmq2a$Freq.y_T2[1], ")", sep = "")
+LabPLtext <- paste("PL (", freqsmq2a$Freq.y_PL[1], ")", sep = "")
+
+#Create UI page.----
+ui <- fluidPage(
+  tags$head(
+    tags$style(HTML("
+      .plot-grid {
+        display: grid;
+        grid-template-columns: 2.5fr 1fr 1fr;
+        gap: 2px;
+        align-items: start;
+      }
+
+      .plot-box {
+       padding: 0px;
+       background-color: white;
+       height: 440px; /* Increased by 10% */
+       overflow: hidden;
+      }
+      
+     .shift-down {
+        margin-top: 0px; /* Slight vertical shift */
+      }
+    "))
+  ),
+
+  titlePanel("Figure 4: Forest Plot of DILI Adverse Events Based on the SMQ"),
+
+  div(class = "plot-grid",
+      div(class = "plot-box", plotOutput("forestPlot1", height = "440px")),
+      div(class = "plot-box shift-down", plotOutput("forestPlot2", height = "440px")),
+      div(class = "plot-box shift-down", plotOutput("forestPlot3",  height = "440px"))
+  )
+)
+
+server <- function(input, output) {
+  common_y_scale <- setdiff(levels(freqsmq2a1$SMQname), "<Missing>")
+
+output$forestPlot1 <- renderPlot({
+#Create main forest plot.
+ggplot(freqsmq2b, aes(x = T1per, y = SMQname)) +
+      geom_point(aes(color = "T1", shape = "T1"), size = 1) +
+      geom_point(aes(x = T2per, color = "T2", shape = "T2"), size = 1) +
+      geom_point(aes(x = PLper, color = "PL", shape = "PL"), size = 1) +
+      scale_color_manual(values = c("T1" = "green", "T2" = "blue", "PL" = "red"),
+                     labels = c(LabT1text, LabT2text, LabPLtext),
+                     breaks = c("T1", "T2", "PL")) +
+      scale_shape_manual(values = c("T1" = 16, "T2" = 17, "PL" = 18),
+                     labels = c(LabT1text, LabT2text, LabPLtext),
+                     breaks = c("T1", "T2", "PL")) +
+      labs(x = "Percent of Subjects with AE", y = "") +
+      theme(legend.position = c(0.5, .99),  # Position the legend just above the plot
+        legend.title = element_blank(),
+        legend.justification = c(0.5, 1),   # Center align the legend horizontally above the plot
+        legend.margin = margin(t = 2)) +  
+      theme(axis.text.y = element_text(size = 11, margin = margin(b = 35))) + 
+guides(color = guide_legend(title = "Treatment Arm", 
+                              ncol = 3),
+         shape = guide_legend(title = "Treatment Arm", 
+                              ncol = 3)) +
+      theme(panel.border = element_rect(colour = "black", fill = NA, size = 1)) +
+      theme(panel.background = element_rect(fill = "white")) +
+      theme(axis.title.x = element_text(size = 11)) + 
+geom_text_repel(aes(x = T1per, label = paste(Freq.x_T1, " (", round(T1per, 1), "%)", sep = "")),
+                size = 3, color = "green", box.padding = 0.3, 
+                nudge_x = ifelse(freqsmq2a$SMQname == "HEPATIC ENZYME INCREASED", -0.3, 
+                                 ifelse(freqsmq2a$SMQname %in% c("HEPATIC FUNCTION ABNORMAL"), 0.3, 0.2)),
+                nudge_y = ifelse(freqsmq2a$SMQname == "HEPATIC ENZYME INCREASED", -.2, 
+                                 ifelse(freqsmq2a$SMQname %in% c("HEPATIC FUNCTION ABNORMAL"), -0.1, 0.2)),
+                max.overlaps = Inf) +
+    geom_text_repel(aes(x = T2per, label = paste(Freq.x_T2, " (", round(T2per, 1), "%)", sep = "")),
+                    size = 3, color = "blue", box.padding = 0.25, force = 2.5, max.overlaps = Inf,
+                    nudge_x = 0.15, nudge_y = -0.1) +
+    geom_text_repel(aes(x = PLper, label = paste(Freq.x_PL, " (", round(PLper, 1), "%)", sep = "")),
+                    size = 3, color = "red", box.padding = 0.25, force = 2.5, max.overlaps = Inf,
+                    nudge_x = 0.15, nudge_y = 0.1) +
+    geom_segment(aes(x = 0, xend = 2.5, y = SMQname, yend = SMQname), 
+               color = "gray", linetype = "dotted", linewidth = 0.75) +
+    scale_y_discrete(limits = common_y_scale)
+  })
+
+#Create adjoining forest plots with CI intervals and risk difference.
+  
+output$forestPlot2 <- renderPlot({
+  ggplot(data = freqsmq2b, aes(x = RiskT1PL, y = SMQname)) + 
+  geom_point() +
+  geom_errorbarh(aes(xmin = lowerCIT1PL, xmax = upperCIT1PL), height = .5, linewidth = 1) +
+  labs(x = "Risk Difference (95% CI)", y = "") +
+  theme(panel.background = element_rect(fill = "white")) +
+  geom_segment(aes(x = -.4, xend = 1.6, y = SMQname, yend = SMQname), 
+               color = "gray", linetype = "dotted", linewidth = 0.55) +
+  geom_text(aes(x = 1.25, y = 9.25), label = "Favors PL", size = 2.75, hjust = 0, vjust = 1) +
+  geom_text(aes(x = -.05, y = 9.25), label = "Favors T1", size = 2.75, hjust = 1, vjust = 1) +
+  geom_segment(aes(x = 0, xend = 0, y = 0, yend = 9.95), 
+               color = "gray", linetype = "dotted", linewidth = 0.55) +
+ theme(panel.border = element_rect(colour = "black", fill = NA, size = 1)) +
+ theme(axis.text.y = element_blank(), margin = margin(b = 10))  +
+  scale_y_discrete(limits = common_y_scale)
+ })
+
+output$forestPlot3 <- renderPlot({
+  ggplot(data = freqsmq2b, aes(x = RiskT2T1, y = SMQname)) + 
+  geom_point() +
+  geom_errorbarh(aes(xmin = lowerCIT2T1, xmax = upperCIT2T1), height = .5, linewidth = 1) +
+  labs(x = "Risk Difference (95% CI)", y = "") +
+  theme(panel.background = element_rect(fill = "white")) +
+  geom_segment(aes(x = -1.5, xend = .9, y = SMQname, yend = SMQname), 
+               color = "gray", linetype = "dotted", linewidth = 0.85) +
+  geom_segment(aes(x = 0, xend = 0, y = 0, yend = 9.95), 
+               color = "gray", linetype = "dotted", linewidth = 0.55) +
+  geom_text(aes(x = .60, y = 9.25), label = "Favors T2", size = 2.75, hjust = 0, vjust = 1) +
+  geom_text(aes(x = -1.15, y = 9.25), label = "Favors T1", size = 2.75, hjust = 1, vjust = 1) +
+  theme(panel.border = element_rect(colour = "black", fill = NA, size = 1)) +
+  xlim(-1.5, .9) +
+  theme(axis.text.y = element_blank(), margin = margin(b = 10))  +
+  scale_y_discrete(limits = common_y_scale)
+ })
+}
+
+shinyApp(ui = ui, server = server)
+  </script>
+
+  <script>
+    (function(){
+      let raw = document.getElementById('rawCode').textContent.replace(/\r/g, '').replace(/^\n+/, '').replace(/\n+$/, '');
+      const linesArray = raw.split('\n');
+      const linesContainer = document.getElementById('lines');
+      const frag = document.createDocumentFragment();
+      linesArray.forEach((text, idx) => {
+        const row = document.createElement('div'); row.className='line';
+        const ln = document.createElement('div'); ln.className='ln'; ln.textContent = idx+1;
+        const content = document.createElement('div'); content.className='content'; content.textContent=text;
+        row.appendChild(ln); row.appendChild(content); frag.appendChild(row);
+      });
+      linesContainer.appendChild(frag);
+
+      document.getElementById('copyBtn').addEventListener('click', async ()=>{
+        try {
+          await navigator.clipboard.writeText(raw);
+          let b=document.getElementById('copyBtn');
+          b.textContent='Copied!';
+          setTimeout(()=>b.textContent='Copy Code',1200);
+        } catch(e) {
+          alert('Copy failed');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
