@@ -230,9 +230,10 @@ freqsmq2 <- freqsaect %>% filter(!SMQname == "<Missing>") %>%
 freqsmq2a <- freqsmq2 %>% mutate("T1per" = Freq.x_T1/Freq.y_T1*100, "T2per" = Freq.x_T2/Freq.y_T2*100, "PLper"= Freq.x_PL/Freq.y_PL*100)
 
 #Reorder the AE SMQs to match white paper example.
-freqsmq2a1 <- freqsmq2a %>% mutate(ordersmq = case_when(SMQname == "ALANINE AMINOTRANSFERASE INCREASED" ~ 1, SMQname == "HEPATIC ENZYME INCREASED" ~ 2, SMQname == "ASPARTATE AMINOTRANSFERASE INCREASED" ~ 3, SMQname == "LIVER FUNCTION TEST ABNORMAL" ~ 4, SMQname == "GAMMA-GLUTAMYLTRANSFERASE INCREASED" ~ 5, SMQname == "HEPATIC FUNCTION ABNORMAL" ~ 6, SMQname == "LIVER DISORDER" ~ 7, 
-                                                        SMQname == "HEPATIC STEATOSIS" ~ 8, SMQname == "BLOOD BILIRUBIN INCREASED" ~ 9)) %>%
-  arrange(ordersmq)
+freqsmq2a1 <- freqsmq2a %>% mutate(ordersmq = case_when(SMQname == "ALANINE AMINOTRANSFERASE INCREASED" ~ 9, SMQname == "HEPATIC ENZYME INCREASED" ~ 8, SMQname == "ASPARTATE AMINOTRANSFERASE INCREASED" ~ 7, SMQname == "LIVER FUNCTION TEST ABNORMAL" ~ 6, SMQname == "GAMMA-GLUTAMYLTRANSFERASE INCREASED" ~ 5, SMQname == "HEPATIC FUNCTION ABNORMAL" ~ 4, SMQname == "LIVER DISORDER" ~ 3, 
+                                                        SMQname == "HEPATIC STEATOSIS" ~ 2, SMQname == "BLOOD BILIRUBIN INCREASED" ~ 1)) %>%
+  arrange(ordersmq) %>% mutate(SMQname = factor(SMQname, levels = unique(SMQname)))
+
 
 #Calculate risk difference between T1 & PL and then again for T1 and T2. Also calculate Standard #Error and CI intervals.
 freqsmq2b <- freqsmq2a1 %>%
